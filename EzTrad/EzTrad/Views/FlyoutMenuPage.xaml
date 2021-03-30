@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EzTrad.Views.FlyoutMenuPage"
+             xmlns:local="clr-namespace:EzTrad.ViewModels"
+             Title="Abc"
+             Padding="0,0,0,0"
+             BackgroundColor="White">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="validMenuTemplate">
+                <ViewCell>
+                    <Label Text="{Binding Title}" TextColor="#6f6f6f" BackgroundColor="#f2f2f2" FontSize="18" VerticalTextAlignment="Center"/>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="invalidMenuTemplate">
+                <ViewCell>
+                    <Grid Padding="5,10" ColumnDefinitions="30,*,30">
+                        <Image Source="{Binding Icon}" />
+                        <Label Grid.Column="1" Text="{Binding Title}" TextColor="Black"/>
+                        <ImageButton Source="favorites.png" IsVisible="true" Grid.Column="2" BackgroundColor="Transparent"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <local:MenuDataTemplateSelector x:Key="menuDataTemplateSelector"
+                ValidTemplate="{StaticResource validMenuTemplate}"
+                InvalidTemplate="{StaticResource invalidMenuTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Padding="0" BackgroundColor="Aqua" Spacing="0">
+        <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3">
+            <Image Source="userPro.png" Grid.Column="0" Margin="10,10,10,10"/>
+            <StackLayout Orientation="Vertical" Grid.Column="1">
+                <Label Text="059C189701" TextColor="White"/>
+                <Label Text="Nguyen Van Thien" TextColor="White"/>
+            </StackLayout>
+            <ImageButton Source="settingsPro.png" Grid.Column="2" BackgroundColor="Transparent" Margin="12,12,12,12"/>
+            <ImageButton Source="powerbutton.png" Grid.Column="3" BackgroundColor="Transparent" Margin="12,12,12,12" />
+        </Grid>
+        <ScrollView>
+            <ListView x:Name="listView" x:FieldModifier="public" ItemTemplate="{StaticResource menuDataTemplateSelector}"/>
+        </ScrollView>
+    </StackLayout>
+</ContentPage>
