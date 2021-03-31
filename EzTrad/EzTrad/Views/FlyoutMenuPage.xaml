@@ -8,9 +8,14 @@
              BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Style TargetType="ImageButton">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Margin" Value="12,12,12,12"/>
+            </Style>
             <DataTemplate x:Key="validMenuTemplate">
                 <ViewCell>
-                    <Label Text="{Binding Title}" TextColor="#6f6f6f" BackgroundColor="#f2f2f2" FontSize="18" VerticalTextAlignment="Center"/>
+                    <Label Text="{Binding Title}" TextColor="#6f6f6f" BackgroundColor="#f2f2f2" 
+                           FontSize="18" VerticalTextAlignment="Center"/>
                 </ViewCell>
             </DataTemplate>
             <DataTemplate x:Key="invalidMenuTemplate">
@@ -18,27 +23,40 @@
                     <Grid Padding="5,10" ColumnDefinitions="30,*,30">
                         <Image Source="{Binding Icon}" />
                         <Label Grid.Column="1" Text="{Binding Title}" TextColor="Black"/>
-                        <ImageButton Source="favorites.png" IsVisible="true" Grid.Column="2" BackgroundColor="Transparent"/>
+                        <ImageButton Source="favorites.png" 
+                                     Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
+                                     CommandParameter="{Binding .}"
+                                     IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
+                                     Grid.Column="2" Margin="2,2,2,2" 
+                                     Clicked="ImageButton_Clicked"
+                                     BackgroundColor="{Binding Source={x:Reference lbColor}, Path=Text}"/>
+
                     </Grid>
                 </ViewCell>
             </DataTemplate>
             <local:MenuDataTemplateSelector x:Key="menuDataTemplateSelector"
                 ValidTemplate="{StaticResource validMenuTemplate}"
-                InvalidTemplate="{StaticResource invalidMenuTemplate}" />
+                InvalidTemplate="{StaticResource invalidMenuTemplate}"/>
+            
         </ResourceDictionary>
     </ContentPage.Resources>
-    <StackLayout Padding="0" BackgroundColor="Aqua" Spacing="0">
+    
+    <StackLayout Padding="0" BackgroundColor="White" Spacing="0">
+        <Label Text="{Binding StarTick}" IsVisible="False" x:Name="lbShow"/>
+        <Label Text="{Binding StarColor}" IsVisible="False" x:Name="lbColor"/>
         <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3">
             <Image Source="userPro.png" Grid.Column="0" Margin="10,10,10,10"/>
             <StackLayout Orientation="Vertical" Grid.Column="1">
                 <Label Text="059C189701" TextColor="White"/>
                 <Label Text="Nguyen Van Thien" TextColor="White"/>
             </StackLayout>
-            <ImageButton Source="settingsPro.png" Grid.Column="2" BackgroundColor="Transparent" Margin="12,12,12,12"/>
-            <ImageButton Source="powerbutton.png" Grid.Column="3" BackgroundColor="Transparent" Margin="12,12,12,12" />
+            <ImageButton Source="settingsPro.png" Grid.Column="2" Command="{Binding SettingCommand}"/>
+            <ImageButton Source="powerbutton.png" Grid.Column="3" Command="{Binding LogoutCommand}"/>
+            <!--<ImageButton Source=""/>-->
         </Grid>
         <ScrollView>
-            <ListView x:Name="listView" x:FieldModifier="public" ItemTemplate="{StaticResource menuDataTemplateSelector}"/>
+            <ListView x:Name="listView" x:FieldModifier="public" ItemTemplate="{StaticResource menuDataTemplateSelector}" 
+                      ItemsSource="{Binding FlyoutItems}"/>
         </ScrollView>
     </StackLayout>
 </ContentPage>
