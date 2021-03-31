@@ -1,4 +1,4 @@
-﻿using EzTrad.Models;
+﻿using EzTrad.ViewModels.FlyoutMenuViewModel;
 using Xamarin.Forms;
 
 namespace EzTrad.ViewModels
@@ -11,7 +11,7 @@ namespace EzTrad.ViewModels
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
             //return ((Flyout)item).IsHeader = true ? ValidTemplate : InvalidTemplate;
-            if (((Flyout)item).IsHeader == true)
+            if (((FlyoutViewModel)item).IsHeader == true)
             {
                 return ValidTemplate;
             }

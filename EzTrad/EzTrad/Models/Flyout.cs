@@ -8,6 +8,6 @@ namespace EzTrad.Models
         public Type TargetPage { get; set; }
         public string Icon { get; set; }
         public bool IsHeader { get; set; }
-        public bool IsTicked { get; set; }
+        public string IsTicked { get; set; }
     }
 }

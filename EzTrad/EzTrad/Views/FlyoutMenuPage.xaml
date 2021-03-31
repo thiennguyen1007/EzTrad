@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EzTrad.Views.FlyoutMenuPage"
+             xmlns:vm="clr-namespace:EzTrad.ViewModels.FlyoutMenuViewModel"
              xmlns:local="clr-namespace:EzTrad.ViewModels"
              Title="Abc"
              Padding="0,0,0,0"
@@ -23,27 +24,26 @@
                     <Grid Padding="5,10" ColumnDefinitions="30,*,30">
                         <Image Source="{Binding Icon}" />
                         <Label Grid.Column="1" Text="{Binding Title}" TextColor="Black"/>
-                        <ImageButton Source="favorites.png" 
+                        <ImageButton Source="favorites.png"                                     
+                                     IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
+                                     Grid.Column="2" Margin="2,2,2,2"                        
                                      Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
                                      CommandParameter="{Binding .}"
-                                     IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
-                                     Grid.Column="2" Margin="2,2,2,2" 
-                                     Clicked="ImageButton_Clicked"
-                                     BackgroundColor="{Binding Source={x:Reference lbColor}, Path=Text}"/>
-
+                                     BackgroundColor="{Binding IsTicked}"/>
+                        <!--Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
+                                     CommandParameter="{Binding .}"-->
                     </Grid>
                 </ViewCell>
             </DataTemplate>
             <local:MenuDataTemplateSelector x:Key="menuDataTemplateSelector"
                 ValidTemplate="{StaticResource validMenuTemplate}"
                 InvalidTemplate="{StaticResource invalidMenuTemplate}"/>
-            
         </ResourceDictionary>
     </ContentPage.Resources>
     
     <StackLayout Padding="0" BackgroundColor="White" Spacing="0">
         <Label Text="{Binding StarTick}" IsVisible="False" x:Name="lbShow"/>
-        <Label Text="{Binding StarColor}" IsVisible="False" x:Name="lbColor"/>
+        <!--<Label Text="{Binding StarColor}" IsVisible="False" x:Name="lbColor"/>-->
         <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3">
             <Image Source="userPro.png" Grid.Column="0" Margin="10,10,10,10"/>
             <StackLayout Orientation="Vertical" Grid.Column="1">
@@ -55,7 +55,7 @@
             <!--<ImageButton Source=""/>-->
         </Grid>
         <ScrollView>
-            <ListView x:Name="listView" x:FieldModifier="public" ItemTemplate="{StaticResource menuDataTemplateSelector}" 
+            <ListView x:Name="listView" ItemTemplate="{StaticResource menuDataTemplateSelector}" 
                       ItemsSource="{Binding FlyoutItems}"/>
         </ScrollView>
     </StackLayout>

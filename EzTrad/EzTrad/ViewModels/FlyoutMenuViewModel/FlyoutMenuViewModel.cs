@@ -1,5 +1,4 @@
-﻿using EzTrad.Models;
-using EzTrad.Services;
+﻿using EzTrad.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -9,14 +8,9 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
     public class FlyoutMenuViewModel : BaseViewModel
     {
         private IPageService _pageService;
-        private ObservableCollection<Flyout> _flyoutItems;
-        public string StarColor 
-        { 
-            get => _starColor; 
-            set => SetProperty(ref _starColor, value); 
-        }
+        private ObservableCollection<FlyoutViewModel> _flyoutItems;
+        private int temp { get; set; } = 0;
         private bool _starTick;
-        private string _starColor = "Transparent";
 
         //Command
         public ICommand LoadDataCommand { get; set; }
@@ -24,7 +18,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         public ICommand SettingCommand { get; set; }
         public ICommand FavoritesCommand { get; set; }
         //
-        public ObservableCollection<Flyout> FlyoutItems
+        public ObservableCollection<FlyoutViewModel> FlyoutItems
         {
             get => _flyoutItems;
             set { SetProperty(ref _flyoutItems, value); }
@@ -34,6 +28,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             get => _starTick;
             set { SetProperty(ref _starTick, value); }
         }
+        public FlyoutMenuViewModel() { }
         public FlyoutMenuViewModel(IPageService pageService)
         {
             _pageService = pageService;
@@ -45,7 +40,11 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         }
         private void LoadData()
         {
-            FlyoutItems = new ObservableCollection<Flyout>(LstMenu());
+            FlyoutItems = new ObservableCollection<FlyoutViewModel>(LstMenu());
+            for (int i = 0; i < FlyoutItems.Count; i++)
+            {
+                FlyoutItems[i].IsTicked = "White";
+            }
             StarTick = IsBusy;
         }
         private void OnLogoutClicked()
@@ -65,61 +64,69 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                 StarTick = IsBusy;
             }
         }
-        private void OnFavoritesClicked()
+        private void OnFavoritesClicked(object obj)
         {
-            if (StarColor == "White")
+            var x = obj as FlyoutViewModel;
+            if (x.IsTicked == "White")
             {
-                StarColor = "#FFEB3B";
+                x.IsTicked = "#FFEB3B";
             }
             else
             {
-                StarColor = "White";
-            }          
+                x.IsTicked = "white";
+            }
+            for (int i = 0; i < FlyoutItems.Count; i++)
+            {
+                if (FlyoutItems[i].Title == x.Title)
+                {
+                    FlyoutItems[i].IsTicked = x.IsTicked;
+                }
+            }
         }
-        private ObservableCollection<Flyout> LstMenu()
+        private ObservableCollection<FlyoutViewModel> LstMenu()
         {
-            ObservableCollection<Flyout> lstTemp = new ObservableCollection<Flyout>();
-            Flyout f = new Flyout
+            ObservableCollection<FlyoutViewModel> lstTemp = new ObservableCollection<FlyoutViewModel>();
+            FlyoutViewModel f = new FlyoutViewModel
             {
                 Title = "Thị trường",
                 IsHeader = true
             };
-            Flyout f1 = new Flyout
+            FlyoutViewModel f1 = new FlyoutViewModel
             {
                 Title = "Tổng quan",
                 Icon = "tongQuan.png",
             };
-            Flyout f2 = new Flyout
+            FlyoutViewModel f2 = new FlyoutViewModel
             {
                 Title = "Bảng giá",
                 Icon = "BangGia.png",
             };
-            Flyout f3 = new Flyout
+            FlyoutViewModel f3 = new FlyoutViewModel
             {
                 Title = "Tin tức",
                 Icon = "news.png",
             };
-            Flyout f4 = new Flyout
+            FlyoutViewModel f4 = new FlyoutViewModel
             {
                 Title = "Chỉ số thế giới",
                 Icon = "index.png",
             };
-            Flyout f5 = new Flyout
+            FlyoutViewModel f5 = new FlyoutViewModel
             {
                 Title = "FPTS nhận định",
                 Icon = "nhanDinh.png",
             };
-            Flyout f6 = new Flyout
+            FlyoutViewModel f6 = new FlyoutViewModel
             {
                 Title = "Lịch sự kiện",
                 Icon = "calendar.png",
             };
-            Flyout f7 = new Flyout
+            FlyoutViewModel f7 = new FlyoutViewModel
             {
                 Title = "Biểu đồ",
                 Icon = "chart.png",
             };
-            Flyout f8 = new Flyout
+            FlyoutViewModel f8 = new FlyoutViewModel
             {
                 Title = "Giao dịch phái sinh",
                 Icon = "transaction.png",

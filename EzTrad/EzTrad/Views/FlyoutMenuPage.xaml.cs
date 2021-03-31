@@ -26,10 +26,15 @@ namespace EzTrad.Views
             get => BindingContext as FlyoutMenuViewModel;
             set { BindingContext = value; }
         }
-
         private void ImageButton_Clicked(object sender, System.EventArgs e)
         {
             ViewModel.FavoritesCommand.Execute(null);
         }
+
+        //private void listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    var itemSelected = e.SelectedItem as Models.Flyout;
+        //    //ViewModels.Check();
+        //}
     }
 }
