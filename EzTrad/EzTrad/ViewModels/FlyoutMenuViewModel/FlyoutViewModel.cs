@@ -10,7 +10,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         private bool _isHeader;
         private string _isTicked;
 
-        public string Title1
+        public string LabelTitle
         {
             get => _title;
             set => SetProperty(ref _title, value);

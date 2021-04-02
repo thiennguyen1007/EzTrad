@@ -11,6 +11,7 @@ namespace EzTrad
             InitializeComponent();
 
             MainPage = new MainPage();
+            //MainPage = new NavigationPage(new Views.FlyoutMenuPage());
         }
 
         protected override void OnStart()

@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EzTrad.Views.FlyoutMenuPage"
              xmlns:vm="clr-namespace:EzTrad.ViewModels.FlyoutMenuViewModel"
+             Title="Menu"
              xmlns:local="clr-namespace:EzTrad.ViewModels"
-             Title="Abc"
+             NavigationPage.HasNavigationBar="False"
              Padding="0,0,0,0"
              BackgroundColor="White">
     <ContentPage.Resources>
@@ -14,49 +15,118 @@
                 <Setter Property="Margin" Value="12,12,12,12"/>
             </Style>
             <DataTemplate x:Key="validMenuTemplate">
-                <ViewCell>
-                    <Label Text="{Binding Title}" TextColor="#6f6f6f" BackgroundColor="#f2f2f2" 
+                <ViewCell IsEnabled="False">
+                    <Label Text="{Binding LabelTitle}" TextColor="#6f6f6f" BackgroundColor="#f2f2f2" 
                            FontSize="18" VerticalTextAlignment="Center"/>
                 </ViewCell>
             </DataTemplate>
             <DataTemplate x:Key="invalidMenuTemplate">
                 <ViewCell>
                     <Grid Padding="5,10" ColumnDefinitions="30,*,30">
-                        <Image Source="{Binding Icon}" />
-                        <Label Grid.Column="1" Text="{Binding Title}" TextColor="Black"/>
+                        <Image Source="{Binding Icon}" IsEnabled="False"/>
+                        <Label Grid.Column="1" Text="{Binding LabelTitle}" TextColor="Black" IsEnabled="False"/>
                         <ImageButton Source="favorites.png"                                     
                                      IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
                                      Grid.Column="2" Margin="2,2,2,2"                        
                                      Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
                                      CommandParameter="{Binding .}"
                                      BackgroundColor="{Binding IsTicked}"/>
-                        <!--Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
-                                     CommandParameter="{Binding .}"-->
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="isBaoCaoGDTemplate">
+                <ViewCell>
+                    <Grid Padding="5,10" ColumnDefinitions="30,*,30">
+                        <Image Source="{Binding Icon}" IsEnabled="False"/>
+                        <Label Grid.Column="1" Text="{Binding LabelTitle}" TextColor="Black" IsEnabled="False"/>
+                        <ImageButton Source="favorites.png"                                     
+                                     IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
+                                     Grid.Column="2" Margin="2,2,2,2"                        
+                                     Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
+                                     CommandParameter="{Binding .}"
+                                     BackgroundColor="{Binding IsTicked}"/>
+                        <ImageButton Source="next.png" Grid.Column="2" Margin="2,2,2,2" 
+                                     Command="{Binding Source={x:Reference listView}, Path=BindingContext.showLstBaoCaoGDCommmand}" 
+                                     IsVisible="{Binding Source={x:Reference lbShowBaoCaoGDBtn}, Path=Text}"/>
+                        <ImageButton Source="chevron.png" Grid.Column="2" Margin="2,2,2,2" Command="{Binding showLstBaoCaoGDCommmand}" 
+                                     IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="isQuanlyTaiKhoanTemplate">
+                <ViewCell>
+                    <Grid Padding="5,10" ColumnDefinitions="30,*,30">
+                        <Image Source="{Binding Icon}" IsEnabled="False"/>
+                        <Label Grid.Column="1" Text="{Binding LabelTitle}" TextColor="Black" IsEnabled="False"/>
+                        <ImageButton Source="favorites.png"                                     
+                                     IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
+                                     Grid.Column="2" Margin="2,2,2,2"                        
+                                     Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
+                                     CommandParameter="{Binding .}"
+                                     BackgroundColor="{Binding IsTicked}"/>
+                        <ImageButton Source="next.png" Grid.Column="2" Margin="2,2,2,2" Command="{Binding showLstBaoCaoGDCommmand}" 
+                                     IsVisible="{Binding Source={x:Reference lbShowQuanLyBtn}, Path=Text}"/>
+                        <ImageButton Source="chevron.png" Grid.Column="2" Margin="2,2,2,2" Command="{Binding showLstQuanLyCommand}"
+                                     IsVisible="{Binding Source={x:Reference lbShowDropDownQuanLyBtn}, Path=Text}"/>
                     </Grid>
                 </ViewCell>
             </DataTemplate>
             <local:MenuDataTemplateSelector x:Key="menuDataTemplateSelector"
-                ValidTemplate="{StaticResource validMenuTemplate}"
-                InvalidTemplate="{StaticResource invalidMenuTemplate}"/>
+                                            ValidTemplate="{StaticResource validMenuTemplate}"
+                                            InvalidTemplate="{StaticResource invalidMenuTemplate}"
+                                            BaoCaoGD="{StaticResource isBaoCaoGDTemplate}"
+                                            QuanlyTaiKhoan="{StaticResource isQuanlyTaiKhoanTemplate}"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <StackLayout Padding="0" BackgroundColor="White" Spacing="0">
-        <Label Text="{Binding StarTick}" IsVisible="False" x:Name="lbShow"/>
-        <!--<Label Text="{Binding StarColor}" IsVisible="False" x:Name="lbColor"/>-->
-        <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3">
-            <Image Source="userPro.png" Grid.Column="0" Margin="10,10,10,10"/>
-            <StackLayout Orientation="Vertical" Grid.Column="1">
-                <Label Text="059C189701" TextColor="White"/>
-                <Label Text="Nguyen Van Thien" TextColor="White"/>
-            </StackLayout>
-            <ImageButton Source="settingsPro.png" Grid.Column="2" Command="{Binding SettingCommand}"/>
-            <ImageButton Source="powerbutton.png" Grid.Column="3" Command="{Binding LogoutCommand}"/>
-            <!--<ImageButton Source=""/>-->
-        </Grid>
-        <ScrollView>
-            <ListView x:Name="listView" ItemTemplate="{StaticResource menuDataTemplateSelector}" 
-                      ItemsSource="{Binding FlyoutItems}"/>
-        </ScrollView>
-    </StackLayout>
+    <ScrollView>
+        <StackLayout BackgroundColor="White" Spacing="0" Orientation="Vertical">
+            <!--#region temp-->
+            <Label Text="{Binding StarTick}" IsVisible="False" x:Name="lbShow"/>
+            <Label Text="{Binding IsShowQuanLyBtn}" IsVisible="False" x:Name="lbShowQuanLyBtn"/>
+            <Label Text="{Binding IsShowBaoCaoGDBtn}" IsVisible="False" x:Name="lbShowBaoCaoGDBtn"/>
+            <Label Text="{Binding IsShowDropDownQuanLyBtn}" IsVisible="False" x:Name="lbShowDropDownQuanLyBtn"/>
+            <Label Text="{Binding IsShowDropDownBaoCaoGDBtn}" IsVisible="False" x:Name="lbShowDropDownBaoCaoBtn"/>
+            <!--#endregion-->
+            <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3">
+                <Image Source="userPro.png" Grid.Column="0" Margin="10,10,10,10"/>
+                <StackLayout Orientation="Vertical" Grid.Column="1">
+                    <Label Text="059C189701" TextColor="White"/>
+                    <Label Text="Nguyen Van Thien" TextColor="White"/>
+                </StackLayout>
+                <ImageButton Source="settingsPro.png" Grid.Column="2" Command="{Binding SettingCommand}" IsVisible="{Binding IsShowPowerBtn}"/>
+                <ImageButton Source="powerbutton.png" Grid.Column="3" Command="{Binding LogoutCommand}" IsVisible="{Binding IsShowPowerBtn}"/>
+                <ImageButton Source="checked.png" Grid.Column="3" Command="{Binding UpdateCommand}" IsVisible="{Binding IsShowUpdateBtn}"/>
+            </Grid>
+
+            <ScrollView>
+                <!--list favorites-->
+                <StackLayout Spacing="0">
+                    <Label Text="Yêu thích" TextColor="#6f6f6f" BackgroundColor="#FFEB3B" 
+                           FontSize="18" VerticalTextAlignment="Center" IsVisible="{Binding IsShowFavor}" HeightRequest="45"/>
+                    <ListView ItemsSource="{Binding LstFavorites}" IsVisible="{Binding IsShowFavor}" HeightRequest="{Binding HeightOfLst}"
+                              x:Name="lstViewFavor">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Padding="5,10" ColumnDefinitions="30,*,30">
+                                        <Image Source="{Binding Icon}" IsEnabled="False"/>
+                                        <Label Grid.Column="1" Text="{Binding LabelTitle}" TextColor="Black" IsEnabled="False"/>
+                                        <ImageButton Source="favorites.png"                                     
+                                     IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
+                                     Grid.Column="2" Margin="2,2,2,2"                        
+                                     Command="{Binding Source={x:Reference lstViewFavor}, Path=BindingContext.RemoveFavoritesCommand}"
+                                     CommandParameter="{Binding .}"
+                                     BackgroundColor="{Binding IsTicked}"/>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <!--list menu-->
+                    <ListView x:Name="listView" ItemTemplate="{StaticResource menuDataTemplateSelector}" 
+                      ItemsSource="{Binding FlyoutItems}" ItemSelected="listView_ItemSelected"/>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

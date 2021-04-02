@@ -1,6 +1,6 @@
 ﻿using EzTrad.Services;
 using EzTrad.ViewModels.FlyoutMenuViewModel;
-
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +15,9 @@ namespace EzTrad.Views
             ViewModel = new FlyoutMenuViewModel(pageService);
             this.BindingContext = ViewModel;
             InitializeComponent();
+            //not show color selected item
+             listView.ItemSelected += DeselectItem;          
+            //      
         }
         protected override void OnAppearing()
         {
@@ -30,11 +33,13 @@ namespace EzTrad.Views
         {
             ViewModel.FavoritesCommand.Execute(null);
         }
+        private void listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
 
-        //private void listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        //{
-        //    var itemSelected = e.SelectedItem as Models.Flyout;
-        //    //ViewModels.Check();
-        //}
+        }
+        private void DeselectItem(object sender, EventArgs e)
+        {
+            ((ListView)sender).SelectedItem = null;
+        }
     }
 }
