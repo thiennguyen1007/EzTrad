@@ -14,6 +14,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         private static ObservableCollection<FlyoutViewModel> _favoritesTemp = new ObservableCollection<FlyoutViewModel>();
         private ObservableCollection<FlyoutViewModel> _flyoutItemsTemp;
         private int temp { get; set; } = 0;
+        private int _heightLstFavor;
         private bool _starTick = false;
         private bool _isShowFavor;
         private bool _isShowPowerBtn;
@@ -98,6 +99,11 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             get => _isShowDropDownBaoCaoBtn;
             set => SetProperty(ref _isShowDropDownBaoCaoBtn, value);
         }
+        public int HeightLstFavor
+        {
+            set => SetProperty(ref _heightLstFavor, value);
+            get => _heightLstFavor;
+        }
         //implement ...
         public FlyoutMenuViewModel(IPageService pageService)
         {
@@ -129,7 +135,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             {
                 FlyoutItems[i].IsTicked = "White";
             }
-            FlyoutItemsTemp = new ObservableCollection<FlyoutViewModel>(FlyoutItems);           
+            FlyoutItemsTemp = new ObservableCollection<FlyoutViewModel>(FlyoutItems);
         }
         private void OnLogoutClicked()
         {
@@ -180,7 +186,11 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                     }
                 }
             }
-
+            else
+            {
+                FlyoutItems = new ObservableCollection<FlyoutViewModel>(FlyoutItemsTemp);
+            }
+            LstFavorites = new ObservableCollection<FlyoutViewModel>(FavoritesTemp);
         }
         private void OnFavoritesClicked(object obj)
         {
@@ -247,6 +257,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             if (x != null)
             {
                 FavoritesTemp.Remove(x);
+                LstFavorites = new ObservableCollection<FlyoutViewModel>(FavoritesTemp);
                 //show change in view
                 for (int i = 0; i < FlyoutItems.Count; i++)
                 {
@@ -291,13 +302,93 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         }
         private void OnShowQuanLyClicked()
         {
-            IsShowDropDownQuanLyBtn = true;
-            IsShowQuanLyBtn = false;
+            IsShowDropDownQuanLyBtn = !IsShowDropDownQuanLyBtn;
+            IsShowQuanLyBtn = !IsShowQuanLyBtn;
+            CheckFavorIsAny();
+            int duplicate = 0;
+            
+            if (IsShowFavor == true)
+            {
+                int x = 45 * LstFavorites.Count;
+                for (int i = 0; i < LstFavorites.Count; i++)
+                {
+                    if (LstFavorites[i].LabelTitle.Equals("Quản lý tài khoản"))
+                    {
+                        duplicate++;
+                    }
+                }
+                if (duplicate == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == false)
+                    {
+                        x += 90;
+                        //HeightLstFavor = x;
+                    }
+                    else if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == true)
+                    {
+                        x += 240;
+                    }
+                    else if (IsShowDropDownBaoCaoGDBtn == false && IsShowDropDownQuanLyBtn == true)
+                    {
+                        x += 150;
+                    }
+                    else
+                    {
+                        x = LstFavorites.Count * 45;
+                    }
+                    //reset
+                    duplicate = 0;
+                }
+                HeightOfLst = x.ToString();
+            }          
         }
         private void OnShowBaoCaoGDClicked()
         {
-            IsShowDropDownBaoCaoGDBtn = true;
-            IsShowBaoCaoGDBtn = false;
+            IsShowDropDownBaoCaoGDBtn = !IsShowDropDownBaoCaoGDBtn;
+            IsShowBaoCaoGDBtn = !IsShowBaoCaoGDBtn;
+            CheckFavorIsAny();
+            int duplicate = 0;
+            if (IsShowFavor == true)
+            {
+                int x = 45 * LstFavorites.Count;
+                for (int i = 0; i < LstFavorites.Count; i++)
+                {
+                    if (LstFavorites[i].LabelTitle.Equals("Báo cáo giao dịch"))
+                    {
+                        duplicate++;
+                    }
+                }
+                if (duplicate == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == false)
+                    {
+                        x += 90;
+                        //HeightLstFavor = x;
+                    }
+                    else if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == true)
+                    {
+                        x += 240;
+                    }
+                    else if (IsShowDropDownBaoCaoGDBtn == false && IsShowDropDownQuanLyBtn == true)
+                    {
+                        x += 150;
+                    }
+                    else
+                    {
+                        x = LstFavorites.Count * 45;
+                    }
+                    duplicate = 0;
+                }
+                HeightOfLst = x.ToString();
+            }
         }
         private void CheckFavorIsAny()// check list favorites is any or not>>
         {
@@ -313,8 +404,8 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             {
                 IsShowFavor = true;
                 LstFavorites = new ObservableCollection<FlyoutViewModel>(FavoritesTemp);
-                int x = 45 * LstFavorites.Count;
-                HeightOfLst = x.ToString();
+                HeightLstFavor = 45 * LstFavorites.Count;
+                HeightOfLst = HeightLstFavor.ToString();
             }
         }
         private ObservableCollection<FlyoutViewModel> LstMenu()
@@ -373,15 +464,17 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             FlyoutViewModel f10 = new FlyoutViewModel
             {
                 LabelTitle = "Đặt lệnh",
+                Icon = "paper.png",
             };
             FlyoutViewModel f11 = new FlyoutViewModel
             {
                 LabelTitle = "Báo cáo giao dịch",
+                Icon = "stockMarket.png"
             };
             FlyoutViewModel f12 = new FlyoutViewModel
             {
                 LabelTitle = "Quản lý tài khoản",
-                Icon = "",
+                Icon = "mangAcc.png",
             };
             lstTemp.Add(f);
             lstTemp.Add(f1);
