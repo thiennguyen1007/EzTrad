@@ -18,6 +18,7 @@
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="FontSize" Value="14"/>
             </Style>
+            <!--main menu-->
             <DataTemplate x:Key="validMenuTemplate">
                 <ViewCell IsEnabled="False">
                     <Label Text="{Binding LabelTitle}" TextColor="#6f6f6f" BackgroundColor="#f2f2f2" 
