@@ -185,8 +185,7 @@
                                             QuanlyTaiKhoan="{StaticResource isQuanlyTaiKhoanTemplate}"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ScrollView>
-        <StackLayout BackgroundColor="White" Spacing="0" Orientation="Vertical">
+    <StackLayout BackgroundColor="White" Spacing="0" Orientation="Vertical">
             <!--#region temp-->
             <Label Text="{Binding StarTick}" IsVisible="False" x:Name="lbShow"/>
             <Label Text="{Binding IsShowQuanLyBtn}" IsVisible="False" x:Name="lbShowQuanLyBtn"/>
@@ -194,21 +193,23 @@
             <Label Text="{Binding IsShowDropDownQuanLyBtn}" IsVisible="False" x:Name="lbShowDropDownQuanLyBtn"/>
             <Label Text="{Binding IsShowDropDownBaoCaoGDBtn}" IsVisible="False" x:Name="lbShowDropDownBaoCaoBtn"/>
             <!--#endregion-->
-            <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3">
-                <Image Source="userPro.png" Grid.Column="0" Margin="10,10,10,10"/>
-                <StackLayout Orientation="Vertical" Grid.Column="1">
-                    <Label Text="059C189701" TextColor="White"/>
-                    <Label Text="Nguyen Van Thien" TextColor="White" FontSize="18"/>
-                </StackLayout>
-                <ImageButton Source="settingsPro.png" Grid.Column="2" Command="{Binding SettingCommand}" IsVisible="{Binding IsShowPowerBtn}"/>
-                <ImageButton Source="powerbutton.png" Grid.Column="3" Command="{Binding LogoutCommand}" IsVisible="{Binding IsShowPowerBtn}"/>
-                <ImageButton Source="checked.png" Grid.Column="3" Command="{Binding UpdateCommand}" IsVisible="{Binding IsShowUpdateBtn}"/>
-            </Grid>
+            
 
             <ScrollView>
+                
                 <!--list favorites-->
                 <StackLayout Spacing="0">
-                    <Label Text="Yêu thích" TextColor="#6f6f6f" BackgroundColor="#FFEB3B" 
+                <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3" HeightRequest="56">
+                    <Image Source="userPro.png" Grid.Column="0" Margin="10,10,10,10"/>
+                    <StackLayout Orientation="Vertical" Grid.Column="1">
+                        <Label Text="059C189701" TextColor="White"/>
+                        <Label Text="Nguyen Van Thien" TextColor="White" FontSize="18"/>
+                    </StackLayout>
+                    <ImageButton Source="settingsPro.png" Grid.Column="2" Command="{Binding SettingCommand}" IsVisible="{Binding IsShowPowerBtn}"/>
+                    <ImageButton Source="powerbutton.png" Grid.Column="3" Command="{Binding LogoutCommand}" IsVisible="{Binding IsShowPowerBtn}"/>
+                    <ImageButton Source="checked.png" Grid.Column="3" Command="{Binding UpdateCommand}" IsVisible="{Binding IsShowUpdateBtn}"/>
+                </Grid>
+                <Label Text="Yêu thích" TextColor="#6f6f6f" BackgroundColor="#FFEB3B" 
                            FontSize="18" VerticalTextAlignment="Center" IsVisible="{Binding IsShowFavor}" HeightRequest="45"/>
                     <ListView ItemsSource="{Binding LstFavorites}" IsVisible="{Binding IsShowFavor}" MinimumHeightRequest="{Binding HeightOfLst}"
                               x:Name="lstViewFavor" ItemTemplate="{StaticResource menuFavorTemplateSelector}"
@@ -220,5 +221,4 @@
                 </StackLayout>
             </ScrollView>
         </StackLayout>
-    </ScrollView>
 </ContentPage>

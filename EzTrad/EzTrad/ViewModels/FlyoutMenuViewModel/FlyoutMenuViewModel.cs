@@ -13,7 +13,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         private static ObservableCollection<FlyoutViewModel> _lstFavorites;
         private static ObservableCollection<FlyoutViewModel> _favoritesTemp = new ObservableCollection<FlyoutViewModel>();
         private ObservableCollection<FlyoutViewModel> _flyoutItemsTemp;
-        private int temp { get; set; } = 0;
         private int _heightLstFavor;
         private bool _starTick = false;
         private bool _isShowFavor;
@@ -33,7 +32,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         public ICommand UpdateCommand { get; set; }
         public ICommand showLstQuanLyCommand { get; set; }
         public ICommand showLstBaoCaoGDCommmand { get; set; }
-        //
+        //get; set;
         public ObservableCollection<FlyoutViewModel> FlyoutItems
         {
             get => _flyoutItems;
@@ -129,12 +128,15 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             IsShowQuanLyBtn = true;
             IsShowDropDownBaoCaoGDBtn = false;
             IsShowDropDownQuanLyBtn = false;
-            //
+
+            //create list FlyoutItem
+            LstFavorites = new ObservableCollection<FlyoutViewModel>();
             FlyoutItems = new ObservableCollection<FlyoutViewModel>(LstMenu());
             for (int i = 0; i < FlyoutItems.Count; i++)
             {
                 FlyoutItems[i].IsTicked = "White";
             }
+            //create list Flyout temp
             FlyoutItemsTemp = new ObservableCollection<FlyoutViewModel>(FlyoutItems);
         }
         private void OnLogoutClicked()
@@ -151,8 +153,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             IsShowDropDownBaoCaoGDBtn = false;
             IsShowDropDownQuanLyBtn = false;
             StarTick = true;
-            //
-            FlyoutItems = new ObservableCollection<FlyoutViewModel>(FlyoutItemsTemp);
         }
         private void OnUpdateClicked()
         {
@@ -166,31 +166,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             StarTick = false;
             //
             CheckFavorIsAny();
-            if (LstFavorites != null)
-            {
-                int duplicateNumber = 0;
-                for (int i = 0; i < LstFavorites.Count; i++)
-                {
-                    for (int j = 0; j < FlyoutItemsTemp.Count; j++)
-                    {
-                        if (LstFavorites[i].LabelTitle == FlyoutItemsTemp[j].LabelTitle)
-                        {
-                            duplicateNumber++;
-                        }
-                    }
-                    if (duplicateNumber > 0)
-                    {
-                        FlyoutItems.Remove(LstFavorites[i]);
-                        //reset
-                        duplicateNumber = 0;
-                    }
-                }
-            }
-            else
-            {
-                FlyoutItems = new ObservableCollection<FlyoutViewModel>(FlyoutItemsTemp);
-            }
-            LstFavorites = new ObservableCollection<FlyoutViewModel>(FavoritesTemp);
         }
         private void OnFavoritesClicked(object obj)
         {
@@ -210,90 +185,40 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                     FlyoutItemsTemp[i].IsTicked = x.IsTicked;
                 }
             }
-            //if in list favorites have duplicate this item => remove it else {add new item}
+            //delete now, item in list Flyout          
+            FlyoutItems.Remove(x);
+            x.IsTicked = "#FFEB3B";
+            LstFavorites.Add(x);
             CheckFavorIsAny();
-            if (IsShowFavor == true)
+            for (int i = 0; i < FlyoutItemsTemp.Count; i++)
             {
-                for (int i = 0; i < LstFavorites.Count; i++)
+                if (x.LabelTitle.Equals(FlyoutItemsTemp[i].LabelTitle))
                 {
-                    if (x.LabelTitle.Equals(LstFavorites[i].LabelTitle))// true when duplicate => remove it
-                    {
-                        FavoritesTemp.Remove(x);
-                        temp++;
-                    }
-                }
-                if (temp == 0)// not duplicate => add 
-                {
-                    FavoritesTemp.Clear();// reset list favor to setup 
-                    for (int i = 0; i < FlyoutItems.Count; i++)
-                    {
-                        if (FlyoutItems[i].IsTicked.Equals("#FFEB3B"))//check what item is ticked to add
-                        {
-                            FavoritesTemp.Add(FlyoutItems[i]);
-                        }
-                    }
+                    FlyoutItemsTemp[i].IsTicked = "#FFEB3B";
                 }
             }
-            else// list favor is (/0)
-            {
-                //add to list favorites          
-                for (int i = 0; i < FlyoutItems.Count; i++)
-                {
-                    if (FlyoutItems[i].IsTicked.Equals("#FFEB3B"))//check what item is ticked to add
-                    {
-                        FavoritesTemp.Add(FlyoutItems[i]);
-                    }
-                }
-            }
-            CheckFavorIsAny();
-            //reset temp
-            temp = 0;
         }
         private void OnRemoveFavorClicked(object obj)//remove item in favor list and change color of star
         {
             var x = obj as FlyoutViewModel;
-            int duplicate = 0;
             //remove item in list favorites
             if (x != null)
             {
-                FavoritesTemp.Remove(x);
-                LstFavorites = new ObservableCollection<FlyoutViewModel>(FavoritesTemp);
-                //show change in view
-                for (int i = 0; i < FlyoutItems.Count; i++)
-                {
-                    if (x.LabelTitle == FlyoutItems[i].LabelTitle)
-                    {
-                        duplicate++;
-                    }
-                }
-                if (duplicate != 0)
-                {
-                    duplicate = 0;
-                }
-                else//not duplicate => add item to Flyout list
-                {
-                    //check color
-                    FlyoutItems = new ObservableCollection<FlyoutViewModel>(FlyoutItemsTemp);
-                    for (int i = 0; i < FlyoutItems.Count; i++)
-                    {
-                        if (x.LabelTitle == FlyoutItems[i].LabelTitle)
-                        {
-                            FlyoutItems[i].IsTicked = "White";
-                        }
-                    }
-                    //change list flyout item
-
-                    CheckFavorIsAny();
-                }
-                // check color of star in item
+                LstFavorites.Remove(x);
+                x.IsTicked = "White";
                 for (int i = 0; i < FlyoutItemsTemp.Count; i++)
                 {
-                    if (x.LabelTitle == FlyoutItemsTemp[i].LabelTitle)
+                    if (x.LabelTitle.Equals(FlyoutItemsTemp[i].LabelTitle))
                     {
                         FlyoutItemsTemp[i].IsTicked = "White";
                     }
                 }
+                FlyoutItems = new ObservableCollection<FlyoutViewModel>(FlyoutItemsTemp);
                 CheckFavorIsAny();
+                foreach (var item in LstFavorites)
+                {
+                    FlyoutItems.Remove(item);
+                }
             }
             else
             {
@@ -306,7 +231,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             IsShowQuanLyBtn = !IsShowQuanLyBtn;
             CheckFavorIsAny();
             int duplicate = 0;
-            
             if (IsShowFavor == true)
             {
                 int x = 45 * LstFavorites.Count;
@@ -323,28 +247,12 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                 }
                 else
                 {
-                    if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == false)
-                    {
-                        x += 90;
-                        //HeightLstFavor = x;
-                    }
-                    else if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == true)
-                    {
-                        x += 240;
-                    }
-                    else if (IsShowDropDownBaoCaoGDBtn == false && IsShowDropDownQuanLyBtn == true)
-                    {
-                        x += 150;
-                    }
-                    else
-                    {
-                        x = LstFavorites.Count * 45;
-                    }
+                    x += ChangeHeightOfLstFavorites(IsShowDropDownBaoCaoGDBtn, IsShowDropDownQuanLyBtn);
                     //reset
                     duplicate = 0;
                 }
                 HeightOfLst = x.ToString();
-            }          
+            }
         }
         private void OnShowBaoCaoGDClicked()
         {
@@ -368,42 +276,43 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                 }
                 else
                 {
-                    if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == false)
-                    {
-                        x += 90;
-                        //HeightLstFavor = x;
-                    }
-                    else if (IsShowDropDownBaoCaoGDBtn == true && IsShowDropDownQuanLyBtn == true)
-                    {
-                        x += 240;
-                    }
-                    else if (IsShowDropDownBaoCaoGDBtn == false && IsShowDropDownQuanLyBtn == true)
-                    {
-                        x += 150;
-                    }
-                    else
-                    {
-                        x = LstFavorites.Count * 45;
-                    }
+                    x += ChangeHeightOfLstFavorites(IsShowDropDownBaoCaoGDBtn, IsShowDropDownQuanLyBtn);
                     duplicate = 0;
                 }
                 HeightOfLst = x.ToString();
             }
         }
+        private int ChangeHeightOfLstFavorites(bool a, bool b)
+        {
+            if (a == true && b == false)
+            {
+                return 90;
+            }
+            else if (a == true && b == true)
+            {
+                return 240;
+            }
+            else if (a == false && b == true)
+            {
+                return 150;
+            }
+            else {
+                return 0;
+            }
+        }
         private void CheckFavorIsAny()// check list favorites is any or not>>
         {
-            if (FavoritesTemp == null)
+            if (LstFavorites == null)
             {
                 IsShowFavor = false;
             }
-            else if (FavoritesTemp.Count == 0)
+            else if (LstFavorites.Count == 0)
             {
                 IsShowFavor = false;
             }
             else
             {
                 IsShowFavor = true;
-                LstFavorites = new ObservableCollection<FlyoutViewModel>(FavoritesTemp);
                 HeightLstFavor = 45 * LstFavorites.Count;
                 HeightOfLst = HeightLstFavor.ToString();
             }
