@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EzTrad.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -9,6 +10,9 @@ namespace EzTrad.ViewModels.DatLenhViewModel
 {
     public class DatLenhPageViewModel : BaseViewModel
     {
+        private IPageService _pageService;
+
+        //
         private string _opacityValue;
         private string _colorOfLO;
         private string _colorOfATO;
@@ -19,6 +23,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
 
         private bool _muaBanValue = true;
         private bool _isShowMenuGia = false;
+        private bool _isEnable = false;
 
         private string _muaBanString;
         private string _txtMa;
@@ -29,7 +34,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private string _lbTienOrCK;
         private string _lbTongTaiSan;
         private string _lbKLMax;
-
         private double _tongTaiSan;
         private float _tongSoDuCK;
         private MaCompanyViewModel _company;
@@ -43,6 +47,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public ICommand CancelCommand { get; private set; }
         public ICommand MinusGiaCommand { get; private set; }
         public ICommand PlusGiaCommand { get; private set; }
+        public ICommand BtnTranCommand { get; private set; }
+        public ICommand BtnTCCommand { get; private set; }
+        public ICommand BtnSanCommand { get; private set; }
+        public ICommand BtnMuaCommand { get; private set; }
+        public ICommand BtnKhopCommand { get; private set; }
+        public ICommand BtnBanCommand { get; private set; }
         //
         public string OpacityValue { get => _opacityValue; set => SetProperty(ref _opacityValue, value); }
         public string ColorOfLO { get => _colorOfLO; set => SetProperty(ref _colorOfLO, value); }
@@ -65,11 +75,13 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public string LbTongTaiSan { get => _lbTongTaiSan; set => SetProperty(ref _lbTongTaiSan, value); }
         public float TongSoDuCK { get => _tongSoDuCK; set => SetProperty(ref _tongSoDuCK, value); }
         public string LbKLMax { get => _lbKLMax; set => SetProperty(ref _lbKLMax, value); }
+        public bool IsEnable { get => _isEnable; set => SetProperty(ref _isEnable, value); }
 
         //implement
-        public DatLenhPageViewModel()
+        public DatLenhPageViewModel(IPageService pageService)
         {
-            TongTaiSan =  1000000000;
+            _pageService = pageService;
+            TongTaiSan = 1000000000;
             TongSoDuCK = (float)10000;
             //Command
             LoadDataCommand = new Command(LoadData);
@@ -79,13 +91,20 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             ATOCommand = new Command(OnATOClicked);
             ATCCommand = new Command(OnATCClicked);
             MPCommand = new Command(OnMPClicked);
+            MinusGiaCommand = new Command(OnMinusGiaClicked);
+            BtnTranCommand = new Command(OnBtnTranClicked);
+            BtnTCCommand = new Command(OnBtnTCClicked);
+            BtnSanCommand = new Command(OnBtnSanClicked);
+            BtnMuaCommand = new Command(OnBtnMuaClicked);
+            BtnKhopCommand = new Command(OnBtnKhopClicked);
+            BtnBanCommand = new Command(OnBtnBanClicked);
         }
         private void LoadData()
         {
             ColorOfLO = ColorOfATO = ColorOfMP = ColorOfATC = "White";
             MuaBanString = "Mua";
             ColorOfPurchase = "#007efa";
-            ColorOfBtnXacNhan = "#007aff";
+            ColorOfBtnXacNhan = "#80bdfe";
             StringOfXacNhanBtn = "Xác nhận mua";
             IsShowMenuGia = false;
             LbTienOrCK = "S.dư tiền";
@@ -97,7 +116,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             Company.PriceSan = 0;
             Company.PriceTC = 0;
             Company.PriceTran = 0;
-            LbKLMax = "max 0";
+            LbKLMax = null;
         }
         public void SearchChanged(string txt)
         {
@@ -109,20 +128,47 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             else
             {
                 Task.Run(() => LoadData());
-                Company=new MaCompanyViewModel();
+                Company = new MaCompanyViewModel();
                 Company = GetCompany(txt);
             }
-            if (Company != null)
+            if (TxtMa.Length >= 3)
             {
-                int max = 0;
-                max = Convert.ToInt32(TongTaiSan/Company.PriceSan);
-                if (max > Company.KL)
+                if (Company != null)
                 {
-                    max = Company.KL;
+                    double max = 0;
+                    max = System.Math.Truncate(Convert.ToDouble(TongTaiSan / (Company.PriceSan*1000)));
+                    if (max > Company.KL)
+                    {
+                        max = Company.KL;
+                    }
+                    IsShowMenuGia = true;
+                    LbKLMax = $"max {max}";
+                    Company = GetCompany(txt);
                 }
-                IsShowMenuGia = true;
-                LbKLMax = $"max {max}";
+                else
+                {
+                    Company = new MaCompanyViewModel();
+                    _pageService.DisplayAlert("Alert!", "Khong ton tai", "OK");
+                }
             }
+            
+        }
+        public void TxtKhoiLuongChangedCheck(string x)
+        {
+            if (x != null && x != "")
+            {
+                TxtKhoiLuong = x;
+                double temp = Convert.ToSingle(x) * Company.PriceSan*1000;
+
+                if (temp > TongTaiSan)
+                {
+                    _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
+                }
+                else
+                {
+                    return;
+                }
+            }           
         }
         private MaCompanyViewModel GetCompany(string id)
         {
@@ -132,7 +178,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 Temp.Add(item);
             }
-            result = Temp.Find(x=> x.ID==$"{id}");
+            result = Temp.Find(x => x.ID == $"{id}");
             return result;
         }
         private void OnCancelClick()
@@ -141,6 +187,30 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             TxtKhoiLuong = "";
             TxtGia = "";
             Company = new MaCompanyViewModel();
+        }
+        private void OnBtnTranClicked()
+        {
+            TxtGia = Company.PriceTran.ToString();
+        }
+        private void OnBtnTCClicked()
+        {
+            TxtGia = Company.PriceTC.ToString();
+        }
+        private void OnBtnSanClicked()
+        {
+            TxtGia = Company.PriceSan.ToString();
+        }
+        private void OnBtnMuaClicked()
+        {
+            TxtGia = Company.PriceMua.ToString();
+        }
+        private void OnBtnKhopClicked()
+        {
+            TxtGia = Company.PriceKhop.ToString();
+        }
+        private void OnBtnBanClicked()
+        {
+            TxtGia = Company.PriceBan.ToString();
         }
         private void OnStatusOfMuaBanClicked()
         {
@@ -171,9 +241,19 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 TxtGia = Company.PriceTran.ToString();
             }
-            else if(Convert.ToSingle(TxtGia) > Company.PriceSan)
+            else if (TxtGia == "ATO" || TxtGia == "MP" || TxtGia == "ATC")
             {
-                
+                return;
+            }
+            else if (Convert.ToSingle(TxtGia) > Company.PriceSan)
+            {
+                float tempGia = 0;
+                tempGia = Convert.ToSingle(TxtGia) - (float)0.1;
+                TxtGia = tempGia.ToString();
+            }
+            else
+            {
+                return;
             }
         }
         private void OnLOClicked()
@@ -249,12 +329,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 ID = "FPT",
                 Name = "HOSE- Cong ty co phan FPT",
                 PriceBan = (float)79.6,
-                PriceKhop =(float)79.6,
-                PriceMua =(float)79.4,
-                PriceSan =(float)73.9,
-                PriceTC =(float)79.4,
-                PriceTran =(float)84.9,
-                KL=150380,
+                PriceKhop = (float)79.6,
+                PriceMua = (float)79.4,
+                PriceSan = (float)73.9,
+                PriceTC = (float)79.4,
+                PriceTran = (float)84.9,
+                KL = 150380,
             };
             MaCompanyViewModel ma2 = new MaCompanyViewModel()
             {
@@ -275,4 +355,3 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
     }
 }
-        
