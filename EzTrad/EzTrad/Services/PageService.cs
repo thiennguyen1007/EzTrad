@@ -25,5 +25,9 @@ namespace EzTrad.Services
         {
             await MainPage.Navigation.PushAsync(page);
         }
+        public async Task PushModelAsync(Page page)
+        {
+            await MainPage.Navigation.PushModalAsync(page);
+        }
     }
 }

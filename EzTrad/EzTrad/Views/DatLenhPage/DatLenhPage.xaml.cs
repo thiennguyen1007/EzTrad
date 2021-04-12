@@ -21,7 +21,7 @@ namespace EzTrad.Views.DatLenhPage
         {
             base.OnAppearing();
             ViewModel.LoadDataCommand.Execute(null);
-
+            btnXacNhan.TextColor= Color.White;
             Task.Delay(2000);
             Task.Run(async () =>
                 {
@@ -45,28 +45,67 @@ namespace EzTrad.Views.DatLenhPage
         {
             ViewModel.SearchChanged(e.NewTextValue);
         }
-        private async void btn_Tapped(object sender, EventArgs e)
+        private void btn_Tapped(object sender, EventArgs e)
         {
             var x = sender as StackLayout;
             FadeViewClicked(x);
-            await Task.Delay(50);
-            await BoxGia.FadeTo(0.5, 100);
-            BoxGia.BackgroundColor = Color.FromHex("#c9c9c9");
-            await Task.Delay(50);
-            await BoxGia.FadeTo(1, 100);
-            BoxGia.BackgroundColor = Color.White;
+        }
+        
+        private void TxtKhoiLuong_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.TxtKhoiLuongChangedCheck(e.NewTextValue);
+        }
+
+        private void PlusMinus_Tapped(object sender, EventArgs e)
+        {
+            var x = sender as Grid;
+            FadeGridClicked(x);         
         }
         private async void FadeViewClicked(StackLayout x)
         {
             await Task.Delay(50);
             await x.FadeTo(0.5, 100);
+            x.BackgroundColor = Color.FromHex("#c9c9c9");
             await Task.Delay(50);
             await x.FadeTo(1, 100);
+            x.BackgroundColor = Color.FromHex("#4d4d4d");
+        }
+        private async void FadeGridClicked(Grid g)
+        {
+            await Task.Delay(50);
+            await g.FadeTo(0.5, 100);
+            g.BackgroundColor = Color.FromHex("#c9c9c9");
+            await Task.Delay(50);
+            await g.FadeTo(1, 100);
+            g.BackgroundColor = Color.White;
         }
 
-        private void TxtKhoiLuong_TextChanged(object sender, TextChangedEventArgs e)
+        private void btnPlusGia_Clicked(object sender, EventArgs e)
         {
-            ViewModel.TxtKhoiLuongChangedCheck(e.NewTextValue);
+            FadeGridClicked(PlusGia);
+        }
+        private void btnMinusGia_Clicked(object sender, EventArgs e)
+        {
+            FadeGridClicked(minusGia);
+        }
+
+        private void btnMinusKL_Clicked(object sender, EventArgs e)
+        {
+            FadeGridClicked(minusKL);
+        }
+        private void btnPlusKL_Clicked(object sender, EventArgs e)
+        {
+            FadeGridClicked(plusKL);
+        }
+
+        private void txtPassWord_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.TxtPassWordChanged(e.NewTextValue);
+        }
+
+        private void TxtGia_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.TxtGiaChanged(e.NewTextValue);
         }
     }
 }

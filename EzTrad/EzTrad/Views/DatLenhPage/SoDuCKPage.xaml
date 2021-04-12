@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EzTrad.Views.DatLenhPage.SoDuCKPage"
+             BackgroundColor="#7f7f7f" NavigationPage.HasNavigationBar="False">
+    <RelativeLayout>
+        <Frame 
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.1}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}"
+            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
+            BackgroundColor="White" Padding="0">
+            <Grid RowDefinitions="1*,*,6.5*,0.8*" RowSpacing="0">
+                <Grid ColumnDefinitions="9*,*" BackgroundColor="#0063b4">
+                    <Label Text="Số dư chứng khoán hiện có" TextColor="White" FontSize="16" 
+                           HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"
+                           />
+                    <Grid Grid.Column="1">
+                        <ImageButton BackgroundColor="Transparent" Source="cancel.png" Margin="5,5,10,5" VerticalOptions="Center"/>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1" Padding="0">
+                    <Frame BackgroundColor="#e6e6e8" Padding="0" Margin="10,5,10,5" CornerRadius="10">
+                        
+                    </Frame>
+                </Grid>
+                <Grid Grid.Row="2" BackgroundColor="#e6e6e8">
+                    <ListView ItemsSource="{Binding ListSoDuCK}">
+                        <ListView.Header>
+                            <Grid ColumnDefinitions="3*,2*,*,*">
+                                <Label Grid.Column="0" Text="Mã"/>
+                                <Label Grid.Column="1" Text="KL"/>
+                                <Label Grid.Column="2" Text="Tỷ lệ vay"/>
+                                <Label Grid.Column="3" Text="Ngày ĐH"/>
+                            </Grid>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ScrollView>
+                                    <Grid ColumnDefinitions="3*,2*,*,*">
+                                        <Label Text="{Binding ID}" Grid.Column="0"/>
+                                        <Label Text="{Binding KL}" Grid.Column="1"/>
+                                    </Grid>
+                                </ScrollView>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+                <Grid Grid.Row="3" BackgroundColor="White" ColumnDefinitions="*,*">
+                    <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="10" HorizontalOptions="CenterAndExpand">
+                        <BoxView BackgroundColor="#e48e8f" HeightRequest="20" WidthRequest="20" VerticalOptions="CenterAndExpand"/>
+                        <Label Text="Xử lý" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="10" HorizontalOptions="CenterAndExpand">
+                        <BoxView BackgroundColor="#f2d985" HeightRequest="20" WidthRequest="20" VerticalOptions="CenterAndExpand"/>
+                        <Label Text="Hết hạn" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </StackLayout>
+                </Grid>
+            </Grid>
+        </Frame>
+    </RelativeLayout>
+</ContentPage>

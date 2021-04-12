@@ -13,6 +13,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private IPageService _pageService;
 
         //
+        private double max { get; set; } = 0;
         private string _opacityValue;
         private string _colorOfLO;
         private string _colorOfATO;
@@ -24,12 +25,14 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private bool _muaBanValue = true;
         private bool _isShowMenuGia = false;
         private bool _isEnable = false;
+        private bool _isEnableGia = false;
 
         private string _muaBanString;
         private string _txtMa;
         private string _txtKhoiLuong;
         private string _txtGia;
-        private string _statusOfXacNhan;
+        private string _txtPassWord;
+        private bool _statusOfXacNhan;
         private string _stringOfXacNhanBtn;
         private string _lbTienOrCK;
         private string _lbTongTaiSan;
@@ -47,12 +50,16 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public ICommand CancelCommand { get; private set; }
         public ICommand MinusGiaCommand { get; private set; }
         public ICommand PlusGiaCommand { get; private set; }
+        public ICommand MinusKhoiLuongCommand { get; private set; }
+        public ICommand PlusKhoiLuongCommand { get; private set; }
+        public ICommand LbMaxCommand { get; private set; }
         public ICommand BtnTranCommand { get; private set; }
         public ICommand BtnTCCommand { get; private set; }
         public ICommand BtnSanCommand { get; private set; }
         public ICommand BtnMuaCommand { get; private set; }
         public ICommand BtnKhopCommand { get; private set; }
         public ICommand BtnBanCommand { get; private set; }
+        public ICommand NaviSoDuCKCommand { get; private set; }
         //
         public string OpacityValue { get => _opacityValue; set => SetProperty(ref _opacityValue, value); }
         public string ColorOfLO { get => _colorOfLO; set => SetProperty(ref _colorOfLO, value); }
@@ -66,7 +73,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public string TxtMa { get => _txtMa; set => SetProperty(ref _txtMa, value); }
         public string TxtKhoiLuong { get => _txtKhoiLuong; set => SetProperty(ref _txtKhoiLuong, value); }
         public string TxtGia { get => _txtGia; set => SetProperty(ref _txtGia, value); }
-        public string StatusOfXacNhan { get => _statusOfXacNhan; set => SetProperty(ref _statusOfXacNhan, value); }
+        public bool StatusOfXacNhan { get => _statusOfXacNhan; set => SetProperty(ref _statusOfXacNhan, value); }
         public string StringOfXacNhanBtn { get => _stringOfXacNhanBtn; set => SetProperty(ref _stringOfXacNhanBtn, value); }
         public MaCompanyViewModel Company { get => _company; set => SetProperty(ref _company, value); }
         public bool IsShowMenuGia { get => _isShowMenuGia; set => SetProperty(ref _isShowMenuGia, value); }
@@ -76,6 +83,8 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public float TongSoDuCK { get => _tongSoDuCK; set => SetProperty(ref _tongSoDuCK, value); }
         public string LbKLMax { get => _lbKLMax; set => SetProperty(ref _lbKLMax, value); }
         public bool IsEnable { get => _isEnable; set => SetProperty(ref _isEnable, value); }
+        public string TxtPassWord { get => _txtPassWord; set => SetProperty(ref _txtPassWord, value); }
+        public bool IsEnableGia { get => _isEnableGia; set => SetProperty(ref _isEnableGia, value); }
 
         //implement
         public DatLenhPageViewModel(IPageService pageService)
@@ -91,13 +100,18 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             ATOCommand = new Command(OnATOClicked);
             ATCCommand = new Command(OnATCClicked);
             MPCommand = new Command(OnMPClicked);
+            LbMaxCommand = new Command(OnLbMaxClicked);
             MinusGiaCommand = new Command(OnMinusGiaClicked);
+            PlusGiaCommand = new Command(OnPlusGiaClicked);
             BtnTranCommand = new Command(OnBtnTranClicked);
             BtnTCCommand = new Command(OnBtnTCClicked);
             BtnSanCommand = new Command(OnBtnSanClicked);
             BtnMuaCommand = new Command(OnBtnMuaClicked);
             BtnKhopCommand = new Command(OnBtnKhopClicked);
             BtnBanCommand = new Command(OnBtnBanClicked);
+            MinusKhoiLuongCommand = new Command(OnMinusKhoiLuongClicked);
+            PlusKhoiLuongCommand = new Command(OnPlusKhoiLuongClicked);
+            NaviSoDuCKCommand = new Command(OnSoDuCKClicked);
         }
         private void LoadData()
         {
@@ -106,16 +120,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             ColorOfPurchase = "#007efa";
             ColorOfBtnXacNhan = "#80bdfe";
             StringOfXacNhanBtn = "Xác nhận mua";
+            IsEnable = false;
             IsShowMenuGia = false;
             LbTienOrCK = "S.dư tiền";
             LbTongTaiSan = TongTaiSan.ToString();
+            StatusOfXacNhan = false;
             Company = new MaCompanyViewModel();
-            Company.PriceBan = 0;
-            Company.PriceKhop = 0;
-            Company.PriceMua = 0;
-            Company.PriceSan = 0;
-            Company.PriceTC = 0;
-            Company.PriceTran = 0;
             LbKLMax = null;
         }
         public void SearchChanged(string txt)
@@ -135,8 +145,8 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 if (Company != null)
                 {
-                    double max = 0;
-                    max = System.Math.Truncate(Convert.ToDouble(TongTaiSan / (Company.PriceSan*1000)));
+
+                    max = System.Math.Truncate(Convert.ToDouble(TongTaiSan / (Company.PriceSan * 1000)));
                     if (max > Company.KL)
                     {
                         max = Company.KL;
@@ -144,31 +154,76 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     IsShowMenuGia = true;
                     LbKLMax = $"max {max}";
                     Company = GetCompany(txt);
+                    IsEnable = true;
+                    ColorOfLO = "#fb9807";
+                    IsEnableGia = true;
                 }
                 else
                 {
                     Company = new MaCompanyViewModel();
                     _pageService.DisplayAlert("Alert!", "Khong ton tai", "OK");
+                    TxtMa = "";
                 }
             }
-            
+
+        }
+        private void OnSoDuCKClicked()
+        {
+            _pageService.PushModelAsync(new Views.DatLenhPage.SoDuCKPage());
         }
         public void TxtKhoiLuongChangedCheck(string x)
         {
             if (x != null && x != "")
             {
                 TxtKhoiLuong = x;
-                double temp = Convert.ToSingle(x) * Company.PriceSan*1000;
+                double temp = Convert.ToSingle(x) * Company.PriceSan * 1000;
 
                 if (temp > TongTaiSan)
                 {
                     _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
+                    TxtKhoiLuong = max.ToString();
                 }
                 else
                 {
                     return;
                 }
-            }           
+            }
+            CheckIsEnableXacNhan();
+        }
+        public void TxtPassWordChanged(string x)
+        {
+            if (TxtPassWord != "")
+            {
+                CheckIsEnableXacNhan();
+            }
+        }
+        public void TxtGiaChanged(string x)
+        {
+            if (TxtGia == "" || TxtGia == null)
+            {
+                return;
+            }
+            else
+            {
+                TxtGiaChecked(x);
+            }
+            CheckIsEnableXacNhan();
+        }
+        private void TxtGiaChecked(string x)//check xem kl mua * gia co vuot so du tai san hay khong
+        {
+            if (x != null)
+            {
+                TxtGia = x;
+                float temp = 0;
+                if (TxtKhoiLuong != "" && TxtKhoiLuong != "." && TxtGia != "ATC" && TxtGia != "MP" && TxtGia != "ATO")
+                {
+                    temp = Convert.ToSingle(x) * 1000 * Convert.ToSingle(TxtKhoiLuong);
+                    if (temp > TongTaiSan)
+                    {
+                        _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
+                    }
+                }
+            }        
         }
         private MaCompanyViewModel GetCompany(string id)
         {
@@ -186,30 +241,37 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             TxtMa = "";
             TxtKhoiLuong = "";
             TxtGia = "";
+            TxtPassWord = "";
             Company = new MaCompanyViewModel();
         }
         private void OnBtnTranClicked()
-        {
+        {           
+            OnLOClicked();
             TxtGia = Company.PriceTran.ToString();
         }
         private void OnBtnTCClicked()
-        {
+        {          
+            OnLOClicked();
             TxtGia = Company.PriceTC.ToString();
         }
         private void OnBtnSanClicked()
-        {
+        {      
+            OnLOClicked();
             TxtGia = Company.PriceSan.ToString();
         }
         private void OnBtnMuaClicked()
-        {
+        {           
+            OnLOClicked();
             TxtGia = Company.PriceMua.ToString();
         }
         private void OnBtnKhopClicked()
-        {
+        {           
+            OnLOClicked();
             TxtGia = Company.PriceKhop.ToString();
         }
         private void OnBtnBanClicked()
-        {
+        {           
+            OnLOClicked();
             TxtGia = Company.PriceBan.ToString();
         }
         private void OnStatusOfMuaBanClicked()
@@ -235,6 +297,52 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
             CheckIsEnableXacNhan();
         }
+        private void OnLbMaxClicked()
+        {
+            TxtKhoiLuong = max.ToString();
+        }
+        private void OnMinusKhoiLuongClicked()
+        {
+            if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
+            {
+                TxtKhoiLuong = max.ToString();
+            }
+            else if (Convert.ToSingle(TxtKhoiLuong) < 100)
+            {
+                TxtKhoiLuong = "0";
+            }
+            else if (Convert.ToSingle(TxtKhoiLuong) >= 100)
+            {
+                float tempKL = 0;
+                tempKL = Convert.ToSingle(TxtKhoiLuong) - 100;
+                TxtKhoiLuong = tempKL.ToString();
+            }
+            else
+            {
+                return;
+            }
+        }
+        private void OnPlusKhoiLuongClicked()
+        {
+            if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
+            {
+                TxtKhoiLuong = "100";
+            }
+            else if (Convert.ToSingle(TxtKhoiLuong) < Company.KL)
+            {
+                float tempKL = 0;
+                tempKL = Convert.ToSingle(TxtKhoiLuong) + 100;
+                TxtKhoiLuong = tempKL.ToString();
+            }
+            else if (Convert.ToSingle(TxtKhoiLuong) > Company.KL)
+            {
+                TxtKhoiLuong = max.ToString();
+            }
+            else
+            {
+                return;
+            }
+        }
         private void OnMinusGiaClicked()
         {
             if (TxtGia == "" || TxtGia == null)
@@ -256,51 +364,77 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 return;
             }
         }
+        private void OnPlusGiaClicked()
+        {
+            if (TxtGia == "" || TxtGia == null)
+            {
+                TxtGia = Company.PriceSan.ToString();
+            }
+            else if (TxtGia == "ATO" || TxtGia == "MP" || TxtGia == "ATC")
+            {
+                return;
+            }
+            else if (Convert.ToSingle(TxtGia) < Company.PriceTran)
+            {
+                float tempGia = 0;
+                tempGia = Convert.ToSingle(TxtGia) + (float)0.1;
+                TxtGia = tempGia.ToString();
+            }
+            else
+            {
+                return;
+            }
+        }
         private void OnLOClicked()
         {
             ColorOfLO = "#fb9807";
             TxtGia = "";
             ColorOfATC = ColorOfATO = ColorOfMP = "White";
+            IsEnableGia = true;
+            StatusOfXacNhan = false;
         }
         private void OnATOClicked()
         {
             ColorOfATO = "#fb9807";
             TxtGia = "ATO";
             ColorOfATC = ColorOfLO = ColorOfMP = "White";
+            IsEnableGia = false;
         }
         private void OnMPClicked()
         {
             ColorOfMP = "#fb9807";
             TxtGia = "MP";
             ColorOfATC = ColorOfATO = ColorOfLO = "White";
+            IsEnableGia = false;
         }
         private void OnATCClicked()
         {
             ColorOfATC = "#fb9807";
             TxtGia = "ATC";
+            IsEnableGia = false;
             ColorOfLO = ColorOfATO = ColorOfMP = "White";
         }
         private void CheckIsEnableXacNhan()
         {
             if (string.IsNullOrEmpty(TxtMa) || string.IsNullOrEmpty(TxtGia) || string.IsNullOrEmpty(TxtKhoiLuong))
             {
-                StatusOfXacNhan = "False";
+                StatusOfXacNhan = false;
             }
             else if (string.IsNullOrWhiteSpace(TxtMa) || string.IsNullOrWhiteSpace(TxtGia) || string.IsNullOrWhiteSpace(TxtKhoiLuong))
             {
-                StatusOfXacNhan = "False";
+                StatusOfXacNhan = false;
             }
             else
             {
-                StatusOfXacNhan = "True";
+                StatusOfXacNhan = true;
             }
-            if (StatusOfXacNhan == "True" && MuaBanValue == true)
+            if (StatusOfXacNhan == true && MuaBanValue == true)
             {
                 ColorOfBtnXacNhan = "#007aff";
             }
-            else if (StatusOfXacNhan == "True" && MuaBanValue == false)
+            else if (StatusOfXacNhan == true && MuaBanValue == false)
             { ColorOfBtnXacNhan = "Red"; }
-            else if (StatusOfXacNhan == "False" && MuaBanValue == true)
+            else if (StatusOfXacNhan == false && MuaBanValue == true)
             {
                 ColorOfBtnXacNhan = "#80bdfe";
             }
