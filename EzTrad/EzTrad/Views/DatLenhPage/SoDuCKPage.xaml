@@ -1,62 +1,86 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EzTrad.Views.DatLenhPage.SoDuCKPage"
-             BackgroundColor="#7f7f7f" NavigationPage.HasNavigationBar="False">
-    <RelativeLayout>
-        <Frame 
-            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.1}"
+             xmlns:entryCustom="clr-namespace:EzTrad.CustomLayout"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
+    <!--NavigationPage.HasNavigationBar="False" 
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"-->
+    <ScrollView>
+        <RelativeLayout>
+            <Frame 
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.05}"
             RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}"
-            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.9}"
             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
             BackgroundColor="White" Padding="0">
-            <Grid RowDefinitions="1*,*,6.5*,0.8*" RowSpacing="0">
-                <Grid ColumnDefinitions="9*,*" BackgroundColor="#0063b4">
-                    <Label Text="Số dư chứng khoán hiện có" TextColor="White" FontSize="16" 
+                <Grid RowDefinitions="*,0.8*,6.5*,0.6*" RowSpacing="0">
+                    <Grid ColumnDefinitions="9*,*" BackgroundColor="#0063b4">
+                        <Label Text="Số dư chứng khoán hiện có" TextColor="White" FontSize="16" 
                            HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"
                            />
-                    <Grid Grid.Column="1">
-                        <ImageButton BackgroundColor="Transparent" Source="cancel.png" Margin="5,5,10,5" VerticalOptions="Center"/>
+                        <Grid Grid.Column="1">
+                            <ImageButton BackgroundColor="Transparent" Source="cancel.png" Margin="5,5,10,5" VerticalOptions="Center" Command="{Binding ClosePopupCommand}"/>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1" Padding="0">
+                        <Frame BackgroundColor="#e6e6e8" Padding="0" Margin="10,5,10,5" CornerRadius="10">
+                            <Grid ColumnDefinitions="*,4*">
+                                <ImageButton Source="search.png" BackgroundColor="Transparent" Margin="10,10,10,10"/>
+                                <entryCustom:CustomEntry Grid.Column="1" Placeholder="Ma chung khoan" FontSize="12" TextColor="Black" 
+                                                         Focused="CustomEntry_Focused" Unfocused="CustomEntry_Unfocused"
+                                                         Text="{Binding TxtMa, Mode=TwoWay}">
+                                    <entryCustom:CustomEntry.Keyboard>
+                                        <Keyboard x:FactoryMethod="Create">
+                                            <x:Arguments>
+                                                <KeyboardFlags>CapitalizeCharacter</KeyboardFlags>
+                                            </x:Arguments>
+                                        </Keyboard>
+                                    </entryCustom:CustomEntry.Keyboard>
+                                </entryCustom:CustomEntry>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                    <Grid Grid.Row="2" BackgroundColor="#e6e6e8">
+                        <ListView ItemsSource="{Binding LstSoDuCK}">
+                            <ListView.Header>
+                                <Grid ColumnDefinitions="1.5*,0.8*,*,*">
+                                    <Label Grid.Column="0" Text="Mã" Margin="5,0,0,0"/>
+                                    <Label Grid.Column="1" Text="KL"/>
+                                    <Label Grid.Column="2" Text="Tỷ lệ vay"/>
+                                    <Label Grid.Column="3" Text="Ngày ĐH"/>
+                                </Grid>
+                            </ListView.Header>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ScrollView>
+                                            <Grid ColumnDefinitions="1.5*,0.8*,*,*">
+                                                <Label Text="{Binding ID}" Grid.Column="0" Margin="5,0,0,0" VerticalOptions="Center"/>
+                                                <Label Text="{Binding KL}" Grid.Column="1" VerticalOptions="Center"/>
+                                            </Grid>
+                                        </ScrollView>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <Grid Grid.Row="3" BackgroundColor="White" ColumnDefinitions="*,*">
+                        <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="10" HorizontalOptions="CenterAndExpand">
+                            <BoxView BackgroundColor="#e48e8f" HeightRequest="15" WidthRequest="15" VerticalOptions="CenterAndExpand"/>
+                            <Label Text="Xử lý" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="10" HorizontalOptions="CenterAndExpand">
+                            <BoxView BackgroundColor="#f2d985" HeightRequest="15" WidthRequest="15" VerticalOptions="CenterAndExpand"/>
+                            <Label Text="Hết hạn" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </StackLayout>
                     </Grid>
                 </Grid>
-                <Grid Grid.Row="1" Padding="0">
-                    <Frame BackgroundColor="#e6e6e8" Padding="0" Margin="10,5,10,5" CornerRadius="10">
-                        
-                    </Frame>
-                </Grid>
-                <Grid Grid.Row="2" BackgroundColor="#e6e6e8">
-                    <ListView ItemsSource="{Binding ListSoDuCK}">
-                        <ListView.Header>
-                            <Grid ColumnDefinitions="3*,2*,*,*">
-                                <Label Grid.Column="0" Text="Mã"/>
-                                <Label Grid.Column="1" Text="KL"/>
-                                <Label Grid.Column="2" Text="Tỷ lệ vay"/>
-                                <Label Grid.Column="3" Text="Ngày ĐH"/>
-                            </Grid>
-                        </ListView.Header>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ScrollView>
-                                    <Grid ColumnDefinitions="3*,2*,*,*">
-                                        <Label Text="{Binding ID}" Grid.Column="0"/>
-                                        <Label Text="{Binding KL}" Grid.Column="1"/>
-                                    </Grid>
-                                </ScrollView>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-                <Grid Grid.Row="3" BackgroundColor="White" ColumnDefinitions="*,*">
-                    <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="10" HorizontalOptions="CenterAndExpand">
-                        <BoxView BackgroundColor="#e48e8f" HeightRequest="20" WidthRequest="20" VerticalOptions="CenterAndExpand"/>
-                        <Label Text="Xử lý" HorizontalOptions="Center" VerticalOptions="Center"/>
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Grid.Column="1" Spacing="10" HorizontalOptions="CenterAndExpand">
-                        <BoxView BackgroundColor="#f2d985" HeightRequest="20" WidthRequest="20" VerticalOptions="CenterAndExpand"/>
-                        <Label Text="Hết hạn" HorizontalOptions="Center" VerticalOptions="Center"/>
-                    </StackLayout>
-                </Grid>
-            </Grid>
-        </Frame>
-    </RelativeLayout>
-</ContentPage>
+            </Frame>
+        </RelativeLayout>
+        <!--<ListView>
+            
+        </ListView>-->
+    </ScrollView>
+</pages:PopupPage>

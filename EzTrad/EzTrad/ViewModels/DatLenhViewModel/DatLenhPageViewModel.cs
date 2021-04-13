@@ -1,4 +1,5 @@
 ﻿using EzTrad.Services;
+using EzTrad.Views.DatLenhPage;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
     public class DatLenhPageViewModel : BaseViewModel
     {
         private IPageService _pageService;
-
         //
         private double max { get; set; } = 0;
         private string _opacityValue;
@@ -28,6 +28,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private bool _isEnableGia = false;
 
         private string _muaBanString;
+        private string _lbLoaiGD;
         private string _txtMa;
         private string _txtKhoiLuong;
         private string _txtGia;
@@ -60,6 +61,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public ICommand BtnKhopCommand { get; private set; }
         public ICommand BtnBanCommand { get; private set; }
         public ICommand NaviSoDuCKCommand { get; private set; }
+        public ICommand LoaiGDCommand { get; private set; }
         //
         public string OpacityValue { get => _opacityValue; set => SetProperty(ref _opacityValue, value); }
         public string ColorOfLO { get => _colorOfLO; set => SetProperty(ref _colorOfLO, value); }
@@ -85,6 +87,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public bool IsEnable { get => _isEnable; set => SetProperty(ref _isEnable, value); }
         public string TxtPassWord { get => _txtPassWord; set => SetProperty(ref _txtPassWord, value); }
         public bool IsEnableGia { get => _isEnableGia; set => SetProperty(ref _isEnableGia, value); }
+        public string LbLoaiGD { get => _lbLoaiGD; set => SetProperty(ref _lbLoaiGD, value); }
 
         //implement
         public DatLenhPageViewModel(IPageService pageService)
@@ -112,6 +115,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             MinusKhoiLuongCommand = new Command(OnMinusKhoiLuongClicked);
             PlusKhoiLuongCommand = new Command(OnPlusKhoiLuongClicked);
             NaviSoDuCKCommand = new Command(OnSoDuCKClicked);
+            LoaiGDCommand = new Command(OnLoaiGDClicked);
         }
         private void LoadData()
         {
@@ -127,6 +131,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             StatusOfXacNhan = false;
             Company = new MaCompanyViewModel();
             LbKLMax = null;
+            LbLoaiGD = "Thường";
         }
         public void SearchChanged(string txt)
         {
@@ -167,21 +172,25 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
 
         }
-        private void OnSoDuCKClicked()
+        private async void OnSoDuCKClicked()
         {
-            _pageService.PushModelAsync(new Views.DatLenhPage.SoDuCKPage());
+            await _pageService.PushModelAsync(new SoDuCKPage());
         }
-        public void TxtKhoiLuongChangedCheck(string x)
+        public void TxtKhoiLuongChangedCheck()
         {
-            if (x != null && x != "")
+            if (TxtKhoiLuong != null && TxtKhoiLuong != "")
             {
-                TxtKhoiLuong = x;
-                double temp = Convert.ToSingle(x) * Company.PriceSan * 1000;
+                double temp = Convert.ToSingle(TxtKhoiLuong) * Company.PriceSan * 1000;
 
                 if (temp > TongTaiSan)
                 {
                     _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
                     TxtKhoiLuong = max.ToString();
+                }
+                else if (TxtKhoiLuong=="0" || Convert.ToSingle(TxtKhoiLuong)<100)
+                {
+                    _pageService.DisplayAlert("Alert!", "Khoi luong >=100", "OK");
+                    TxtKhoiLuong = "";
                 }
                 else
                 {
@@ -192,12 +201,9 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         public void TxtPassWordChanged(string x)
         {
-            if (TxtPassWord != "")
-            {
                 CheckIsEnableXacNhan();
-            }
         }
-        public void TxtGiaChanged(string x)
+        public void TxtGiaChanged()
         {
             if (TxtGia == "" || TxtGia == null)
             {
@@ -205,25 +211,37 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
             else
             {
-                TxtGiaChecked(x);
+                TxtGiaChecked();
             }
             CheckIsEnableXacNhan();
         }
-        private void TxtGiaChecked(string x)//check xem kl mua * gia co vuot so du tai san hay khong
+        private void TxtGiaChecked()//check xem kl mua * gia co vuot so du tai san hay khong
         {
-            if (x != null)
+            if (TxtGia != null)
             {
-                TxtGia = x;
                 float temp = 0;
                 if (TxtKhoiLuong != "" && TxtKhoiLuong != "." && TxtGia != "ATC" && TxtGia != "MP" && TxtGia != "ATO")
                 {
-                    temp = Convert.ToSingle(x) * 1000 * Convert.ToSingle(TxtKhoiLuong);
+                    temp = Convert.ToSingle(TxtGia) * 1000 * Convert.ToSingle(TxtKhoiLuong);
                     if (temp > TongTaiSan)
                     {
                         _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
+                        TxtGia = "";
+                    }
+                    else if (temp == 0 || Convert.ToSingle(TxtGia) < Company.PriceSan)
+                    {
+                        _pageService.DisplayAlert("Alert!", "Gia thap hon gia san", "OK");
+                        TxtGia = "";
                     }
                 }
-            }        
+            }
+        }
+        private void OnLoaiGDClicked()
+        {
+            if (LbLoaiGD == "Thường")
+            { LbLoaiGD = "Mergin"; }
+            else
+            { LbLoaiGD = "Thường"; }
         }
         private MaCompanyViewModel GetCompany(string id)
         {
@@ -245,32 +263,32 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             Company = new MaCompanyViewModel();
         }
         private void OnBtnTranClicked()
-        {           
+        {
             OnLOClicked();
             TxtGia = Company.PriceTran.ToString();
         }
         private void OnBtnTCClicked()
-        {          
+        {
             OnLOClicked();
             TxtGia = Company.PriceTC.ToString();
         }
         private void OnBtnSanClicked()
-        {      
+        {
             OnLOClicked();
             TxtGia = Company.PriceSan.ToString();
         }
         private void OnBtnMuaClicked()
-        {           
+        {
             OnLOClicked();
             TxtGia = Company.PriceMua.ToString();
         }
         private void OnBtnKhopClicked()
-        {           
+        {
             OnLOClicked();
             TxtGia = Company.PriceKhop.ToString();
         }
         private void OnBtnBanClicked()
-        {           
+        {
             OnLOClicked();
             TxtGia = Company.PriceBan.ToString();
         }
@@ -321,6 +339,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 return;
             }
+            CheckIsEnableXacNhan();
         }
         private void OnPlusKhoiLuongClicked()
         {
@@ -342,6 +361,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 return;
             }
+            CheckIsEnableXacNhan();
         }
         private void OnMinusGiaClicked()
         {
@@ -363,6 +383,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 return;
             }
+            CheckIsEnableXacNhan();
         }
         private void OnPlusGiaClicked()
         {
@@ -384,6 +405,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 return;
             }
+            CheckIsEnableXacNhan();
         }
         private void OnLOClicked()
         {
@@ -416,11 +438,11 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         private void CheckIsEnableXacNhan()
         {
-            if (string.IsNullOrEmpty(TxtMa) || string.IsNullOrEmpty(TxtGia) || string.IsNullOrEmpty(TxtKhoiLuong))
+            if (string.IsNullOrEmpty(TxtMa) || string.IsNullOrEmpty(TxtGia) || string.IsNullOrEmpty(TxtKhoiLuong) || string.IsNullOrEmpty(TxtPassWord))
             {
                 StatusOfXacNhan = false;
             }
-            else if (string.IsNullOrWhiteSpace(TxtMa) || string.IsNullOrWhiteSpace(TxtGia) || string.IsNullOrWhiteSpace(TxtKhoiLuong))
+            else if (string.IsNullOrWhiteSpace(TxtMa) || string.IsNullOrWhiteSpace(TxtGia) || string.IsNullOrWhiteSpace(TxtKhoiLuong) || string.IsNullOrWhiteSpace(TxtPassWord))
             {
                 StatusOfXacNhan = false;
             }

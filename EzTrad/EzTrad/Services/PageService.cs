@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace EzTrad.Services
@@ -25,9 +27,9 @@ namespace EzTrad.Services
         {
             await MainPage.Navigation.PushAsync(page);
         }
-        public async Task PushModelAsync(Page page)
+        public async Task PushModelAsync(PopupPage page)
         {
-            await MainPage.Navigation.PushModalAsync(page);
+            await PopupNavigation.Instance.PushAsync(page);
         }
     }
 }

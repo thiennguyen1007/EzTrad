@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Rg.Plugins.Popup.Pages;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace EzTrad.Services
@@ -7,7 +8,7 @@ namespace EzTrad.Services
     {
         Task PushAsync(Page page);
         Task<Page> PopAsync();
-        Task PushModelAsync(Page page);
+        Task PushModelAsync(PopupPage page);
         Task<bool> DisplayAlert(string title, string message, string ok, string cancel);
         Task DisplayAlert(string title, string message, string ok);
     }

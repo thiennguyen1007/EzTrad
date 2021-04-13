@@ -2,7 +2,6 @@
 using EzTrad.ViewModels.DatLenhViewModel;
 using System;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -21,7 +20,7 @@ namespace EzTrad.Views.DatLenhPage
         {
             base.OnAppearing();
             ViewModel.LoadDataCommand.Execute(null);
-            btnXacNhan.TextColor= Color.White;
+            btnXacNhan.TextColor = Color.White;
             Task.Delay(2000);
             Task.Run(async () =>
                 {
@@ -50,36 +49,12 @@ namespace EzTrad.Views.DatLenhPage
             var x = sender as StackLayout;
             FadeViewClicked(x);
         }
-        
-        private void TxtKhoiLuong_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ViewModel.TxtKhoiLuongChangedCheck(e.NewTextValue);
-        }
 
         private void PlusMinus_Tapped(object sender, EventArgs e)
         {
             var x = sender as Grid;
-            FadeGridClicked(x);         
+            FadeGridClicked(x);
         }
-        private async void FadeViewClicked(StackLayout x)
-        {
-            await Task.Delay(50);
-            await x.FadeTo(0.5, 100);
-            x.BackgroundColor = Color.FromHex("#c9c9c9");
-            await Task.Delay(50);
-            await x.FadeTo(1, 100);
-            x.BackgroundColor = Color.FromHex("#4d4d4d");
-        }
-        private async void FadeGridClicked(Grid g)
-        {
-            await Task.Delay(50);
-            await g.FadeTo(0.5, 100);
-            g.BackgroundColor = Color.FromHex("#c9c9c9");
-            await Task.Delay(50);
-            await g.FadeTo(1, 100);
-            g.BackgroundColor = Color.White;
-        }
-
         private void btnPlusGia_Clicked(object sender, EventArgs e)
         {
             FadeGridClicked(PlusGia);
@@ -102,10 +77,73 @@ namespace EzTrad.Views.DatLenhPage
         {
             ViewModel.TxtPassWordChanged(e.NewTextValue);
         }
-
-        private void TxtGia_TextChanged(object sender, TextChangedEventArgs e)
+        private void btnBackLoaiGD_Clicked(object sender, EventArgs e)
         {
-            ViewModel.TxtGiaChanged(e.NewTextValue);
+            FadeGridClickedWhite(backLoaiGD);
+        }
+        private void btnNextLoaiGD_Clicked(object sender, EventArgs e)
+        {
+            FadeGridClickedWhite(nextLoaiGD);
+        }
+        private void btnBackMuaBan_Clicked(object sender, EventArgs e)
+        {
+            FadeGridClickedWhite(backMuaBan);
+        }
+
+        private void btnNextMuaBan_Clicked(object sender, EventArgs e)
+        {
+            FadeGridClickedWhite(nextMuaBan);
+        }
+        private async void FadeViewClicked(StackLayout x)
+        {
+            await Task.Delay(50);
+            await x.FadeTo(0.5, 100);
+            x.BackgroundColor = Color.FromHex("#c9c9c9");
+            await Task.Delay(50);
+            await x.FadeTo(1, 100);
+            x.BackgroundColor = Color.FromHex("#4d4d4d");
+        }
+        private async void FadeGridClicked(Grid g)
+        {
+            await Task.Delay(50);
+            await g.FadeTo(0.5, 100);
+            g.BackgroundColor = Color.FromHex("#c9c9c9");
+            await Task.Delay(50);
+            await g.FadeTo(1, 100);
+            g.BackgroundColor = Color.White;
+        }
+        private async void FadeGridClickedWhite(Grid g)
+        {
+            await Task.Delay(50);
+            await g.FadeTo(0.5, 100);
+            g.BackgroundColor = Color.White;
+            await Task.Delay(50);
+            await g.FadeTo(1, 100);
+            g.BackgroundColor = Color.FromHex("#c9c9c9");
+        }
+        private void NextBack_Tapped(object sender, EventArgs e)
+        {
+            var x = sender as Grid;
+            FadeGridClickedWhite(x);
+        }
+        private void lbKhoiLuong_Focused(object sender, FocusEventArgs e)
+        {
+            ViewModel.StatusOfXacNhan =false;
+        }
+
+        private void lbKhoiLuong_Unfocused(object sender, FocusEventArgs e)
+        {
+            ViewModel.TxtKhoiLuongChangedCheck();
+        }
+
+        private void lbGia_Focused(object sender, FocusEventArgs e)
+        {
+            ViewModel.StatusOfXacNhan = false;
+        }
+
+        private void lbGia_Unfocused(object sender, FocusEventArgs e)
+        {
+            ViewModel.TxtGiaChanged();
         }
     }
 }
