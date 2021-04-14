@@ -13,6 +13,10 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private IPageService _pageService;
         //Command
         public ICommand ClosePopupCommand { get; private set; }
+        public ObservableCollection<MaCompanyViewModel> LstSoDuCK { get => _lstSoDuCK; set => SetProperty(ref _lstSoDuCK, value); }
+        public string TxtMa { get => _txtMa; set => SetProperty(ref _txtMa, value); }
+
+        //implement
         public SoDuCKPageViewModel(IPageService pageService)
         {
             _pageService = pageService;
@@ -20,13 +24,11 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             //Command
             ClosePopupCommand = new Command(OnCloseClicked);
         }
-
-        public ObservableCollection<MaCompanyViewModel> LstSoDuCK { get => _lstSoDuCK; set => SetProperty(ref _lstSoDuCK, value); }
-        public string TxtMa { get => _txtMa; set => SetProperty(ref _txtMa, value); }
+        
 
         private void OnCloseClicked()
         {
-            _pageService.PopAsync();
+            _pageService.PopAsyncPopup();
         }
         public void SearchCompany()
         {
@@ -47,8 +49,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     LstSoDuCK = new ObservableCollection<MaCompanyViewModel>();
                     LstSoDuCK.Add(GetCompany(TxtMa));
                 }
-
             }
+        }
+        public void SoDuCKSelected(MaCompanyViewModel x)
+        {
+            MessagingCenter.Send(this, "Company", x);
+            _pageService.PopAsyncPopup();
         }
         private MaCompanyViewModel GetCompany(string id)
         {

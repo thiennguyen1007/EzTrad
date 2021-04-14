@@ -23,6 +23,12 @@ namespace EzTrad.Services
         {
             return await MainPage.Navigation.PopAsync();
         }
+
+        public async Task PopAsyncPopup()
+        {
+            await PopupNavigation.Instance.PopAsync();
+        }
+
         public async Task PushAsync(Page page)
         {
             await MainPage.Navigation.PushAsync(page);

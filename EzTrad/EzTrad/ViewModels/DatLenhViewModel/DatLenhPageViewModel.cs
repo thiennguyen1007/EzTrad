@@ -40,7 +40,10 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private string _lbKLMax;
         private double _tongTaiSan;
         private float _tongSoDuCK;
+        // Company in Stock exchanges
         private MaCompanyViewModel _company;
+        //Company user have stock
+        private MaCompanyViewModel _companyHaveCK;
         //Command
         public ICommand LoadDataCommand { get; private set; }
         public ICommand MuaBanCommand { get; private set; }
@@ -88,6 +91,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public string TxtPassWord { get => _txtPassWord; set => SetProperty(ref _txtPassWord, value); }
         public bool IsEnableGia { get => _isEnableGia; set => SetProperty(ref _isEnableGia, value); }
         public string LbLoaiGD { get => _lbLoaiGD; set => SetProperty(ref _lbLoaiGD, value); }
+        public MaCompanyViewModel CompanyHaveCK { get => _companyHaveCK; set => SetProperty(ref _companyHaveCK, value); }
 
         //implement
         public DatLenhPageViewModel(IPageService pageService)
@@ -116,9 +120,27 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             PlusKhoiLuongCommand = new Command(OnPlusKhoiLuongClicked);
             NaviSoDuCKCommand = new Command(OnSoDuCKClicked);
             LoaiGDCommand = new Command(OnLoaiGDClicked);
+            //
+            MessagingCenter.Subscribe<SoDuCKPageViewModel, MaCompanyViewModel>(this, "Company", SubcribeCompanyAndUpdate);
+        }
+
+        private void SubcribeCompanyAndUpdate(SoDuCKPageViewModel sender, MaCompanyViewModel companySent)
+        {
+            Company = new MaCompanyViewModel();
+            MuaBanValue = false;
+            //
+            Company = companySent;
+            TxtMa = companySent.ID.ToString();
+            CheckMuaBan();
+            CheckIsEnableXacNhan();
+            MessagingCenter.Unsubscribe<SoDuCKPageViewModel, MaCompanyViewModel>(this, "Company");
         }
         private void LoadData()
         {
+            //khoi tao
+            Company = new MaCompanyViewModel();
+            CompanyHaveCK = new MaCompanyViewModel();
+            //
             ColorOfLO = ColorOfATO = ColorOfMP = ColorOfATC = "White";
             MuaBanString = "Mua";
             ColorOfPurchase = "#007efa";
@@ -128,10 +150,10 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             IsShowMenuGia = false;
             LbTienOrCK = "S.dư tiền";
             LbTongTaiSan = TongTaiSan.ToString();
-            StatusOfXacNhan = false;
-            Company = new MaCompanyViewModel();
+            StatusOfXacNhan = false;          
             LbKLMax = null;
             LbLoaiGD = "Thường";
+            
         }
         public void SearchChanged(string txt)
         {
@@ -170,7 +192,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     TxtMa = "";
                 }
             }
-
+            CheckIsEnableXacNhan();
         }
         private async void OnSoDuCKClicked()
         {
@@ -187,7 +209,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
                     TxtKhoiLuong = max.ToString();
                 }
-                else if (TxtKhoiLuong=="0" || Convert.ToSingle(TxtKhoiLuong)<100)
+                else if (TxtKhoiLuong == "0" || Convert.ToSingle(TxtKhoiLuong) < 100)
                 {
                     _pageService.DisplayAlert("Alert!", "Khoi luong >=100", "OK");
                     TxtKhoiLuong = "";
@@ -201,7 +223,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         public void TxtPassWordChanged(string x)
         {
-                CheckIsEnableXacNhan();
+            CheckIsEnableXacNhan();
         }
         public void TxtGiaChanged()
         {
@@ -239,9 +261,16 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void OnLoaiGDClicked()
         {
             if (LbLoaiGD == "Thường")
-            { LbLoaiGD = "Mergin"; }
+            {
+                LbLoaiGD = "Mergin";
+                MuaBanValue = false;
+                Task.Delay(100);
+                _pageService.PushModelAsync(new SoDuCKPage());
+            }
             else
             { LbLoaiGD = "Thường"; }
+            CheckMuaBan();
+            CheckIsEnableXacNhan();
         }
         private MaCompanyViewModel GetCompany(string id)
         {
@@ -266,54 +295,70 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         {
             OnLOClicked();
             TxtGia = Company.PriceTran.ToString();
+            CheckIsEnableXacNhan();
         }
         private void OnBtnTCClicked()
         {
             OnLOClicked();
             TxtGia = Company.PriceTC.ToString();
+            CheckIsEnableXacNhan();
         }
         private void OnBtnSanClicked()
         {
             OnLOClicked();
             TxtGia = Company.PriceSan.ToString();
+            CheckIsEnableXacNhan();
+
         }
         private void OnBtnMuaClicked()
         {
             OnLOClicked();
             TxtGia = Company.PriceMua.ToString();
+            CheckIsEnableXacNhan();
+
         }
         private void OnBtnKhopClicked()
         {
             OnLOClicked();
             TxtGia = Company.PriceKhop.ToString();
+            CheckIsEnableXacNhan();
+
         }
         private void OnBtnBanClicked()
         {
             OnLOClicked();
             TxtGia = Company.PriceBan.ToString();
+            CheckIsEnableXacNhan();
         }
         private void OnStatusOfMuaBanClicked()
         {
             MuaBanValue = !MuaBanValue;
+
+            CheckMuaBan();
+            CheckIsEnableXacNhan();
+        }
+        public void CheckMuaBan()
+        {
             if (MuaBanValue == true)
             {
                 MuaBanString = "Mua";
-                ColorOfPurchase = "#007efa";
-                ColorOfBtnXacNhan = "#007aff";
-                StringOfXacNhanBtn = "Xác nhận mua";
                 LbTienOrCK = "S.dư tiền";
+                //color
+                ColorOfPurchase = "#007efa";
+                ColorOfBtnXacNhan = "#80bdfe";
+                StringOfXacNhanBtn = "Xác nhận mua";
                 LbTongTaiSan = TongTaiSan.ToString();
             }
             else
             {
-                ColorOfPurchase = "#c3161c";
                 MuaBanString = "Bán";
+                LbTienOrCK = "Số dư CK";
+                //color
+                ColorOfPurchase = "#c3161c";
                 ColorOfBtnXacNhan = "#e18b8e";
                 StringOfXacNhanBtn = "Xác nhận bán";
                 LbTongTaiSan = TongSoDuCK.ToString();
-                LbTienOrCK = "Số dư CK";
             }
-            CheckIsEnableXacNhan();
         }
         private void OnLbMaxClicked()
         {
@@ -327,12 +372,18 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
             else if (Convert.ToSingle(TxtKhoiLuong) < 100)
             {
-                TxtKhoiLuong = "0";
+                _pageService.DisplayAlert("Alert!","Khoi luong min= 100","Ok");
+                TxtKhoiLuong = "100";
             }
             else if (Convert.ToSingle(TxtKhoiLuong) >= 100)
             {
                 float tempKL = 0;
                 tempKL = Convert.ToSingle(TxtKhoiLuong) - 100;
+                if (tempKL < 100)
+                {
+                    _pageService.DisplayAlert("Alert!", "Khoi luong min= 100", "Ok");
+                    TxtKhoiLuong = "100";
+                }
                 TxtKhoiLuong = tempKL.ToString();
             }
             else
@@ -343,24 +394,33 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         private void OnPlusKhoiLuongClicked()
         {
-            if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
+            if (MuaBanValue == true)
             {
-                TxtKhoiLuong = "100";
-            }
-            else if (Convert.ToSingle(TxtKhoiLuong) < Company.KL)
-            {
-                float tempKL = 0;
-                tempKL = Convert.ToSingle(TxtKhoiLuong) + 100;
-                TxtKhoiLuong = tempKL.ToString();
-            }
-            else if (Convert.ToSingle(TxtKhoiLuong) > Company.KL)
-            {
-                TxtKhoiLuong = max.ToString();
+                if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
+                {
+                    TxtKhoiLuong = "100";
+                }
+                else if (Convert.ToSingle(TxtKhoiLuong) < max)
+                {
+                    float tempKL = 0;
+                    tempKL = Convert.ToSingle(TxtKhoiLuong) + 100;
+                    TxtKhoiLuong = tempKL.ToString();
+                }
+                else if (Convert.ToSingle(TxtKhoiLuong) > Company.KL)
+                {
+                    _pageService.DisplayAlert("Alert!", "Khoi luong vuot muc", "Ok");
+                    TxtKhoiLuong = max.ToString();
+                }
+                else
+                {
+                    return;
+                }
             }
             else
             {
-                return;
+                
             }
+            
             CheckIsEnableXacNhan();
         }
         private void OnMinusGiaClicked()
@@ -414,6 +474,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             ColorOfATC = ColorOfATO = ColorOfMP = "White";
             IsEnableGia = true;
             StatusOfXacNhan = false;
+            CheckIsEnableXacNhan();
         }
         private void OnATOClicked()
         {
@@ -421,6 +482,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             TxtGia = "ATO";
             ColorOfATC = ColorOfLO = ColorOfMP = "White";
             IsEnableGia = false;
+            CheckIsEnableXacNhan();
         }
         private void OnMPClicked()
         {
@@ -428,6 +490,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             TxtGia = "MP";
             ColorOfATC = ColorOfATO = ColorOfLO = "White";
             IsEnableGia = false;
+            CheckIsEnableXacNhan();
         }
         private void OnATCClicked()
         {
@@ -435,6 +498,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             TxtGia = "ATC";
             IsEnableGia = false;
             ColorOfLO = ColorOfATO = ColorOfMP = "White";
+            CheckIsEnableXacNhan();
         }
         private void CheckIsEnableXacNhan()
         {
@@ -446,10 +510,15 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 StatusOfXacNhan = false;
             }
-            else
+            else if (TxtMa != "" && TxtPassWord != "" && TxtKhoiLuong != "" && TxtGia != "")
             {
                 StatusOfXacNhan = true;
             }
+            else
+            {
+                StatusOfXacNhan = false;
+            }
+            //
             if (StatusOfXacNhan == true && MuaBanValue == true)
             {
                 ColorOfBtnXacNhan = "#007aff";

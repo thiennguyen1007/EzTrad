@@ -31,7 +31,7 @@
                             <StackLayout Orientation="Horizontal" Spacing="0">
                                 <local:CustomEntry BackgroundColor="Transparent" Placeholder="Mã" 
                                            HorizontalOptions="Center" WidthRequest="150"
-                                           HorizontalTextAlignment="Center" Text="{Binding TxtMa}" TextChanged="txt_name_TextChanged">
+                                           HorizontalTextAlignment="Center" Text="{Binding TxtMa, Mode=TwoWay}" TextChanged="txt_name_TextChanged">
                                     <local:CustomEntry.Keyboard>
                                         <Keyboard x:FactoryMethod="Create">
                                             <x:Arguments>

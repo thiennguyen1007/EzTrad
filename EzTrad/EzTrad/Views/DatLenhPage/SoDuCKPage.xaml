@@ -43,28 +43,33 @@
                         </Frame>
                     </Grid>
                     <Grid Grid.Row="2" BackgroundColor="#e6e6e8">
-                        <ListView ItemsSource="{Binding LstSoDuCK}">
-                            <ListView.Header>
-                                <Grid ColumnDefinitions="1.5*,0.8*,*,*">
-                                    <Label Grid.Column="0" Text="Mã" Margin="5,0,0,0"/>
-                                    <Label Grid.Column="1" Text="KL"/>
-                                    <Label Grid.Column="2" Text="Tỷ lệ vay"/>
-                                    <Label Grid.Column="3" Text="Ngày ĐH"/>
-                                </Grid>
-                            </ListView.Header>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <ScrollView>
+                        <ScrollView>
+                            <ListView ItemsSource="{Binding LstSoDuCK}" ItemSelected="ListView_ItemSelected">
+                                <ListView.Header>
+                                    <StackLayout Orientation="Vertical" Spacing="0">
+                                        <Grid ColumnDefinitions="1.5*,0.8*,*,*" HeightRequest="45">
+                                            <Label Grid.Column="0" Text="Mã" Margin="5,0,0,0"/>
+                                            <Label Grid.Column="1" Text="KL"/>
+                                            <Label Grid.Column="2" Text="Tỷ lệ vay"/>
+                                            <Label Grid.Column="3" Text="Ngày ĐH"/>
+                                        </Grid>
+                                        <BoxView HeightRequest="0.5" BackgroundColor="#d1d1d1" HorizontalOptions="FillAndExpand"/>
+                                    </StackLayout>
+                                </ListView.Header>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+
                                             <Grid ColumnDefinitions="1.5*,0.8*,*,*">
                                                 <Label Text="{Binding ID}" Grid.Column="0" Margin="5,0,0,0" VerticalOptions="Center"/>
                                                 <Label Text="{Binding KL}" Grid.Column="1" VerticalOptions="Center"/>
                                             </Grid>
-                                        </ScrollView>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ScrollView>
                     </Grid>
                     <Grid Grid.Row="3" BackgroundColor="White" ColumnDefinitions="*,*">
                         <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="10" HorizontalOptions="CenterAndExpand">
