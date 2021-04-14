@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EzTrad.MenuHorizontal"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             android:TabbedPage.ToolbarPlacement="Bottom"
+             xmlns:datLenh="clr-namespace:EzTrad.Views.DatLenhPage"
+            xmlns:tongQuan="clr-namespace:EzTrad.Views">
+  <!--Pages can be added as references or inline-->
+    <tongQuan:TongQuanPage Title="Tổng quan"/>
+    <datLenh:DatLenhPage Title="Đặt lệnh" />
+</TabbedPage>

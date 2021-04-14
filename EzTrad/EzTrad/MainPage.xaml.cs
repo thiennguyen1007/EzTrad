@@ -13,10 +13,10 @@ namespace EzTrad
             InitializeComponent();
             //flyoutPage.listView.ItemSelected += OnItemSelected;
         }
-        public MainPage(Page page)
+        public MainPage(string x)
         {
             InitializeComponent();
-            Detail= new NavigationPage(page);
+            Detail= new NavigationPage(new MenuHorizontal(x));
         }
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {

@@ -144,7 +144,8 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         {
             if (x == "Đặt lệnh")
             {
-                Application.Current.MainPage = new MainPage(new DatLenhPage());
+                Application.Current.MainPage = new MainPage(x);
+                //Application.Current.MainPage = new NavigationPage(new MenuHorizontal(x));
             }
         }
         private void OnLogoutClicked()
