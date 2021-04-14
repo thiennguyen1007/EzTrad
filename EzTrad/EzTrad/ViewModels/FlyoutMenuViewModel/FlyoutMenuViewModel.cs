@@ -1,4 +1,5 @@
 ﻿using EzTrad.Services;
+using EzTrad.Views.DatLenhPage;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -139,9 +140,12 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             //create list Flyout temp
             FlyoutItemsTemp = new ObservableCollection<FlyoutViewModel>(FlyoutItems);
         }
-        public void OnSelectedItem()
+        public void OnSelectedItem(string x)
         {
-
+            if (x == "Đặt lệnh")
+            {
+                Application.Current.MainPage = new MainPage(new DatLenhPage());
+            }
         }
         private void OnLogoutClicked()
         {
@@ -378,6 +382,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             {
                 LabelTitle = "Đặt lệnh",
                 Icon = "paper.png",
+                TargetPage = typeof(Views.DatLenhPage.DatLenhPage)
             };
             FlyoutViewModel f11 = new FlyoutViewModel
             {

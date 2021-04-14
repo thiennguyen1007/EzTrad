@@ -6,7 +6,7 @@
              Title="Start"
              BackgroundColor="White">
     <FlyoutPage.Flyout>
-        <Views:FlyoutMenuPage x:Name="flyoutPage" />
+        <Views:FlyoutMenuPage x:Name="flyoutPage"/>
     </FlyoutPage.Flyout>
     <FlyoutPage.Detail>
         <NavigationPage>
