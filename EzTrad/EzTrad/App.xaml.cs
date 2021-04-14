@@ -11,8 +11,8 @@ namespace EzTrad
             Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
             InitializeComponent();
 
-            //MainPage = new MainPage();
-            MainPage = new NavigationPage(new Views.DatLenhPage.DatLenhPage());
+            MainPage = new MainPage();
+            //MainPage = new NavigationPage(new Views.DatLenhPage.DatLenhPage());
         }
 
         protected override void OnStart()

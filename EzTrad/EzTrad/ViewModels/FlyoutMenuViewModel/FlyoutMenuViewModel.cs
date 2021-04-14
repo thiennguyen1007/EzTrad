@@ -139,6 +139,10 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             //create list Flyout temp
             FlyoutItemsTemp = new ObservableCollection<FlyoutViewModel>(FlyoutItems);
         }
+        public void OnSelectedItem()
+        {
+
+        }
         private void OnLogoutClicked()
         {
             _pageService.DisplayAlert("Alert!", "Log out now?", "Yes", "No");

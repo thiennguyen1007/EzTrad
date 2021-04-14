@@ -98,7 +98,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         {
             _pageService = pageService;
             TongTaiSan = 1000000000;
-            TongSoDuCK = (float)10000;
+            TongSoDuCK = 1750;
             //Command
             LoadDataCommand = new Command(LoadData);
             MuaBanCommand = new Command(OnStatusOfMuaBanClicked);
@@ -123,7 +123,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             //
             MessagingCenter.Subscribe<SoDuCKPageViewModel, MaCompanyViewModel>(this, "Company", SubcribeCompanyAndUpdate);
         }
-
         private void SubcribeCompanyAndUpdate(SoDuCKPageViewModel sender, MaCompanyViewModel companySent)
         {
             Company = new MaCompanyViewModel();
@@ -133,7 +132,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             TxtMa = companySent.ID.ToString();
             CheckMuaBan();
             CheckIsEnableXacNhan();
-            MessagingCenter.Unsubscribe<SoDuCKPageViewModel, MaCompanyViewModel>(this, "Company");
         }
         private void LoadData()
         {
@@ -150,10 +148,9 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             IsShowMenuGia = false;
             LbTienOrCK = "S.dư tiền";
             LbTongTaiSan = TongTaiSan.ToString();
-            StatusOfXacNhan = false;          
+            StatusOfXacNhan = false;
             LbKLMax = null;
             LbLoaiGD = "Thường";
-            
         }
         public void SearchChanged(string txt)
         {
@@ -172,11 +169,17 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 if (Company != null)
                 {
-
-                    max = System.Math.Truncate(Convert.ToDouble(TongTaiSan / (Company.PriceSan * 1000)));
-                    if (max > Company.KL)
+                    if (MuaBanValue == true)
                     {
-                        max = Company.KL;
+                        max = System.Math.Truncate(Convert.ToDouble(TongTaiSan / (Company.PriceSan * 1000)));
+                        if (max > Company.KL)
+                        {
+                            max = Company.KL;
+                        }
+                    }
+                    else
+                    {
+                        max = GetCompanyInYourSecuritiesWallet(Company.ID).KL;
                     }
                     IsShowMenuGia = true;
                     LbKLMax = $"max {max}";
@@ -202,21 +205,32 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         {
             if (TxtKhoiLuong != null && TxtKhoiLuong != "")
             {
-                double temp = Convert.ToSingle(TxtKhoiLuong) * Company.PriceSan * 1000;
+                if (MuaBanValue == true)
+                {
+                    double temp = Convert.ToSingle(TxtKhoiLuong) * Company.PriceSan * 1000;
 
-                if (temp > TongTaiSan)
-                {
-                    _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
-                    TxtKhoiLuong = max.ToString();
-                }
-                else if (TxtKhoiLuong == "0" || Convert.ToSingle(TxtKhoiLuong) < 100)
-                {
-                    _pageService.DisplayAlert("Alert!", "Khoi luong >=100", "OK");
-                    TxtKhoiLuong = "";
+                    if (temp > TongTaiSan)
+                    {
+                        _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
+                        TxtKhoiLuong = max.ToString();
+                    }
+                    else if (TxtKhoiLuong == "0" || Convert.ToSingle(TxtKhoiLuong) < 100)
+                    {
+                        _pageService.DisplayAlert("Alert!", "Khoi luong >=100", "OK");
+                        TxtKhoiLuong = "";
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 else
                 {
-                    return;
+                    if (Convert.ToSingle(TxtKhoiLuong) > Company.KL)
+                    {
+                        _pageService.DisplayAlert("Alert!", "Ví chứng khoán không đủ", "OK");
+                        TxtKhoiLuong = max.ToString();
+                    }
                 }
             }
             CheckIsEnableXacNhan();
@@ -372,7 +386,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
             else if (Convert.ToSingle(TxtKhoiLuong) < 100)
             {
-                _pageService.DisplayAlert("Alert!","Khoi luong min= 100","Ok");
+                _pageService.DisplayAlert("Alert!", "Khoi luong min= 100", "Ok");
                 TxtKhoiLuong = "100";
             }
             else if (Convert.ToSingle(TxtKhoiLuong) >= 100)
@@ -418,10 +432,51 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
             else
             {
-                
+                float tempStockHad = 0;
+                //tim kiem cong ty trong ví chứng khoán của người dùng sở hữu
+                tempStockHad = GetCompanyInYourSecuritiesWallet(Company.ID).KL;
+                if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
+                {
+                    TxtKhoiLuong = "100";
+                }
+                else if (Convert.ToSingle(TxtKhoiLuong) <= tempStockHad)
+                {
+                    float tempKL = 0;
+                    tempKL = Convert.ToSingle(TxtKhoiLuong) + 100;
+                    if (tempKL > tempStockHad)
+                    {
+                        _pageService.DisplayAlert("Alert!", "Ví chứng khoán không đủ", "OK");
+                        tempKL = tempStockHad;
+                    }
+                    TxtKhoiLuong = tempKL.ToString();
+                }
+                else if (Convert.ToSingle(TxtKhoiLuong) > Company.KL)
+                {
+                    _pageService.DisplayAlert("Alert!", "Khoi luong vuot muc", "Ok");
+                    TxtKhoiLuong = max.ToString();
+                }
+                else
+                {
+                    return;
+                }
             }
-            
             CheckIsEnableXacNhan();
+        }
+        private MaCompanyViewModel GetCompanyInYourSecuritiesWallet(string x)
+        {
+            SoDuCKPageViewModel userStocck = new SoDuCKPageViewModel(null);
+            ObservableCollection<MaCompanyViewModel> lstTemp = new ObservableCollection<MaCompanyViewModel>();
+            lstTemp = userStocck.KhoiTaoSoDuCK();
+            //tim kiem cong ty trong ví chứng khoán của người dùng sở hữu
+            for (int i = 0; i < lstTemp.Count; i++)
+            {
+
+                if (Company.ID == lstTemp[i].ID)
+                {
+                    CompanyHaveCK = new MaCompanyViewModel(lstTemp[i]);
+                }
+            }
+            return CompanyHaveCK;
         }
         private void OnMinusGiaClicked()
         {
@@ -536,47 +591,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         public ObservableCollection<MaCompanyViewModel> MaKhoiTao()
         {
-            ObservableCollection<MaCompanyViewModel> x = new ObservableCollection<MaCompanyViewModel>();
-            MaCompanyViewModel ma = new MaCompanyViewModel()
-            {
-                ID = "PTV",
-                Name = "UPCOM- Cong ty co phan thuong mai Dau Khi",
-                PriceBan = (float)7,
-                PriceKhop = (float)6.8,
-                PriceMua = (float)6.8,
-                PriceSan = (float)5.8,
-                PriceTC = (float)6.8,
-                PriceTran = (float)7.8,
-                KL = 1160,
-            };
-            MaCompanyViewModel ma1 = new MaCompanyViewModel()
-            {
-                ID = "FPT",
-                Name = "HOSE- Cong ty co phan FPT",
-                PriceBan = (float)79.6,
-                PriceKhop = (float)79.6,
-                PriceMua = (float)79.4,
-                PriceSan = (float)73.9,
-                PriceTC = (float)79.4,
-                PriceTran = (float)84.9,
-                KL = 150380,
-            };
-            MaCompanyViewModel ma2 = new MaCompanyViewModel()
-            {
-                ID = "CMS",
-                Name = "HNX- Cong ty co phan CMVIETNAM",
-                PriceBan = (float)4.7,
-                PriceKhop = (float)4.6,
-                PriceMua = (float)4.6,
-                PriceSan = (float)4,
-                PriceTC = (float)4.4,
-                PriceTran = (float)4.8,
-                KL = 15520,
-            };
-            x.Add(ma);
-            x.Add(ma1);
-            x.Add(ma2);
-            return x;
+            return Company.GetAllCompany();
         }
     }
 }

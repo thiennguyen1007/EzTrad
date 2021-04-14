@@ -35,7 +35,7 @@ namespace EzTrad.Views
         }
         private void listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-
+            var x = e.SelectedItem as FlyoutMenuViewModel;
         }
         private void DeselectItem(object sender, EventArgs e)
         {

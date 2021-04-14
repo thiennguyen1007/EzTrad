@@ -67,7 +67,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             result = Temp.Find(x => x.ID == $"{id}");
             return result;
         }
-        private ObservableCollection<MaCompanyViewModel> KhoiTaoSoDuCK()
+        public ObservableCollection<MaCompanyViewModel> KhoiTaoSoDuCK()
         {
             ObservableCollection<MaCompanyViewModel> x = new ObservableCollection<MaCompanyViewModel>();
             MaCompanyViewModel ma = new MaCompanyViewModel()
