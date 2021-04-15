@@ -126,12 +126,13 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void SubcribeCompanyAndUpdate(SoDuCKPageViewModel sender, MaCompanyViewModel companySent)
         {
             Company = new MaCompanyViewModel();
-            MuaBanValue = false;
+            MuaBanValue = false;          
             //
             Company = companySent;
             TxtMa = companySent.ID.ToString();
             CheckMuaBan();
             CheckIsEnableXacNhan();
+            LbLoaiGD = "Margin";
         }
         private void LoadData()
         {
@@ -141,7 +142,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             //
             ColorOfLO = ColorOfATO = ColorOfMP = ColorOfATC = "White";
             MuaBanString = "Mua";
-            ColorOfPurchase = "#007efa";
+            //ColorOfPurchase = "#007efa";
             ColorOfBtnXacNhan = "#80bdfe";
             StringOfXacNhanBtn = "Xác nhận mua";
             IsEnable = false;
@@ -208,7 +209,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 if (MuaBanValue == true)
                 {
                     double temp = Convert.ToSingle(TxtKhoiLuong) * Company.PriceSan * 1000;
-
                     if (temp > TongTaiSan)
                     {
                         _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
@@ -276,7 +276,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         {
             if (LbLoaiGD == "Thường")
             {
-                LbLoaiGD = "Mergin";
+                LbLoaiGD = "Margin";
                 MuaBanValue = false;
                 Task.Delay(100);
                 _pageService.PushModelAsync(new SoDuCKPage());
@@ -299,11 +299,14 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         private void OnCancelClick()
         {
-            TxtMa = "";
-            TxtKhoiLuong = "";
-            TxtGia = "";
-            TxtPassWord = "";
+            TxtMa = null;
+            MuaBanValue = true;
+            TxtKhoiLuong = null;
+            TxtGia = null;
+            TxtPassWord = null;
             Company = new MaCompanyViewModel();
+            CheckMuaBan();
+            CheckIsEnableXacNhan();
         }
         private void OnBtnTranClicked()
         {
@@ -357,8 +360,13 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 MuaBanString = "Mua";
                 LbTienOrCK = "S.dư tiền";
+                if (TxtMa != null)
+                {
+                    Company = GetCompany(TxtMa);
+                    max = Company.KL;
+                    LbKLMax = $"max {max}";
+                }               
                 //color
-                ColorOfPurchase = "#007efa";
                 ColorOfBtnXacNhan = "#80bdfe";
                 StringOfXacNhanBtn = "Xác nhận mua";
                 LbTongTaiSan = TongTaiSan.ToString();
@@ -368,10 +376,15 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 MuaBanString = "Bán";
                 LbTienOrCK = "Số dư CK";
                 //color
-                ColorOfPurchase = "#c3161c";
                 ColorOfBtnXacNhan = "#e18b8e";
                 StringOfXacNhanBtn = "Xác nhận bán";
                 LbTongTaiSan = TongSoDuCK.ToString();
+                if (TxtMa != null)
+                {
+                    max= GetCompanyInYourSecuritiesWallet(Company.ID).KL;
+                    LbKLMax = $"max {max}";
+                    //max = Company.KL;
+                }
             }
         }
         private void OnLbMaxClicked()

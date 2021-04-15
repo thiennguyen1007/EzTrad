@@ -215,7 +215,7 @@
                     <!--list menu-->
                     <ListView x:Name="listView" ItemTemplate="{StaticResource menuDataTemplateSelector}" 
                               ItemsSource="{Binding FlyoutItems}" ItemSelected="listView_ItemSelected"
-                              HasUnevenRows="True"/>
+                              HasUnevenRows="True" SelectedItem="{Binding SelectedItem,Mode=TwoWay}"/>
                 </StackLayout>
             </ScrollView>
         </StackLayout>

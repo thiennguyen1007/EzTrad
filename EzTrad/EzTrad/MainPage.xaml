@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EzTrad.MainPage"
              xmlns:Views="clr-namespace:EzTrad.Views"
-             Title="Start"
+             Title="MainPage"
              BackgroundColor="White">
     <FlyoutPage.Flyout>
         <Views:FlyoutMenuPage x:Name="flyoutPage"/>
@@ -11,7 +11,7 @@
     <FlyoutPage.Detail>
         <NavigationPage>
             <x:Arguments>
-                <Views:TongQuanPage/>
+                <Views:TongQuanPage Title="Tổng quan"/>
             </x:Arguments>
         </NavigationPage>
     </FlyoutPage.Detail>

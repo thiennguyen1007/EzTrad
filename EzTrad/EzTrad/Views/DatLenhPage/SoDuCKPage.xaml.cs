@@ -31,7 +31,6 @@ namespace EzTrad.Views.DatLenhPage
         {
             ViewModel.SearchCompany();
         }
-
         private void ListView_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
             var x = e.SelectedItem as MaCompanyViewModel;

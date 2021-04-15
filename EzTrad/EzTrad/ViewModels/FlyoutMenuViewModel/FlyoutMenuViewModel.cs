@@ -1,5 +1,5 @@
 ﻿using EzTrad.Services;
-using EzTrad.Views.DatLenhPage;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -24,6 +24,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         private bool _isShowBtnQuanLyBtn;
         private bool _isShowDropDownBaoCaoBtn;
         private bool _isShowDropDownQuanLyBtn;
+        private FlyoutViewModel _selectedItem;
         //Command
         public ICommand LoadDataCommand { get; set; }
         public ICommand LogoutCommand { get; set; }
@@ -104,6 +105,8 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             set => SetProperty(ref _heightLstFavor, value);
             get => _heightLstFavor;
         }
+        public FlyoutViewModel SelectedItem { get => _selectedItem; set => SetProperty(ref _selectedItem, value); }
+
         //implement ...
         public FlyoutMenuViewModel(IPageService pageService)
         {
@@ -140,12 +143,14 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             //create list Flyout temp
             FlyoutItemsTemp = new ObservableCollection<FlyoutViewModel>(FlyoutItems);
         }
-        public void OnSelectedItem(string x)
+        public void OnSelectedItem(FlyoutViewModel x)
         {
-            if (x == "Đặt lệnh")
+            if (x == null)
+            { return; }
+            SelectedItem = null;
+            if (x.LabelTitle == "Đặt lệnh")
             {
-                Application.Current.MainPage = new MainPage(x);
-                //Application.Current.MainPage = new NavigationPage(new MenuHorizontal(x));
+                MessagingCenter.Send(this, "ChangeDetail", x);
             }
         }
         private void OnLogoutClicked()
@@ -325,6 +330,10 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                 HeightLstFavor = 45 * LstFavorites.Count;
                 HeightOfLst = HeightLstFavor.ToString();
             }
+        }
+        private void DeselectItem(object sender, EventArgs e)
+        {
+            ((ListView)sender).SelectedItem = null;
         }
         private ObservableCollection<FlyoutViewModel> LstMenu()
         {

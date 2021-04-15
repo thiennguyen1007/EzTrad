@@ -1,6 +1,4 @@
-﻿using Rg.Plugins.Popup.Services;
-using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+﻿using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace EzTrad
 {

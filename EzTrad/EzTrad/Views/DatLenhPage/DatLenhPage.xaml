@@ -109,7 +109,13 @@
                             </Grid.GestureRecognizers>
                         </Grid>
                         <Label Text="{Binding MuaBanString}" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" 
-                           TextColor="{Binding ColorOfPurchase}" FontSize="20" FontAttributes="Bold"/>
+                           TextColor="#c3161c" FontSize="20" FontAttributes="Bold">
+                            <Label.Triggers>
+                                <Trigger TargetType="Label" Property="Text" Value="Mua">
+                                    <Setter Property="TextColor" Value="#007efa"/>
+                                </Trigger>
+                            </Label.Triggers>
+                        </Label>
                         <Grid Grid.Column="2" x:Name="nextMuaBan">
                             <ImageButton Source="nextBasic.png" Margin="0,10,0,10" Clicked="btnNextMuaBan_Clicked" Command="{Binding MuaBanCommand}"/>
                             <Grid.GestureRecognizers>

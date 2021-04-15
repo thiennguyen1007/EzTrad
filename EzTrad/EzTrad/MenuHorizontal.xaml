@@ -7,6 +7,12 @@
              xmlns:datLenh="clr-namespace:EzTrad.Views.DatLenhPage"
             xmlns:tongQuan="clr-namespace:EzTrad.Views">
   <!--Pages can be added as references or inline-->
+    <!--<NavigationPage>
+        <x:Arguments>
+            <datLenh:DatLenhPage Title="Đặt lệnh"/>
+        </x:Arguments>
+    </NavigationPage>-->
+  
     <tongQuan:TongQuanPage Title="Tổng quan"/>
-    <datLenh:DatLenhPage Title="Đặt lệnh" />
+    <datLenh:DatLenhPage Title="Đặt lệnh"/>
 </TabbedPage>

@@ -21,18 +21,25 @@ namespace EzTrad.Views.DatLenhPage
             base.OnAppearing();
             ViewModel.LoadDataCommand.Execute(null);
             btnXacNhan.TextColor = Color.White;
+            if (txtName != null)
+            {
+                AnimationOfCompanyName();
+            }
+        }
+        private void AnimationOfCompanyName()
+        {
             Task.Delay(2000);
             Task.Run(async () =>
+            {
+                while (true)
                 {
-                    while (true)
-                    {
-                        await txtName.TranslateTo(0, 0, 1000);
-                        await txtName.TranslateTo(-300, 0, 7000);    // Move image left
-                        await txtName.TranslateTo(0, 0, 1000);
-                        await txtName.TranslateTo(300, 0, 7000);     // Move image right
-                        await txtName.TranslateTo(0, 0, 1000);
-                    }
+                    await txtName.TranslateTo(0, 0, 1000);
+                    await txtName.TranslateTo(-300, 0, 7000);    // Move image left
+                    await txtName.TranslateTo(0, 0, 1000);
+                    await txtName.TranslateTo(300, 0, 7000);     // Move image right
+                    await txtName.TranslateTo(0, 0, 1000);
                 }
+            }
             );
         }
         public DatLenhPageViewModel ViewModel

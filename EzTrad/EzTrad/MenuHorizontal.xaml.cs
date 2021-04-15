@@ -14,7 +14,6 @@ namespace EzTrad
             {
                 CurrentPage = Children[1];
             }
-            
         }
     }
 }

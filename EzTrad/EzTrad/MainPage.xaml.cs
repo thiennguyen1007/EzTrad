@@ -1,5 +1,4 @@
 ﻿using EzTrad.ViewModels.FlyoutMenuViewModel;
-using EzTrad.Views;
 using System;
 using Xamarin.Forms;
 
@@ -9,22 +8,18 @@ namespace EzTrad
     {      
         public MainPage()
         {
-            FlyoutMenuPage flyoutPage = new FlyoutMenuPage();
             InitializeComponent();
             //flyoutPage.listView.ItemSelected += OnItemSelected;
+            MessagingCenter.Subscribe<FlyoutMenuViewModel, FlyoutViewModel>(this, "ChangeDetail", OnItemSelected);
         }
-        public MainPage(string x)
+
+        private void OnItemSelected(FlyoutMenuViewModel sender, FlyoutViewModel newDetailPage)
         {
-            InitializeComponent();
-            Detail= new NavigationPage(new MenuHorizontal(x));
-        }
-        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var item = e.SelectedItem as FlyoutViewModel;
-            if (item != null)
+            if (newDetailPage != null)
             {
-                Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetPage));
-                flyoutPage.LstView.SelectedItem = null;
+                //Detail = new NavigationPage((Page)Activator.CreateInstance(newDetailPage.TargetPage));
+                Detail = new NavigationPage(new MenuHorizontal(newDetailPage.LabelTitle));
+                Detail.Title = newDetailPage.LabelTitle;
                 IsPresented = false;
             }
         }
