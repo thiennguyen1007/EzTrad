@@ -7,6 +7,13 @@
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
     <!--NavigationPage.HasNavigationBar="False" 
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"-->
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
     <ScrollView>
         <RelativeLayout>
             <Frame 
@@ -30,7 +37,7 @@
                                 <ImageButton Source="search.png" BackgroundColor="Transparent" Margin="10,10,10,10"/>
                                 <entryCustom:CustomEntry Grid.Column="1" Placeholder="Ma chung khoan" FontSize="12" TextColor="Black" 
                                                          Focused="CustomEntry_Focused" Unfocused="CustomEntry_Unfocused"
-                                                         Text="{Binding TxtMa, Mode=TwoWay}">
+                                                         Text="{Binding TxtMa, Mode=TwoWay}" TextChanged="CustomEntry_TextChanged">
                                     <entryCustom:CustomEntry.Keyboard>
                                         <Keyboard x:FactoryMethod="Create">
                                             <x:Arguments>
@@ -84,8 +91,5 @@
                 </Grid>
             </Frame>
         </RelativeLayout>
-        <!--<ListView>
-            
-        </ListView>-->
     </ScrollView>
 </pages:PopupPage>

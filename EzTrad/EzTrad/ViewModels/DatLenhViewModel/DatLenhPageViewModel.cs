@@ -130,9 +130,9 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             //
             Company = companySent;
             TxtMa = companySent.ID.ToString();
+            TxtKhoiLuong = companySent.KL.ToString();
             CheckMuaBan();
             CheckIsEnableXacNhan();
-            LbLoaiGD = "Margin";
         }
         private void LoadData()
         {
@@ -145,6 +145,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             //ColorOfPurchase = "#007efa";
             ColorOfBtnXacNhan = "#80bdfe";
             StringOfXacNhanBtn = "Xác nhận mua";
+            IsEnableGia = false;
             IsEnable = false;
             IsShowMenuGia = false;
             LbTienOrCK = "S.dư tiền";
@@ -193,6 +194,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 {
                     Company = new MaCompanyViewModel();
                     _pageService.DisplayAlert("Alert!", "Khong ton tai", "OK");
+                    MessagingCenter.Send(this, "foucusID");
                     TxtMa = "";
                 }
             }
@@ -200,6 +202,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         private async void OnSoDuCKClicked()
         {
+            LbLoaiGD = "Thường";
             await _pageService.PushModelAsync(new SoDuCKPage());
         }
         public void TxtKhoiLuongChangedCheck()
@@ -212,11 +215,13 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     if (temp > TongTaiSan)
                     {
                         _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
+                        MessagingCenter.Send(this, "foucusKhoiLuong");
                         TxtKhoiLuong = max.ToString();
                     }
                     else if (TxtKhoiLuong == "0" || Convert.ToSingle(TxtKhoiLuong) < 100)
                     {
                         _pageService.DisplayAlert("Alert!", "Khoi luong >=100", "OK");
+                        MessagingCenter.Send(this, "foucusKhoiLuong");
                         TxtKhoiLuong = "";
                     }
                     else
@@ -229,6 +234,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     if (Convert.ToSingle(TxtKhoiLuong) > Company.KL)
                     {
                         _pageService.DisplayAlert("Alert!", "Ví chứng khoán không đủ", "OK");
+                        MessagingCenter.Send(this, "foucusKhoiLuong");
                         TxtKhoiLuong = max.ToString();
                     }
                 }
@@ -262,11 +268,13 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     if (temp > TongTaiSan)
                     {
                         _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
+                        MessagingCenter.Send(this, "foucusGia");
                         TxtGia = "";
                     }
                     else if (temp == 0 || Convert.ToSingle(TxtGia) < Company.PriceSan)
                     {
                         _pageService.DisplayAlert("Alert!", "Gia thap hon gia san", "OK");
+                        MessagingCenter.Send(this, "foucusGia");
                         TxtGia = "";
                     }
                 }

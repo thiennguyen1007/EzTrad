@@ -15,7 +15,26 @@ namespace EzTrad.Views.DatLenhPage
             var pageService = new PageService();
             InitializeComponent();
             ViewModel = new DatLenhPageViewModel(pageService);
+            MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusID", FocusID);
+            MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusKhoiLuong", FocusKhoiLuong);
+            MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusGia", FocusGia);
         }
+
+        private void FocusGia(DatLenhPageViewModel obj)
+        {
+            lbGia.Focus();
+        }
+
+        private void FocusKhoiLuong(object arg1)
+        {
+            lbKhoiLuong.Focus();
+        }
+
+        private void FocusID(DatLenhPageViewModel obj)
+        {
+            txtMa.Focus();
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -103,28 +122,28 @@ namespace EzTrad.Views.DatLenhPage
         }
         private async void FadeViewClicked(StackLayout x)
         {
-            await Task.Delay(50);
+            await Task.Delay(20);
             await x.FadeTo(0.5, 100);
             x.BackgroundColor = Color.FromHex("#c9c9c9");
-            await Task.Delay(50);
+            await Task.Delay(20);
             await x.FadeTo(1, 100);
             x.BackgroundColor = Color.FromHex("#4d4d4d");
         }
         private async void FadeGridClicked(Grid g)
         {
-            await Task.Delay(50);
+            await Task.Delay(20);
             await g.FadeTo(0.5, 100);
             g.BackgroundColor = Color.FromHex("#c9c9c9");
-            await Task.Delay(50);
+            await Task.Delay(20);
             await g.FadeTo(1, 100);
             g.BackgroundColor = Color.White;
         }
         private async void FadeGridClickedWhite(Grid g)
         {
-            await Task.Delay(50);
+            await Task.Delay(20);
             await g.FadeTo(0.5, 100);
             g.BackgroundColor = Color.White;
-            await Task.Delay(50);
+            await Task.Delay(20);
             await g.FadeTo(1, 100);
             g.BackgroundColor = Color.FromHex("#c9c9c9");
         }

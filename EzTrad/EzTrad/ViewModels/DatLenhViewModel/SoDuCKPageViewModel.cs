@@ -1,6 +1,8 @@
 ﻿using EzTrad.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -50,6 +52,29 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     LstSoDuCK.Add(GetCompany(TxtMa));
                 }
             }
+        }
+        public void SearchCompanyRealTime(string x)
+        {
+            if (string.IsNullOrWhiteSpace(TxtMa) == true || string.IsNullOrEmpty(TxtMa) == true || TxtMa == "")
+            {
+                LstSoDuCK = null;
+                return;
+            }
+            else
+            {
+                ObservableCollection<MaCompanyViewModel> temp = new ObservableCollection<MaCompanyViewModel>();
+                foreach (var item in SearchCompanyLike(x))
+                {
+                    temp.Add(item);
+                }
+                LstSoDuCK = new ObservableCollection<MaCompanyViewModel>(temp);
+            }
+        }
+        private IEnumerable<MaCompanyViewModel> SearchCompanyLike(string newText)
+        {
+            ObservableCollection<MaCompanyViewModel> temp = new ObservableCollection<MaCompanyViewModel>(KhoiTaoSoDuCK());
+            var x = new List<MaCompanyViewModel>(temp);
+            return x.Where(f => f.Name.Contains(newText));
         }
         public void SoDuCKSelected(MaCompanyViewModel x)
         {

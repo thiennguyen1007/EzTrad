@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+﻿using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace EzTrad
 {
@@ -10,7 +11,7 @@ namespace EzTrad
             InitializeComponent();
 
             MainPage = new MainPage();
-            //MainPage = new NavigationPage(new Views.DatLenhPage.DatLenhPage());
+            //MainPage = new NavigationPage(new MenuHorizontal("Đặt lệnh"));
         }
 
         protected override void OnStart()

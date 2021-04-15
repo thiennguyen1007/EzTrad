@@ -36,5 +36,10 @@ namespace EzTrad.Views.DatLenhPage
             var x = e.SelectedItem as MaCompanyViewModel;
             ViewModel.SoDuCKSelected(x);
         }
+
+        private void CustomEntry_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        {
+            ViewModel.SearchCompanyRealTime(e.NewTextValue);
+        }
     }
 }

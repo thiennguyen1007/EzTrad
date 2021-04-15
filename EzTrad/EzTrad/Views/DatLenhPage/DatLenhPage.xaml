@@ -29,6 +29,7 @@
                     <Frame BorderColor="#c5c5c5" Grid.Column="0" HeightRequest="40" Padding="0">
                         <StackLayout Orientation="Horizontal" Spacing="0">
                             <local:CustomEntry BackgroundColor="Transparent" Placeholder="Mã" 
+                                               x:Name="txtMa"
                                            HorizontalOptions="Center" WidthRequest="150"
                                            HorizontalTextAlignment="Center" Text="{Binding TxtMa, Mode=TwoWay}" TextChanged="txt_name_TextChanged">
                                 <local:CustomEntry.Keyboard>
