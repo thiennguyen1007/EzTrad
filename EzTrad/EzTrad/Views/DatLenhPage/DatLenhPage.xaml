@@ -40,8 +40,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="chart.png"/>
     </ContentPage.ToolbarItems>
-    <ContentPage.Content>
-        <ScrollView>
+    <ScrollView>
             <StackLayout>
                 <StackLayout Orientation="Horizontal" Padding="0" Spacing="5" Margin="20,10,0,0">
                     <Label Text="{Binding LbTienOrCK}" HorizontalOptions="Start" FontSize="15" TextColor="#2794ff"/>
@@ -68,8 +67,9 @@
                                          Command="{Binding CancelCommand}"/>
                         </StackLayout>
                     </Frame>
-                    <Grid Grid.Column="1" BackgroundColor="#808080">
-                        <Label Text="Số dư CK" FontSize="17" TextColor="White" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+                    <Grid Grid.Column="1" BackgroundColor="#808080" IsEnabled="{Binding IsEnableSoDuCK}">
+                        <Label Text="Số dư CK" FontSize="17" TextColor="White" 
+                               HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding NaviSoDuCKCommand}"/>
                         </Grid.GestureRecognizers>
@@ -149,7 +149,7 @@
                 </Grid>
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="10,10,10,0">
                     <Label Text="Loại GD" Grid.Column="0" Style="{StaticResource lb_Note}"/>
-                    <Grid ColumnDefinitions="*,4*,*" Grid.Column="1" BackgroundColor="#c9c9c9" HeightRequest="35">
+                <Grid ColumnDefinitions="*,4*,*" Grid.Column="1" BackgroundColor="#c9c9c9" HeightRequest="35" IsEnabled="{Binding IsEnableSoDuCK}">
                         <Grid Grid.Column="0" x:Name="backLoaiGD">
                             <ImageButton Source="back.png"  Margin="0,10,0,10" Clicked="btnBackLoaiGD_Clicked" Command="{Binding LoaiGDCommand}"/>
                             <Grid.GestureRecognizers>
@@ -215,7 +215,8 @@
                                     <TapGestureRecognizer Command="{Binding MinusGiaCommand}" Tapped="PlusMinus_Tapped"/>
                                 </Grid.GestureRecognizers>
                             </Grid>
-                            <local:CustomEntry Text="{Binding TxtGia, Mode=TwoWay}" Grid.Column="1" HorizontalTextAlignment="Center" Keyboard="Numeric"
+                            <local:CustomEntry Text="{Binding TxtGia, Mode=TwoWay}" Grid.Column="1" 
+                                               HorizontalTextAlignment="Center" Keyboard="Numeric"
                                                Focused="lbGia_Focused" x:Name="lbGia"
                                                Unfocused="lbGia_Unfocused"/>
                             <Grid Grid.Column="2" Margin="1" x:Name="PlusGia">
@@ -266,5 +267,5 @@
                     FontAttributes="Bold" Text="{Binding StringOfXacNhanBtn}" x:Name="btnXacNhan"/>
             </StackLayout>
         </ScrollView>
-    </ContentPage.Content>
+
 </ContentPage>

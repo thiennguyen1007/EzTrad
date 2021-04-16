@@ -104,7 +104,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 ID = "FPT",
                 Name = "HOSE- Cong ty co phan FPT",
-                KL = 1250,
+                KL = 1200,
             };
             MaCompanyViewModel ma2 = new MaCompanyViewModel()
             {
