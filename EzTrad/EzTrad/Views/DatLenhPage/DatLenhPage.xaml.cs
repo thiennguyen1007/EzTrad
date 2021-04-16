@@ -18,21 +18,10 @@ namespace EzTrad.Views.DatLenhPage
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusID", FocusID);
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusKhoiLuong", FocusKhoiLuong);
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusGia", FocusGia);
-        }
-
-        private void FocusGia(DatLenhPageViewModel obj)
-        {
-            lbGia.Focus();
-        }
-
-        private void FocusKhoiLuong(object arg1)
-        {
-            lbKhoiLuong.Focus();
-        }
-
-        private void FocusID(DatLenhPageViewModel obj)
-        {
-            txtMa.Focus();
+            //unSub
+            MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusID");
+            MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusKhoiLuong");
+            MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusGia");
         }
 
         protected override void OnAppearing()
@@ -42,7 +31,7 @@ namespace EzTrad.Views.DatLenhPage
             btnXacNhan.TextColor = Color.White;
             if (txtName != null)
             {
-                AnimationOfCompanyName();
+                //AnimationOfCompanyName();
             }
         }
         private void AnimationOfCompanyName()
@@ -68,14 +57,14 @@ namespace EzTrad.Views.DatLenhPage
         }
         private void txt_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ViewModel.SearchChanged(e.NewTextValue);
+            ViewModel.SearchIdRealTime(e.NewTextValue);
         }
         private void btn_Tapped(object sender, EventArgs e)
         {
             var x = sender as StackLayout;
             FadeViewClicked(x);
+            FadeGridClicked(GridGia);
         }
-
         private void PlusMinus_Tapped(object sender, EventArgs e)
         {
             var x = sender as Grid;
@@ -89,7 +78,6 @@ namespace EzTrad.Views.DatLenhPage
         {
             FadeGridClicked(minusGia);
         }
-
         private void btnMinusKL_Clicked(object sender, EventArgs e)
         {
             FadeGridClicked(minusKL);
@@ -98,7 +86,6 @@ namespace EzTrad.Views.DatLenhPage
         {
             FadeGridClicked(plusKL);
         }
-
         private void txtPassWord_TextChanged(object sender, TextChangedEventArgs e)
         {
             ViewModel.TxtPassWordChanged(e.NewTextValue);
@@ -154,14 +141,12 @@ namespace EzTrad.Views.DatLenhPage
         }
         private void lbKhoiLuong_Focused(object sender, FocusEventArgs e)
         {
-            ViewModel.StatusOfXacNhan =false;
+            ViewModel.StatusOfXacNhan = false;
         }
-
         private void lbKhoiLuong_Unfocused(object sender, FocusEventArgs e)
         {
             ViewModel.TxtKhoiLuongChangedCheck();
         }
-
         private void lbGia_Focused(object sender, FocusEventArgs e)
         {
             ViewModel.StatusOfXacNhan = false;
@@ -170,6 +155,27 @@ namespace EzTrad.Views.DatLenhPage
         private void lbGia_Unfocused(object sender, FocusEventArgs e)
         {
             ViewModel.TxtGiaChanged();
+        }
+        private void FocusGia(DatLenhPageViewModel obj)
+        {
+            lbGia.Focus();
+        }
+        private void FocusKhoiLuong(object arg1)
+        {
+            lbKhoiLuong.Focus();
+        }
+        private void FocusID(DatLenhPageViewModel obj)
+        {
+            txtMa.Focus();
+        }
+        private void txtMa_Unfocused(object sender, FocusEventArgs e)
+        {
+            ViewModel.CheckIDAfterUnfocus();
+        }
+
+        private void lbKLMax_Tapped(object sender, EventArgs e)
+        {
+            FadeGridClicked(GridKL);
         }
     }
 }

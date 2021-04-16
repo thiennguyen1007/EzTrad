@@ -1,5 +1,4 @@
 ﻿using EzTrad.ViewModels.FlyoutMenuViewModel;
-using System;
 using Xamarin.Forms;
 
 namespace EzTrad
@@ -11,6 +10,8 @@ namespace EzTrad
             InitializeComponent();
             Detail.Title = "Tổng quan";
             MessagingCenter.Subscribe<FlyoutMenuViewModel, FlyoutViewModel>(this, "ChangeDetail", OnItemSelected);
+            //unsub
+            MessagingCenter.Unsubscribe<MainPage>(this, "ChangeDetail");
         }
 
         private void OnItemSelected(FlyoutMenuViewModel sender, FlyoutViewModel newDetailPage)
@@ -20,6 +21,7 @@ namespace EzTrad
                 Detail = new NavigationPage(new MenuHorizontal(newDetailPage.LabelTitle));
                 IsPresented = false;
             }
+            //MessagingCenter.Unsubscribe<FlyoutMenuViewModel, FlyoutViewModel>(this, "ChangeDetail");
         }
     }
 }

@@ -126,7 +126,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void SubcribeCompanyAndUpdate(SoDuCKPageViewModel sender, MaCompanyViewModel companySent)
         {
             Company = new MaCompanyViewModel();
-            MuaBanValue = false;          
+            MuaBanValue = false;
             //
             Company = companySent;
             TxtMa = companySent.ID.ToString();
@@ -140,9 +140,9 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             Company = new MaCompanyViewModel();
             CompanyHaveCK = new MaCompanyViewModel();
             //
+            TxtMa = null;
             ColorOfLO = ColorOfATO = ColorOfMP = ColorOfATC = "White";
             MuaBanString = "Mua";
-            //ColorOfPurchase = "#007efa";
             ColorOfBtnXacNhan = "#80bdfe";
             StringOfXacNhanBtn = "Xác nhận mua";
             IsEnableGia = false;
@@ -154,24 +154,23 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             LbKLMax = null;
             LbLoaiGD = "Thường";
         }
-        public void SearchChanged(string txt)
+        public void SearchIdRealTime(string realTimeTextID)
         {
-            if (string.IsNullOrWhiteSpace(txt) == true || string.IsNullOrEmpty(txt) == true || txt == "")
+            if (string.IsNullOrWhiteSpace(realTimeTextID) == true || string.IsNullOrEmpty(realTimeTextID) == true || realTimeTextID == "")
             {
-                Task.Run(() => LoadData());
                 return;
             }
             else
             {
-                Task.Run(() => LoadData());
-                Company = new MaCompanyViewModel();
-                Company = GetCompany(txt);
-            }
-            if (TxtMa.Length >= 3)
-            {
-                if (Company != null)
+                if (GetCompany(realTimeTextID) != null)
                 {
-                    if (MuaBanValue == true)
+                    Company = new MaCompanyViewModel(GetCompany(realTimeTextID.ToUpper()));
+                    IsShowMenuGia = true;
+                    IsEnable = true;
+                    ColorOfLO = "#fb9807";
+                    IsEnableGia = true;
+                    // kta la MUA hay BAN'
+                    if (MuaBanValue == true)//true is MUA
                     {
                         max = System.Math.Truncate(Convert.ToDouble(TongTaiSan / (Company.PriceSan * 1000)));
                         if (max > Company.KL)
@@ -183,22 +182,30 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     {
                         max = GetCompanyInYourSecuritiesWallet(Company.ID).KL;
                     }
-                    IsShowMenuGia = true;
+                    //set text Khoi Luong Max 
                     LbKLMax = $"max {max}";
-                    Company = GetCompany(txt);
-                    IsEnable = true;
-                    ColorOfLO = "#fb9807";
-                    IsEnableGia = true;
                 }
                 else
+                {
+                    return;
+                }
+            }
+            CheckIsEnableXacNhan();
+        }
+        public void CheckIDAfterUnfocus()
+        {
+            if (TxtMa == null)
+            { return; }
+            else
+            {
+                if (Company.ID == null)
                 {
                     Company = new MaCompanyViewModel();
                     _pageService.DisplayAlert("Alert!", "Khong ton tai", "OK");
                     MessagingCenter.Send(this, "foucusID");
-                    TxtMa = "";
+                    TxtMa = null;
                 }
-            }
-            CheckIsEnableXacNhan();
+            }          
         }
         private async void OnSoDuCKClicked()
         {
@@ -269,13 +276,13 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     {
                         _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");
                         MessagingCenter.Send(this, "foucusGia");
-                        TxtGia = "";
+                        TxtGia = null;
                     }
                     else if (temp == 0 || Convert.ToSingle(TxtGia) < Company.PriceSan)
                     {
                         _pageService.DisplayAlert("Alert!", "Gia thap hon gia san", "OK");
                         MessagingCenter.Send(this, "foucusGia");
-                        TxtGia = "";
+                        TxtGia = null;
                     }
                 }
             }
@@ -294,17 +301,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             CheckMuaBan();
             CheckIsEnableXacNhan();
         }
-        private MaCompanyViewModel GetCompany(string id)
-        {
-            MaCompanyViewModel result = new MaCompanyViewModel();
-            List<MaCompanyViewModel> Temp = new List<MaCompanyViewModel>();
-            foreach (var item in MaKhoiTao())
-            {
-                Temp.Add(item);
-            }
-            result = Temp.Find(x => x.ID == $"{id}");
-            return result;
-        }
         private void OnCancelClick()
         {
             TxtMa = null;
@@ -319,41 +315,77 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void OnBtnTranClicked()
         {
             OnLOClicked();
-            TxtGia = Company.PriceTran.ToString();
-            CheckIsEnableXacNhan();
+            if (Company.PriceTran == 0)
+            {
+                IsEnableGia = false;
+            }
+            else
+            {
+                TxtGia = Company.PriceTran.ToString();
+                CheckIsEnableXacNhan();
+            }
         }
         private void OnBtnTCClicked()
         {
             OnLOClicked();
-            TxtGia = Company.PriceTC.ToString();
-            CheckIsEnableXacNhan();
+            if (Company.PriceTC == 0)
+            {
+                IsEnableGia = false;
+            }
+            else
+            {
+                TxtGia = Company.PriceTC.ToString();
+                CheckIsEnableXacNhan();
+            }
         }
         private void OnBtnSanClicked()
         {
             OnLOClicked();
-            TxtGia = Company.PriceSan.ToString();
-            CheckIsEnableXacNhan();
-
+            if (Company.PriceSan == 0)
+            {
+                IsEnableGia = false;
+            }
+            else
+            {
+                TxtGia = Company.PriceSan.ToString();
+                CheckIsEnableXacNhan();
+            }
         }
         private void OnBtnMuaClicked()
         {
             OnLOClicked();
-            TxtGia = Company.PriceMua.ToString();
-            CheckIsEnableXacNhan();
-
+            if (Company.PriceMua == 0)
+            { IsEnableGia = false; }
+            else
+            {
+                TxtGia = Company.PriceMua.ToString();
+                CheckIsEnableXacNhan();
+            }
         }
         private void OnBtnKhopClicked()
         {
             OnLOClicked();
-            TxtGia = Company.PriceKhop.ToString();
-            CheckIsEnableXacNhan();
-
+            if (Company.PriceKhop == 0)
+            { IsEnableGia = false; }
+            else
+            {
+                TxtGia = Company.PriceKhop.ToString();
+                CheckIsEnableXacNhan();
+            }
         }
         private void OnBtnBanClicked()
         {
             OnLOClicked();
-            TxtGia = Company.PriceBan.ToString();
-            CheckIsEnableXacNhan();
+
+            if (Company.PriceBan == 0)
+            {
+                IsEnableGia = false;
+            }
+            else
+            {
+                TxtGia = Company.PriceBan.ToString();
+                CheckIsEnableXacNhan();
+            }
         }
         private void OnStatusOfMuaBanClicked()
         {
@@ -373,7 +405,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     Company = GetCompany(TxtMa);
                     max = Company.KL;
                     LbKLMax = $"max {max}";
-                }               
+                }
                 //color
                 ColorOfBtnXacNhan = "#80bdfe";
                 StringOfXacNhanBtn = "Xác nhận mua";
@@ -389,7 +421,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 LbTongTaiSan = TongSoDuCK.ToString();
                 if (TxtMa != null)
                 {
-                    max= GetCompanyInYourSecuritiesWallet(Company.ID).KL;
+                    max = GetCompanyInYourSecuritiesWallet(Company.ID).KL;
                     LbKLMax = $"max {max}";
                     //max = Company.KL;
                 }
@@ -482,22 +514,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 }
             }
             CheckIsEnableXacNhan();
-        }
-        private MaCompanyViewModel GetCompanyInYourSecuritiesWallet(string x)
-        {
-            SoDuCKPageViewModel userStocck = new SoDuCKPageViewModel(null);
-            ObservableCollection<MaCompanyViewModel> lstTemp = new ObservableCollection<MaCompanyViewModel>();
-            lstTemp = userStocck.KhoiTaoSoDuCK();
-            //tim kiem cong ty trong ví chứng khoán của người dùng sở hữu
-            for (int i = 0; i < lstTemp.Count; i++)
-            {
-
-                if (Company.ID == lstTemp[i].ID)
-                {
-                    CompanyHaveCK = new MaCompanyViewModel(lstTemp[i]);
-                }
-            }
-            return CompanyHaveCK;
         }
         private void OnMinusGiaClicked()
         {
@@ -609,6 +625,33 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 ColorOfBtnXacNhan = "#e18b8e";
             }
+        }
+        private MaCompanyViewModel GetCompany(string id)
+        {
+            MaCompanyViewModel result = new MaCompanyViewModel();
+            List<MaCompanyViewModel> Temp = new List<MaCompanyViewModel>();
+            foreach (var item in MaKhoiTao())
+            {
+                Temp.Add(item);
+            }
+            result = Temp.Find(x => x.ID == $"{id}");
+            return result;
+        }
+        private MaCompanyViewModel GetCompanyInYourSecuritiesWallet(string x)
+        {
+            SoDuCKPageViewModel userStocck = new SoDuCKPageViewModel(null);
+            ObservableCollection<MaCompanyViewModel> lstTemp = new ObservableCollection<MaCompanyViewModel>();
+            lstTemp = userStocck.KhoiTaoSoDuCK();
+            //tim kiem cong ty trong ví chứng khoán của người dùng sở hữu
+            for (int i = 0; i < lstTemp.Count; i++)
+            {
+
+                if (Company.ID == lstTemp[i].ID)
+                {
+                    CompanyHaveCK = new MaCompanyViewModel(lstTemp[i]);
+                }
+            }
+            return CompanyHaveCK;
         }
         public ObservableCollection<MaCompanyViewModel> MaKhoiTao()
         {

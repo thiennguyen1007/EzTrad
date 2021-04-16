@@ -12,6 +12,9 @@
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="Black"/>
             </Style>
+            <Style TargetType="ImageButton">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+            </Style>
         </ResourceDictionary>
     </pages:PopupPage.Resources>
     <ScrollView>
@@ -22,19 +25,20 @@
             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.9}"
             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
             BackgroundColor="White" Padding="0">
-                <Grid RowDefinitions="*,0.8*,6.5*,0.6*" RowSpacing="0">
-                    <Grid ColumnDefinitions="9*,*" BackgroundColor="#0063b4">
-                        <Label Text="Số dư chứng khoán hiện có" TextColor="White" FontSize="16" 
-                           HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"
-                           />
-                        <Grid Grid.Column="1">
-                            <ImageButton BackgroundColor="Transparent" Source="cancel.png" Margin="5,5,10,5" VerticalOptions="Center" Command="{Binding ClosePopupCommand}"/>
+                <Grid RowDefinitions="0.9*,0.8*,6.5*,0.6*" RowSpacing="0">
+                    <Grid ColumnDefinitions="*,9*,*" BackgroundColor="#0063b4">
+                            <Label Text="Số dư chứng khoán hiện có" TextColor="White" FontSize="16" 
+                                    HorizontalOptions="Center" Grid.Column="1"
+                                 HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"/>
+                            <Grid Grid.Column="2">
+                                <ImageButton Source="cancel.png" VerticalOptions="Center" 
+                                         Command="{Binding ClosePopupCommand}" Margin="0,8,8,8"/>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid Grid.Row="1" Padding="0">
+                        <Grid Grid.Row="1" Padding="0">
                         <Frame BackgroundColor="#e6e6e8" Padding="0" Margin="10,5,10,5" CornerRadius="10">
                             <Grid ColumnDefinitions="*,4*">
-                                <ImageButton Source="search.png" BackgroundColor="Transparent" Margin="10,10,10,10"/>
+                                <ImageButton Source="search.png" Margin="10,10,10,10"/>
                                 <entryCustom:CustomEntry Grid.Column="1" Placeholder="Ma chung khoan" FontSize="12" TextColor="Black" 
                                                          Focused="CustomEntry_Focused" Unfocused="CustomEntry_Unfocused"
                                                          Text="{Binding TxtMa, Mode=TwoWay}" TextChanged="CustomEntry_TextChanged">
@@ -51,11 +55,11 @@
                     </Grid>
                     <Grid Grid.Row="2" BackgroundColor="#e6e6e8">
                         <ScrollView>
-                            <ListView ItemsSource="{Binding LstSoDuCK}" ItemSelected="ListView_ItemSelected">
+                            <ListView ItemsSource="{Binding LstSoDuCK}" ItemSelected="ListView_ItemSelected" Margin="10,0,0,0">
                                 <ListView.Header>
                                     <StackLayout Orientation="Vertical" Spacing="0">
                                         <Grid ColumnDefinitions="1.5*,0.8*,*,*" HeightRequest="45">
-                                            <Label Grid.Column="0" Text="Mã" Margin="5,0,0,0"/>
+                                            <Label Grid.Column="0" Text="Mã"/>
                                             <Label Grid.Column="1" Text="KL"/>
                                             <Label Grid.Column="2" Text="Tỷ lệ vay"/>
                                             <Label Grid.Column="3" Text="Ngày ĐH"/>
@@ -66,9 +70,8 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-
                                             <Grid ColumnDefinitions="1.5*,0.8*,*,*">
-                                                <Label Text="{Binding ID}" Grid.Column="0" Margin="5,0,0,0" VerticalOptions="Center"/>
+                                                <Label Text="{Binding ID}" Grid.Column="0" VerticalOptions="Center"/>
                                                 <Label Text="{Binding KL}" Grid.Column="1" VerticalOptions="Center"/>
                                             </Grid>
 

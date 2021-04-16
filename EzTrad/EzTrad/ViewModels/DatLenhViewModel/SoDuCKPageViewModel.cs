@@ -63,7 +63,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             else
             {
                 ObservableCollection<MaCompanyViewModel> temp = new ObservableCollection<MaCompanyViewModel>();
-                foreach (var item in SearchCompanyLike(x))
+                foreach (var item in SearchCompanyLike(x.ToUpper()))
                 {
                     temp.Add(item);
                 }

@@ -148,10 +148,7 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             if (x == null)
             { return; }
             SelectedItem = null;
-            if (x.LabelTitle == "Đặt lệnh")
-            {
-                MessagingCenter.Send(this, "ChangeDetail", x);
-            }
+            MessagingCenter.Send(this, "ChangeDetail", x);
         }
         private void OnLogoutClicked()
         {

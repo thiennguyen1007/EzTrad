@@ -2,7 +2,6 @@
 using EzTrad.ViewModels;
 using EzTrad.ViewModels.DatLenhViewModel;
 using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
 using Xamarin.Forms.Xaml;
 
 namespace EzTrad.Views.DatLenhPage

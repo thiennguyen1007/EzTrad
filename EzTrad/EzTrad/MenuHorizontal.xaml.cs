@@ -10,16 +10,24 @@ namespace EzTrad
         public MenuHorizontal(string x)
         {
             InitializeComponent();
-            if (x != null)
+            SetupPage(x); 
+            CurrentPageChanged += (s, e) => Title = (CurrentPage as Page).Title ?? CurrentPage.Title;
+        }
+        private void SetupPage(string newTitle)
+        {
+            if (newTitle != null)
             {
-                if (x == "Đặt lệnh")
+                if (newTitle == "Đặt lệnh")
                 {
                     CurrentPage = Children[1];
 
                 }
-                Title = x;
-            }         
-            CurrentPageChanged += (s, e) => Title = (CurrentPage as Page).Title ?? CurrentPage.Title;
+                else if (newTitle == "Tổng quan")
+                {
+                    CurrentPage = Children[0];
+                }
+                Title = newTitle;
+            }
         }
     }
 }
