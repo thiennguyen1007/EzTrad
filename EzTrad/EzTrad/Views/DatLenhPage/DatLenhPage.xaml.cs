@@ -145,7 +145,7 @@ namespace EzTrad.Views.DatLenhPage
         }
         private void lbKhoiLuong_Unfocused(object sender, FocusEventArgs e)
         {
-            ViewModel.TxtKhoiLuongChangedCheck();
+            ViewModel.TxtKhoiLuongUnfocus();
         }
         private void lbGia_Focused(object sender, FocusEventArgs e)
         {

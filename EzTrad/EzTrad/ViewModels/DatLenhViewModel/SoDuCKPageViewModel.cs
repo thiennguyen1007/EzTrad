@@ -28,6 +28,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void OnCloseClicked()
         {
             _pageService.PopAsyncPopup();
+            MessagingCenter.Send(this, "ReloadData");
         }
         public void SearchCompany()
         {
