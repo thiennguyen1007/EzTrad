@@ -130,7 +130,13 @@ namespace EzTrad.ViewModels.DatLenhViewModel
 
         private void ClosePopupSoDu(SoDuCKPageViewModel obj)
         {
-            LoadData();
+            MuaBanValue = false;
+            LbLoaiGD = "Margin";
+            TxtKhoiLuong = null;
+            TxtGia = null;
+            CheckIDAfterUnfocus();
+            CheckMuaBan();
+            CheckIsEnableXacNhan();
         }
         private void SubcribeCompanyAndUpdate(SoDuCKPageViewModel sender, MaCompanyViewModel companySent)
         {
@@ -140,6 +146,8 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             Company = companySent;
             TxtMa = companySent.ID.ToString();
             TxtKhoiLuong = companySent.KL.ToString();
+            LbLoaiGD = "Thường";
+            CheckIDAfterUnfocus();
             CheckMuaBan();
             CheckIsEnableXacNhan();
         }
@@ -419,6 +427,10 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void OnStatusOfMuaBanClicked()
         {
             MuaBanValue = !MuaBanValue;
+            if (MuaBanValue == false && LbLoaiGD=="Margin")
+            {
+                _pageService.PushModelAsync(new SoDuCKPage());
+            }
             TxtKhoiLuong = null;
             TxtGia = null;
             CheckMuaBan();
