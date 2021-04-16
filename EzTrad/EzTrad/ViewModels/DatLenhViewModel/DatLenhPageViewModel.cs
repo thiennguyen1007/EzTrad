@@ -148,6 +148,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             IsEnableGia = false;
             IsEnable = false;
             IsShowMenuGia = false;
+            TxtGia = TxtKhoiLuong = null;
             LbTienOrCK = "S.dư tiền";
             LbTongTaiSan = TongTaiSan.ToString();
             StatusOfXacNhan = false;
@@ -292,9 +293,10 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             if (LbLoaiGD == "Thường")
             {
                 LbLoaiGD = "Margin";
-                MuaBanValue = false;
-                Task.Delay(100);
-                _pageService.PushModelAsync(new SoDuCKPage());
+                if(MuaBanValue== false)
+                {
+                    _pageService.PushModelAsync(new SoDuCKPage());
+                }                
             }
             else
             { LbLoaiGD = "Thường"; }
@@ -303,14 +305,17 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         private void OnCancelClick()
         {
-            TxtMa = null;
-            MuaBanValue = true;
-            TxtKhoiLuong = null;
-            TxtGia = null;
-            TxtPassWord = null;
-            Company = new MaCompanyViewModel();
-            CheckMuaBan();
-            CheckIsEnableXacNhan();
+            //TxtMa = null;
+            //MuaBanValue = true;
+            //TxtKhoiLuong = null;
+            //IsEnable = false;
+            //IsEnableGia = false;
+            //TxtGia = null;
+            //TxtPassWord = null;
+            //Company = new MaCompanyViewModel();
+            //CheckMuaBan();
+            //CheckIsEnableXacNhan();
+            LoadData();
         }
         private void OnBtnTranClicked()
         {

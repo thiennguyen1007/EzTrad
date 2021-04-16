@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -25,9 +24,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             LstSoDuCK = new ObservableCollection<MaCompanyViewModel>(KhoiTaoSoDuCK());
             //Command
             ClosePopupCommand = new Command(OnCloseClicked);
-        }
-        
-
+        }       
         private void OnCloseClicked()
         {
             _pageService.PopAsyncPopup();
@@ -43,7 +40,8 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 if (GetCompany(TxtMa) == null)
                 {
                     _pageService.DisplayAlert("Alert!", "Khong ton tai ma", "OK");
-                    TxtMa = "";
+                    LstSoDuCK = new ObservableCollection<MaCompanyViewModel>(KhoiTaoSoDuCK());
+                    TxtMa = null;
                 }
                 else
                 {

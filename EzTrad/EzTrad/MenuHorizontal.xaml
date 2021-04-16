@@ -5,8 +5,13 @@
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              android:TabbedPage.ToolbarPlacement="Bottom"
              xmlns:datLenh="clr-namespace:EzTrad.Views.DatLenhPage"
-            xmlns:tongQuan="clr-namespace:EzTrad.Views">
+             xmlns:tongQuan="clr-namespace:EzTrad.Views"
+                xmlns:Views="clr-namespace:EzTrad.Views"
+            xmlns:taiSan="clr-namespace:EzTrad.Views.TaiSanPage">
 
-    <tongQuan:TongQuanPage Title="Tổng quan"/>
-    <datLenh:DatLenhPage Title="Đặt lệnh"/>
+    <tongQuan:TongQuanPage Title="Thị trường" IconImageSource="tonQuan.png"/>
+    <taiSan:TaiSanPage Title="Tài sản"/>
+    <datLenh:DatLenhPage Title="Đặt lệnh" IconImageSource="paper.png"/>
+    <Views:HuySuaPage/>
+    <Views:ChuyenTienPage/>
 </TabbedPage>

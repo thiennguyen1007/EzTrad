@@ -19,7 +19,7 @@ namespace EzTrad
             {
                 if (newTitle == "Đặt lệnh")
                 {
-                    CurrentPage = Children[1];
+                    CurrentPage = Children[2];
 
                 }
                 else if (newTitle == "Tổng quan")
