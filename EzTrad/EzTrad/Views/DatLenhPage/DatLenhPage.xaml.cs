@@ -154,7 +154,7 @@ namespace EzTrad.Views.DatLenhPage
 
         private void lbGia_Unfocused(object sender, FocusEventArgs e)
         {
-            ViewModel.TxtGiaChanged();
+            ViewModel.TxtGiaUnfocus();
         }
         private void FocusGia(DatLenhPageViewModel obj)
         {
