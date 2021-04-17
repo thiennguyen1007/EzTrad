@@ -9,19 +9,16 @@ namespace EzTrad
         {
             InitializeComponent();
             Detail.Title = "Tổng quan";
-            MessagingCenter.Subscribe<FlyoutMenuViewModel, FlyoutViewModel>(this, "ChangeDetail", OnItemSelected);
-            //unsub
-            MessagingCenter.Unsubscribe<MainPage>(this, "ChangeDetail");
+            MessagingCenter.Subscribe<FlyoutMenuViewModel, FlyoutViewModel>(this, "ChangeDetail", OnItemSelected);  
         }
-
-        private void OnItemSelected(FlyoutMenuViewModel sender, FlyoutViewModel newDetailPage)
+        private void OnItemSelected(FlyoutMenuViewModel sender, FlyoutViewModel x)
         {
-            if (newDetailPage != null)
+            if (x != null)
             {
-                Detail = new NavigationPage(new MenuHorizontal(newDetailPage.LabelTitle));
-                IsPresented = false;
+                Detail = new NavigationPage(new MenuHorizontal(x.LabelTitle));
+                MessagingCenter.Unsubscribe<MainPage>(this, "ChangeDetail");
             }
-            //MessagingCenter.Unsubscribe<FlyoutMenuViewModel, FlyoutViewModel>(this, "ChangeDetail");
+            IsPresented = false;            
         }
     }
 }

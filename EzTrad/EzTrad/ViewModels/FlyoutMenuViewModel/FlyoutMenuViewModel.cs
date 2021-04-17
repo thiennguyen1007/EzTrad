@@ -120,7 +120,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             RemoveFavoritesCommand = new Command(OnRemoveFavorClicked);
             showLstBaoCaoGDCommmand = new Command(OnShowBaoCaoGDClicked);
             showLstQuanLyCommand = new Command(OnShowQuanLyClicked);
-            //
         }
         private void LoadData()
         {
@@ -132,7 +131,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             IsShowQuanLyBtn = true;
             IsShowDropDownBaoCaoGDBtn = false;
             IsShowDropDownQuanLyBtn = false;
-
             //create list FlyoutItem
             LstFavorites = new ObservableCollection<FlyoutViewModel>();
             FlyoutItems = new ObservableCollection<FlyoutViewModel>(LstMenu());
@@ -145,10 +143,8 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         }
         public void OnSelectedItem(FlyoutViewModel x)
         {
-            if (x == null)
-            { return; }
-            SelectedItem = null;
             MessagingCenter.Send(this, "ChangeDetail", x);
+            SelectedItem = null;
         }
         private void OnLogoutClicked()
         {

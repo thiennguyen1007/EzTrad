@@ -149,6 +149,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             Company = companySent;
             TxtMa = companySent.ID.ToString();
             TxtKhoiLuong = companySent.KL.ToString();
+            TxtGia = null;
             LbLoaiGD = "Thường";
             SearchIdRealTime(TxtMa);
             CheckIDAfterUnfocus();
@@ -161,6 +162,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             Company = new MaCompanyViewModel();
             CompanyHaveCK = new MaCompanyViewModel();
             //
+            LbTongTaiSan = TongTaiSan.ToString();
             TxtMa = null;
             ColorOfLO = ColorOfATO = ColorOfMP = ColorOfATC = "White";
             MuaBanString = "Mua";
@@ -170,19 +172,14 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             IsEnable = false;
             IsShowMenuGia = false;
             TxtGia = TxtKhoiLuong = null;
-            LbTienOrCK = "S.dư tiền";
-            LbTongTaiSan = TongTaiSan.ToString();
+            LbTienOrCK = "S.dư tiền";           
             StatusOfXacNhan = false;
             LbKLMax = null;
             LbLoaiGD = "Thường";
         }
         public void SearchIdRealTime(string realTimeTextID)
         {
-            if (string.IsNullOrWhiteSpace(realTimeTextID) || string.IsNullOrEmpty(realTimeTextID) || realTimeTextID == "")
-            {
-                return;
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(realTimeTextID) || !string.IsNullOrEmpty(realTimeTextID) || realTimeTextID == "")
             {
                 if (GetCompany(realTimeTextID) != null)
                 {
@@ -198,9 +195,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         public void CheckIDAfterUnfocus()
         {
-            if (TxtMa == null)
-            { return; }
-            else
+            if (TxtMa != null && TxtGia != "")
             {
                 if (GetCompany(TxtMa) != null)
                 {
@@ -421,7 +416,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void OnLbMaxClicked()
         {
             TxtKhoiLuong = max.ToString();
-            if (TxtGia != null)
+            if (TxtGia != null && TxtGia != "")
             {
                 if (!IsValidTaiSan())
                 {
@@ -491,7 +486,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         private void OnMinusGiaClicked()
         {
-            if (TxtGia == "" || TxtGia == null)
+            if (TxtGia == "" || TxtGia == null) 
             {
                 TxtGia = Company.PriceTran.ToString();
             }
@@ -517,15 +512,18 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
             else if (Convert.ToDouble(TxtGia) < Company.PriceTran)
             {
-                double tempGia = Convert.ToDouble(TxtGia) + 0.1;
-                TxtGia = tempGia.ToString();
+                double newGia = Convert.ToDouble(TxtGia) + 0.1;
+                TxtGia = newGia.ToString();
             }
             //check
             if (TxtKhoiLuong != "" && TxtKhoiLuong != null)
             {
                 if (IsValidGia())
                 {
-                    if (!IsValidTaiSan()) FocusGia();
+                    if (!IsValidTaiSan())
+                    { 
+                        FocusGia(); 
+                    }
                 }
             }
             CheckIsEnableXacNhan();
@@ -705,12 +703,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         private bool IsValidTaiSan()
         {
-            bool result = true;
-            double Gia = Convert.ToDouble(TxtGia);
-            double KL = Convert.ToDouble(TxtKhoiLuong);
-            double temp = Gia * KL * 1000;
-            if (!TxtGia.Equals("ATC") && !TxtGia.Equals("AT0") && !TxtGia.Equals("MP"))
+            bool result = true;           
+            double KL = Convert.ToDouble(TxtKhoiLuong);        
+            if (!TxtGia.Equals("ATC") && !TxtGia.Equals("ATO") && !TxtGia.Equals("MP"))
             {
+                double Gia = Convert.ToDouble(TxtGia);
+                double temp = Gia * KL * 1000;
                 if (temp > TongTaiSan)
                 {
                     _pageService.DisplayAlert("Alert!", "Khong du tien", "OK");

@@ -23,5 +23,14 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         public bool IsHeader { get => _isHeader;
             set => SetProperty(ref _isHeader, value); }
         public string IsTicked { get => _isTicked; set => SetProperty(ref _isTicked, value); }
+        public FlyoutViewModel() { }
+        public FlyoutViewModel(FlyoutViewModel x)
+        {
+            Title = x.Title;
+            TargetPage = x.TargetPage;
+            Icon = x.Icon;
+            IsHeader = x.IsHeader;
+            IsTicked = x.IsTicked;
+        }
     }
 }

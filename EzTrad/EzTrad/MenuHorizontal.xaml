@@ -7,7 +7,8 @@
              xmlns:datLenh="clr-namespace:EzTrad.Views.DatLenhPage"
              xmlns:tongQuan="clr-namespace:EzTrad.Views"
                 xmlns:Views="clr-namespace:EzTrad.Views"
-            xmlns:taiSan="clr-namespace:EzTrad.Views.TaiSanPage">
+            xmlns:taiSan="clr-namespace:EzTrad.Views.TaiSanPage"
+             x:Name="MenuNgang">
 
     <tongQuan:TongQuanPage Title="Thị trường" IconImageSource="tonQuan.png"/>
     <taiSan:TaiSanPage Title="Tài sản"/>

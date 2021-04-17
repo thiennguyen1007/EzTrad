@@ -14,10 +14,7 @@ namespace EzTrad.Views
             var pageService = new PageService();
             ViewModel = new FlyoutMenuViewModel(pageService);
             InitializeComponent();
-            //clear item selected
-            //MessagingCenter.Subscribe<MainPage>(this, "DeselectItem", DeselectItem);
         }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -34,12 +31,7 @@ namespace EzTrad.Views
         }
         private void listView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var x = e.SelectedItem as FlyoutViewModel;
-            ViewModel.OnSelectedItem(x);
-        }
-        private void DeselectItem(object sender, EventArgs e)
-        {
-            ((ListView)sender).SelectedItem = null;
+            ViewModel.OnSelectedItem(e.SelectedItem as FlyoutViewModel);
         }
     }
 }

@@ -151,7 +151,6 @@ namespace EzTrad.Views.DatLenhPage
         {
             ViewModel.StatusOfXacNhan = false;
         }
-
         private void lbGia_Unfocused(object sender, FocusEventArgs e)
         {
             ViewModel.TxtGiaUnfocus();

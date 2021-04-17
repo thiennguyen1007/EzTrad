@@ -1,5 +1,4 @@
-﻿
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace EzTrad
@@ -17,12 +16,12 @@ namespace EzTrad
         {
             if (newTitle != null)
             {
-                if (newTitle == "Đặt lệnh")
+                if (newTitle.Equals("Đặt lệnh"))
                 {
                     CurrentPage = Children[2];
 
                 }
-                else if (newTitle == "Tổng quan")
+                else if (newTitle.Equals("Tổng quan"))
                 {
                     CurrentPage = Children[0];
                 }

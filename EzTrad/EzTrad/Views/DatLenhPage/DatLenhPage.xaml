@@ -35,6 +35,10 @@
                 <Setter Property="Margin" Value="10,0,10,0"/>
                 <Setter Property="BackgroundColor" Value="#4d4d4d"/>
             </Style>
+            <Style TargetType="Grid" x:Key="Grid_2Colum">
+                <Setter Property="ColumnSpacing" Value="10"/>
+                <Setter Property="Margin" Value="10,10,10,0"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -121,7 +125,7 @@
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                 </Grid>
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="10,10,10,0">
+            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}">
                     <Label Text="Mua/Ban" Grid.Column="0" Style="{StaticResource lb_Note}"/>
                     <Grid ColumnDefinitions="*,4*,*" Grid.Column="1" BackgroundColor="#c9c9c9" HeightRequest="35">
                         <Grid Grid.Column="0" x:Name="backMuaBan">
@@ -147,7 +151,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="10,10,10,0">
+            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}">
                     <Label Text="Loại GD" Grid.Column="0" Style="{StaticResource lb_Note}"/>
                 <Grid ColumnDefinitions="*,4*,*" Grid.Column="1" BackgroundColor="#c9c9c9" HeightRequest="35" IsEnabled="{Binding IsEnableSoDuCK}">
                         <Grid Grid.Column="0" x:Name="backLoaiGD">
@@ -168,7 +172,7 @@
                     </Grid>
                 </Grid>
                 <!--khoi luong-->
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="10,10,10,0" HeightRequest="35">
+            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}" HeightRequest="35">
                     <Grid Grid.Column="0" ColumnDefinitions="*,*" >
                         <Label Text="Khối lượng" Grid.Column="0" Style="{StaticResource lb_Note}"/>
                         <Label Text="{Binding LbKLMax}" Grid.Column="1" BackgroundColor="#808080" TextColor="White" FontSize="13" 
@@ -204,7 +208,7 @@
                 </Grid>
                 <!--end of khoi luong-->
                 <!--textbox Gia-->
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="10,10,10,0" HeightRequest="35">
+            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}" HeightRequest="35">
                     <Label Text="Giá" Grid.Column="0" Style="{StaticResource lb_Note}"/>
                     <Frame BorderColor="#c5c5c5" Grid.Column="1" Padding="0" HasShadow="False">
                         <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnableGia}" x:Name="GridGia" Margin="1,1,1,1">
