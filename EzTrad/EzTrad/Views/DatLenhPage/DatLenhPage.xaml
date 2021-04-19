@@ -67,13 +67,13 @@
                                                HorizontalTextAlignment="Center" Text="{Binding TxtMa, Mode=TwoWay}" 
                                                TextChanged="txt_name_TextChanged"
                                                Unfocused="txtMa_Unfocused">
-                            <!--<local:CustomEntry.Keyboard>
+                            <local:CustomEntry.Keyboard>
                                 <Keyboard x:FactoryMethod="Create">
                                     <x:Arguments>
                                         <KeyboardFlags>CapitalizeCharacter</KeyboardFlags>
                                     </x:Arguments>
                                 </Keyboard>
-                            </local:CustomEntry.Keyboard>-->
+                            </local:CustomEntry.Keyboard>
                         </local:CustomEntry>
                         <ImageButton Source="cancel.png" HorizontalOptions="EndAndExpand" Margin="0,10,10,10"
                                          Command="{Binding CancelCommand}"/>
