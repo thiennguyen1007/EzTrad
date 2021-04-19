@@ -42,7 +42,7 @@
             <DataTemplate x:Key="isBaoCaoGDTemplate">
                 <ViewCell>
                     <StackLayout Spacing="5" Padding="5,0">
-                        <Grid ColumnDefinitions="30,*,30" HeightRequest="45">
+                        <Grid ColumnDefinitions="30,*,30" HeightRequest="40">
                             <Image Source="{Binding Icon}" IsEnabled="False"/>
                             <Label Grid.Column="1" Text="{Binding LabelTitle}" FontSize="16" IsEnabled="False"/>
                             <ImageButton Source="favorites.png"                                     
@@ -67,7 +67,7 @@
             <DataTemplate x:Key="isQuanlyTaiKhoanTemplate">
                 <ViewCell>
                     <StackLayout Spacing="5" Padding="5,0">
-                        <Grid ColumnDefinitions="30,*,30" HeightRequest="45">
+                        <Grid ColumnDefinitions="30,*,30" HeightRequest="40">
                             <Image Source="{Binding Icon}" IsEnabled="False"/>
                             <Label Grid.Column="1" Text="{Binding LabelTitle}" FontSize="16" IsEnabled="False"/>
                             <ImageButton Source="favorites.png"                                     
@@ -118,7 +118,7 @@
                         </Grid>
                         <Label Text="Sao kê chứng khoán" Margin="40,0,0,0" 
                                IsVisible="{Binding Source={x:Reference lbShowDropDownQuanLyBtn}, Path=Text}"/>
-                        <Label Text="Sao kê tiền" Margin="60,0,0,0"
+                        <Label Text="Sao kê tiền" Margin="40,0,0,0"
                                IsVisible="{Binding Source={x:Reference lbShowDropDownQuanLyBtn}, Path=Text}"/>
                         <Label Text="Tra cứu phí lưu ký" Margin="40,0,0,0" 
                                IsVisible="{Binding Source={x:Reference lbShowDropDownQuanLyBtn}, Path=Text}"/>
@@ -132,7 +132,7 @@
             <DataTemplate x:Key="isBaoCaoFavorTemplate">
                 <ViewCell>
                     <StackLayout Spacing="0" Padding="5,0">
-                        <Grid ColumnDefinitions="30,*,30" HeightRequest="45">
+                        <Grid ColumnDefinitions="30,*,30" HeightRequest="40">
                             <Image Source="{Binding Icon}" IsEnabled="False"/>
                             <Label Grid.Column="1" Text="{Binding LabelTitle}" FontSize="16" IsEnabled="False"/>
                             <ImageButton Source="favorites.png"                                     
@@ -162,7 +162,7 @@
             </DataTemplate>
             <DataTemplate x:Key="invalidFavorTemplate">
                 <ViewCell>
-                    <Grid Padding="5,0" ColumnDefinitions="30,*,30" HeightRequest="45">
+                    <Grid Padding="5,0" ColumnDefinitions="30,*,30" HeightRequest="40">
                         <Image Source="{Binding Icon}" IsEnabled="False"/>
                         <Label Grid.Column="1" Text="{Binding LabelTitle}" FontSize="15" IsEnabled="False"/>
                         <ImageButton Source="favorites.png"                                     
@@ -207,7 +207,7 @@
                 <Label Text="Yêu thích" TextColor="#6f6f6f" BackgroundColor="#FFEB3B" 
                            FontSize="18" VerticalTextAlignment="Center" IsVisible="{Binding IsShowFavor}" HeightRequest="40"/>
                 <!--list favorites-->
-                <ListView ItemsSource="{Binding LstFavorites}" IsVisible="{Binding IsShowFavor}" MinimumHeightRequest="{Binding HeightOfLst}"
+                <ListView ItemsSource="{Binding LstFavorites}" IsVisible="{Binding IsShowFavor}"
                               x:Name="lstViewFavor" ItemTemplate="{StaticResource menuFavorTemplateSelector}"
                               HasUnevenRows="True" HeightRequest="{Binding HeightOfLst}" ItemSelected="listView_ItemSelected"/>
                 <!--list menu-->
