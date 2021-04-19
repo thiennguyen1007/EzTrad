@@ -14,6 +14,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private IPageService _pageService;
         //Command
         public ICommand ClosePopupCommand { get; private set; }
+        //
         public ObservableCollection<MaCompanyViewModel> LstSoDuCK { get => _lstSoDuCK; set => SetProperty(ref _lstSoDuCK, value); }
         public string TxtMa { get => _txtMa; set => SetProperty(ref _txtMa, value); }
 

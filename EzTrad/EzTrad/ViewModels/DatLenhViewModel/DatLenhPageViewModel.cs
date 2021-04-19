@@ -265,7 +265,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         {
             LoadData();
         }
-        //btn
+        //btn gia tran, san, mua, ban, khop, TC
         private void OnBtnTranClicked()
         {
             OnLOClicked();
@@ -686,6 +686,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             }
             return result;
         }
+        //
         private MaCompanyViewModel GetCompany(string id)
         {
             MaCompanyViewModel result = new MaCompanyViewModel();
