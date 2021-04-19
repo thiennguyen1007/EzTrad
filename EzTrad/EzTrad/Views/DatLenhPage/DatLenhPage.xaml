@@ -251,7 +251,13 @@
                        HorizontalOptions="Start" Grid.ColumnSpan="2"/>
                 <Grid Grid.Row="8" Grid.ColumnSpan="2" Margin="10,0"
                       ColumnDefinitions="*,*,*,*" ColumnSpacing="45" IsVisible="{Binding IsEnable}">
-                    <Button Text="LO" TextColor="{Binding ColorOfLO}" Command="{Binding LoaiGiaCommand}" CommandParameter="LO"/>
+                    <Button Text="LO" Command="{Binding LoaiGiaCommand}" CommandParameter="LO">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsEnableGia}" Value="true">
+                                <Setter Property="TextColor" Value="#fb9807"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
                     <Button Text="ATO" Grid.Column="1" Command="{Binding LoaiGiaCommand}" CommandParameter="ATO">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding TxtGia}" Value="ATO">
@@ -295,11 +301,17 @@
                 </Frame>
                 <Button HorizontalOptions="Center" Grid.Row="10" Grid.ColumnSpan="2"
                         BackgroundColor="{Binding ColorOfBtnXacNhan}" CornerRadius="30" WidthRequest="200" 
-                        Margin="10,10,15,10" IsEnabled="{Binding StatusOfXacNhan}"
+                        Margin="10,10,15,10" IsEnabled="False"
                         FontAttributes="Bold" Text="Xac nhan Mua" x:Name="btnXacNhan">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding MuaBanString}" Value="Bán">
                             <Setter Property="Text" Value="Xac nhan Ban"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding ColorOfBtnXacNhan}" Value="#007aff">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding ColorOfBtnXacNhan}" Value="Red">
+                            <Setter Property="IsEnabled" Value="True"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>

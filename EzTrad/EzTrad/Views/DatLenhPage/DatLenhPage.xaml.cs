@@ -17,11 +17,11 @@ namespace EzTrad.Views.DatLenhPage
             {
                 AnimationOfCompanyName();
             }
-            //
+            //mess sub
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusID", FocusID);
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusKhoiLuong", FocusKhoiLuong);
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusGia", FocusGia);
-            //unSub
+            //mess unSub
             MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusID");
             MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusKhoiLuong");
             MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusGia");
@@ -98,7 +98,6 @@ namespace EzTrad.Views.DatLenhPage
         {
             FadeGridClickedWhite(backMuaBan);
         }
-
         private void btnNextMuaBan_Clicked(object sender, EventArgs e)
         {
             FadeGridClickedWhite(nextMuaBan);

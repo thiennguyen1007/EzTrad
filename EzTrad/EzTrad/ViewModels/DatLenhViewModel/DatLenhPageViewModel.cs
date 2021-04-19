@@ -13,7 +13,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private IPageService _pageService;
         //
         private double max { get; set; } = 0;
-        private string _colorOfLO;
+        //private string _colorOfLO;
         private string _colorOfBtnXacNhan;
 
         private bool _muaBanValue = true;
@@ -49,7 +49,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public ICommand NaviSoDuCKCommand { get; private set; }
         public ICommand LoaiGDCommand { get; private set; }
         //
-        public string ColorOfLO { get => _colorOfLO; set => SetProperty(ref _colorOfLO, value); }
         public string ColorOfBtnXacNhan { get => _colorOfBtnXacNhan; set => SetProperty(ref _colorOfBtnXacNhan, value); }
         public string MuaBanString { get => _muaBanString; set => SetProperty(ref _muaBanString, value); }
         public bool MuaBanValue { get => _muaBanValue; set => SetProperty(ref _muaBanValue, value); }
@@ -129,7 +128,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             MuaBanValue = true;
             TxtGia = TxtKhoiLuong = LbKLMax = TxtMa = null;
             StatusOfXacNhan = IsEnable = IsEnableGia = false;
-            ColorOfLO = "White";
             ColorOfBtnXacNhan = "#80bdfe";
             MuaBanString = "Mua";
             //StringOfXacNhanBtn = "Xác nhận mua";
@@ -143,7 +141,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 if (GetCompany(realTimeTextID) != null)
                 {
                     Company = new MaCompanyViewModel(GetCompany(realTimeTextID.ToUpper()));
-                    ColorOfLO = "#fb9807";
                     IsEnable = IsEnableGia = true;
                 }
             }
@@ -171,6 +168,10 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             LbLoaiGD = "Thường";
             await _pageService.PushModelAsync(new SoDuCKPage());
             IsEnableSoDuCK = true;
+        }       
+        public void TxtPassWordChanged(string x)
+        {
+            CheckIsEnableXacNhan();
         }
         public void TxtKhoiLuongUnfocus()
         {
@@ -197,10 +198,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 }
             }
             CheckMuaBan();
-            CheckIsEnableXacNhan();
-        }
-        public void TxtPassWordChanged(string x)
-        {
             CheckIsEnableXacNhan();
         }
         public void TxtGiaUnfocus()
@@ -241,7 +238,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         //btn gia tran, san, mua, ban, khop, TC
         private void OnFillGiaClicked(string parameter)
         {
-            ColorOfLO = "#fb9807";
             if (TxtMa != null && TxtMa!= "")
             {
                 if (parameter.Equals("tran"))
@@ -290,8 +286,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 _pageService.PushModelAsync(new SoDuCKPage());
             }
-            TxtGia = TxtGia = TxtKhoiLuong = null;
-            ColorOfLO = "#fb9807";
+            TxtGia = TxtKhoiLuong = null;
             CheckMuaBan();
             CheckIsEnableXacNhan();
         }
@@ -406,13 +401,11 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         {
             if (paramater.Equals("LO"))
             {
-                ColorOfLO = "#fb9807";
                 TxtGia = null;
                 IsEnableGia = true;
             }
             else
             {
-                ColorOfLO = "White";
                 IsEnableGia = false;
                 if (paramater.Equals("ATC"))
                 {
