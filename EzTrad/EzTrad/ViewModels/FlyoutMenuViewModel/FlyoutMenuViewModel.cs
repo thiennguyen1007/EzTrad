@@ -34,7 +34,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         public ICommand UpdateCommand { get; set; }
         public ICommand showLstQuanLyCommand { get; set; }
         public ICommand showLstBaoCaoGDCommmand { get; set; }
-        //get; set;
         public ObservableCollection<FlyoutViewModel> FlyoutItems
         {
             get => _flyoutItems;
@@ -227,10 +226,6 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                     FlyoutItems.Remove(item);
                 }
             }
-            else
-            {
-                return;
-            }
         }
         private void OnShowQuanLyClicked()
         {
@@ -238,21 +233,18 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             IsShowQuanLyBtn = !IsShowQuanLyBtn;
             CheckFavorIsAny();
             int duplicate = 0;
-            if (IsShowFavor == true)
+            if (IsShowFavor)
             {
-                int x = 45 * LstFavorites.Count;
-                for (int i = 0; i < LstFavorites.Count; i++)
+                int numberLstFavor = LstFavorites.Count;
+                int x = 45 * numberLstFavor;
+                for (int i = 0; i < numberLstFavor; i++)
                 {
                     if (LstFavorites[i].LabelTitle.Equals("Quản lý tài khoản"))
                     {
                         duplicate++;
                     }
                 }
-                if (duplicate == 0)
-                {
-                    return;
-                }
-                else
+                if (duplicate != 0)
                 {
                     x += ChangeHeightOfLstFavorites(IsShowDropDownBaoCaoGDBtn, IsShowDropDownQuanLyBtn);
                     //reset
@@ -267,21 +259,18 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             IsShowBaoCaoGDBtn = !IsShowBaoCaoGDBtn;
             CheckFavorIsAny();
             int duplicate = 0;
-            if (IsShowFavor == true)
+            if (IsShowFavor)
             {
-                int x = 45 * LstFavorites.Count;
-                for (int i = 0; i < LstFavorites.Count; i++)
+                int numberLstFavor = LstFavorites.Count;
+                int x = 45 * numberLstFavor;
+                for (int i = 0; i < numberLstFavor; i++)
                 {
                     if (LstFavorites[i].LabelTitle.Equals("Báo cáo giao dịch"))
                     {
                         duplicate++;
                     }
                 }
-                if (duplicate == 0)
-                {
-                    return;
-                }
-                else
+                if (duplicate != 0)
                 {
                     x += ChangeHeightOfLstFavorites(IsShowDropDownBaoCaoGDBtn, IsShowDropDownQuanLyBtn);
                     duplicate = 0;
@@ -291,15 +280,15 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
         }
         private int ChangeHeightOfLstFavorites(bool a, bool b)
         {
-            if (a == true && b == false)
+            if (a && !b)
             {
                 return 90;
             }
-            else if (a == true && b == true)
+            else if (a && b)
             {
                 return 240;
             }
-            else if (a == false && b == true)
+            else if (!a && b)
             {
                 return 150;
             }
@@ -397,6 +386,52 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
                 LabelTitle = "Quản lý tài khoản",
                 Icon = "mangAcc.png",
             };
+            FlyoutViewModel f13 = new FlyoutViewModel
+            {
+                LabelTitle = "Báo cáo tài sản",
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f14 = new FlyoutViewModel
+            {
+                LabelTitle = "Bán lô lẻ",
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f15 = new FlyoutViewModel
+            {
+                LabelTitle = "Ký quỹ",
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f16 = new FlyoutViewModel
+            {
+                LabelTitle = "Thực hiện quyền",
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f17 = new FlyoutViewModel
+            {
+                LabelTitle = "Tư vấn đầu tư",
+                IsHeader = true
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f18 = new FlyoutViewModel
+            {
+                LabelTitle = "Giới thiệu dịch vụ",
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f19 = new FlyoutViewModel
+            {
+                LabelTitle = "Tìm kiếm chuyên viên",
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f20 = new FlyoutViewModel
+            {
+                LabelTitle = "Báo cáo tư vấn",
+                //Icon = "mangAcc.png",
+            };
+            FlyoutViewModel f21 = new FlyoutViewModel
+            {
+                LabelTitle = "Đánh giá chuyên viên",
+                //Icon = "mangAcc.png",
+            };
             lstTemp.Add(f);
             lstTemp.Add(f1);
             lstTemp.Add(f2);
@@ -410,6 +445,15 @@ namespace EzTrad.ViewModels.FlyoutMenuViewModel
             lstTemp.Add(f10);
             lstTemp.Add(f11);
             lstTemp.Add(f12);
+            lstTemp.Add(f13);
+            lstTemp.Add(f14);
+            lstTemp.Add(f15);
+            lstTemp.Add(f16);
+            lstTemp.Add(f17);
+            lstTemp.Add(f18);
+            lstTemp.Add(f19);
+            lstTemp.Add(f20);
+            lstTemp.Add(f21);
             return lstTemp;
         }
     }

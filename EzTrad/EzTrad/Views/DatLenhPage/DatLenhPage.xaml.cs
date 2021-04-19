@@ -12,9 +12,12 @@ namespace EzTrad.Views.DatLenhPage
     {
         public DatLenhPage()
         {
-            var pageService = new PageService();
             InitializeComponent();
-            ViewModel = new DatLenhPageViewModel(pageService);
+            if (txtName != null)
+            {
+                AnimationOfCompanyName();
+            }
+            //
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusID", FocusID);
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusKhoiLuong", FocusKhoiLuong);
             MessagingCenter.Subscribe<DatLenhPageViewModel>(this, "foucusGia", FocusGia);
@@ -23,32 +26,25 @@ namespace EzTrad.Views.DatLenhPage
             MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusKhoiLuong");
             MessagingCenter.Unsubscribe<DatLenhPage>(this, "foucusGia");
         }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            var pageService = new PageService();
+            ViewModel = new DatLenhPageViewModel(pageService);
             ViewModel.LoadDataCommand.Execute(null);
             btnXacNhan.TextColor = Color.White;
-            if (txtName != null)
-            {
-                //AnimationOfCompanyName();
-            }
         }
-        private void AnimationOfCompanyName()
+        private async void AnimationOfCompanyName()
         {
-            Task.Delay(2000);
-            Task.Run(async () =>
+            await Task.Delay(4000);
+            while (true)
             {
-                while (true)
-                {
-                    await txtName.TranslateTo(0, 0, 1000);
-                    await txtName.TranslateTo(-300, 0, 7000);    // Move image left
-                    await txtName.TranslateTo(0, 0, 1000);
-                    await txtName.TranslateTo(300, 0, 7000);     // Move image right
-                    await txtName.TranslateTo(0, 0, 1000);
-                }
+                await txtName.TranslateTo(0, 0, 800);
+                await txtName.TranslateTo(-300, 0, 7000);    // Move image left
+                await txtName.TranslateTo(0, 0, 800);
+                await txtName.TranslateTo(300, 0, 7000);     // Move image right
+                await txtName.TranslateTo(0, 0, 800);
             }
-            );
         }
         public DatLenhPageViewModel ViewModel
         {
@@ -171,7 +167,6 @@ namespace EzTrad.Views.DatLenhPage
         {
             ViewModel.CheckIDAfterUnfocus();
         }
-
         private void lbKLMax_Tapped(object sender, EventArgs e)
         {
             FadeGridClicked(GridKL);

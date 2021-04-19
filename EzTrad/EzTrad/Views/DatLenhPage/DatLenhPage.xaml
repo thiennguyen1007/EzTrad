@@ -11,18 +11,18 @@
         <ResourceDictionary>
             <Style TargetType="ImageButton">
                 <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Margin" Value="5,10,5,10"/>
             </Style>
             <Style TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
             <Style TargetType="StackLayout" x:Key="stackLayoutMenu">
                 <Setter Property="BackgroundColor" Value="#4d4d4d"/>
-                <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="Spacing" Value="0"/>
             </Style>
             <Style TargetType="Label" x:Key="labelStackLayoutMenu">
                 <Setter Property="TextColor" Value="White"/>
-                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontSize" Value="17"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
             <Style TargetType="Label" x:Key="lb_Note">
@@ -32,12 +32,18 @@
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
             <Style TargetType="Button">
-                <Setter Property="Margin" Value="10,0,10,0"/>
                 <Setter Property="BackgroundColor" Value="#4d4d4d"/>
             </Style>
-            <Style TargetType="Grid" x:Key="Grid_2Colum">
-                <Setter Property="ColumnSpacing" Value="10"/>
-                <Setter Property="Margin" Value="10,10,10,0"/>
+            <Style TargetType="Grid" x:Key="grid_GDandMuaBan">
+                <Setter Property="ColumnDefinitions" Value="*,4*,*"/>
+                <Setter Property="BackgroundColor" Value="#c9c9c9"/>
+                <Setter Property="Grid.Column" Value="1"/>
+            </Style>
+            <Style TargetType="Frame" x:Key="frame_KLandGia">
+                <Setter Property="BorderColor" Value="#c5c5c5"/>
+                <Setter Property="Grid.Column" Value="1"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="HasShadow" Value="False"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -45,43 +51,47 @@
         <ToolbarItem IconImageSource="chart.png"/>
     </ContentPage.ToolbarItems>
     <ScrollView>
-            <StackLayout>
-                <StackLayout Orientation="Horizontal" Padding="0" Spacing="5" Margin="20,10,0,0">
-                    <Label Text="{Binding LbTienOrCK}" HorizontalOptions="Start" FontSize="15" TextColor="#2794ff"/>
-                    <Label Text="{Binding LbTongTaiSan}" TextColor="#0079fe" FontAttributes="Bold"/>
-                </StackLayout>
-                <Grid ColumnDefinitions="*,*" Margin="10,10,10,0" ColumnSpacing="10">
-                    <Frame BorderColor="#c5c5c5" Grid.Column="0" HeightRequest="40" Padding="0">
-                        <StackLayout Orientation="Horizontal" Spacing="0">
-                            <local:CustomEntry BackgroundColor="Transparent" Placeholder="Mã" 
+        <StackLayout Margin="10,0,10,0">
+            <StackLayout Orientation="Horizontal" Spacing="5" Margin="10,10,0,0">
+                <Label Text="{Binding LbTienOrCK}" HorizontalOptions="Start" FontSize="15" TextColor="#2794ff"/>
+                <Label Text="{Binding LbTongTaiSan}" TextColor="#0079fe" FontAttributes="Bold"/>
+            </StackLayout>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="0.45*,0.4*,0.65*,0.45*,0.45*,0.45*,0.45*,0.3*,0.5*,0.5*,*,2*" 
+                  RowSpacing="10" ColumnSpacing="10" HeightRequest="650">
+                <!--txtID & so du CK-->
+                <Frame BorderColor="#c5c5c5" Grid.Column="0" Padding="0">
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        <local:CustomEntry BackgroundColor="Transparent" Placeholder="Mã" 
                                                x:Name="txtMa"
                                                HorizontalOptions="Center" WidthRequest="150"
                                                HorizontalTextAlignment="Center" Text="{Binding TxtMa, Mode=TwoWay}" 
                                                TextChanged="txt_name_TextChanged"
                                                Unfocused="txtMa_Unfocused">
-                                <local:CustomEntry.Keyboard>
-                                    <Keyboard x:FactoryMethod="Create">
-                                        <x:Arguments>
-                                            <KeyboardFlags>CapitalizeCharacter</KeyboardFlags>
-                                        </x:Arguments>
-                                    </Keyboard>
-                                </local:CustomEntry.Keyboard>
-                            </local:CustomEntry>
-                            <ImageButton Source="cancel.png" HorizontalOptions="EndAndExpand" Margin="0,12,12,12"
+                            <!--<local:CustomEntry.Keyboard>
+                                <Keyboard x:FactoryMethod="Create">
+                                    <x:Arguments>
+                                        <KeyboardFlags>CapitalizeCharacter</KeyboardFlags>
+                                    </x:Arguments>
+                                </Keyboard>
+                            </local:CustomEntry.Keyboard>-->
+                        </local:CustomEntry>
+                        <ImageButton Source="cancel.png" HorizontalOptions="EndAndExpand" Margin="0,10,10,10"
                                          Command="{Binding CancelCommand}"/>
-                        </StackLayout>
-                    </Frame>
-                    <Grid Grid.Column="1" BackgroundColor="#808080" IsEnabled="{Binding IsEnableSoDuCK}">
-                        <Label Text="Số dư CK" FontSize="17" TextColor="White" 
+                    </StackLayout>
+                </Frame>
+                <Grid Grid.Column="1" BackgroundColor="#808080" IsEnabled="{Binding IsEnableSoDuCK}">
+                    <Label Text="Số dư CK" FontSize="17" TextColor="White" 
                                HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NaviSoDuCKCommand}"/>
-                        </Grid.GestureRecognizers>
-                    </Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NaviSoDuCKCommand}"/>
+                    </Grid.GestureRecognizers>
                 </Grid>
-                <Label Text="{Binding Path=Company.Name}" FontSize="17" TextColor="#0673ff" HorizontalOptions="CenterAndExpand" 
-                   Margin="10,10,10,10" x:Name="txtName"/>
-                <Grid ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="5" Margin="10,0,10,0">
+                <!--end txt id va sodu ck-->
+                <Label Grid.Row="1" Grid.ColumnSpan="2" VerticalTextAlignment="Center"
+                       Text="{Binding Path=Company.Name}" FontSize="16" TextColor="#0673ff" 
+                       HorizontalOptions="CenterAndExpand" x:Name="txtName"/>
+                <!--menu 1-->
+                <Grid ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="5" Grid.Row="2" Grid.ColumnSpan="2">
                     <StackLayout Grid.Column="0" Style="{StaticResource Key=stackLayoutMenu}">
                         <Label Text="Trần" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceTran}" TextColor="#ef2da8"/>
@@ -125,151 +135,146 @@
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                 </Grid>
-            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}">
-                    <Label Text="Mua/Ban" Grid.Column="0" Style="{StaticResource lb_Note}"/>
-                    <Grid ColumnDefinitions="*,4*,*" Grid.Column="1" BackgroundColor="#c9c9c9" HeightRequest="35">
-                        <Grid Grid.Column="0" x:Name="backMuaBan">
-                            <ImageButton Source="back.png"  Margin="0,10,0,10" Clicked="btnBackMuaBan_Clicked" 
+                <!--end menu 1-->
+                <!--mua ban-->
+                <Label Text="Mua/Ban" Grid.Column="0" Grid.Row="3"
+                       Style="{StaticResource lb_Note}"/>
+                <Grid Grid.Row="3" Style="{StaticResource grid_GDandMuaBan}">
+                    <Grid Grid.Column="0" x:Name="backMuaBan">
+                        <ImageButton Source="back.png" Clicked="btnBackMuaBan_Clicked" 
                                          Command="{Binding MuaBanCommand}"/>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding MuaBanCommand}" Tapped="NextBack_Tapped"/>
-                            </Grid.GestureRecognizers>
-                        </Grid>
-                        <Label Text="{Binding MuaBanString}" Grid.Column="1" VerticalTextAlignment="Center" 
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding MuaBanCommand}" Tapped="NextBack_Tapped"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <Label Text="{Binding MuaBanString}" Grid.Column="1" VerticalTextAlignment="Center" 
                            TextColor="#c3161c" FontSize="20" FontAttributes="Bold">
-                            <Label.Triggers>
-                                <Trigger TargetType="Label" Property="Text" Value="Mua">
-                                    <Setter Property="TextColor" Value="#007efa"/>
-                                </Trigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Grid Grid.Column="2" x:Name="nextMuaBan">
-                            <ImageButton Source="nextBasic.png" Margin="0,10,0,10" Clicked="btnNextMuaBan_Clicked" Command="{Binding MuaBanCommand}"/>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding MuaBanCommand}" Tapped="NextBack_Tapped"/>
-                            </Grid.GestureRecognizers>
-                        </Grid>
+                        <Label.Triggers>
+                            <Trigger TargetType="Label" Property="Text" Value="Mua">
+                                <Setter Property="TextColor" Value="#007efa"/>
+                            </Trigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Grid Grid.Column="2" x:Name="nextMuaBan">
+                        <ImageButton Source="nextBasic.png" Clicked="btnNextMuaBan_Clicked" Command="{Binding MuaBanCommand}"/>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding MuaBanCommand}" Tapped="NextBack_Tapped"/>
+                        </Grid.GestureRecognizers>
                     </Grid>
                 </Grid>
-            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}">
-                    <Label Text="Loại GD" Grid.Column="0" Style="{StaticResource lb_Note}"/>
-                <Grid ColumnDefinitions="*,4*,*" Grid.Column="1" BackgroundColor="#c9c9c9" HeightRequest="35" IsEnabled="{Binding IsEnableSoDuCK}">
-                        <Grid Grid.Column="0" x:Name="backLoaiGD">
-                            <ImageButton Source="back.png"  Margin="0,10,0,10" Clicked="btnBackLoaiGD_Clicked" Command="{Binding LoaiGDCommand}"/>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding LoaiGDCommand}" Tapped="NextBack_Tapped"/>
-                            </Grid.GestureRecognizers>
-                        </Grid>
-                        <Label Text="{Binding LbLoaiGD}" Grid.Column="1" VerticalTextAlignment="Center" 
+                <!--end mua ban-->
+                <!--loai GD-->
+                <Label Text="Loại GD" Grid.Column="0" Style="{StaticResource lb_Note}" Grid.Row="4"/>
+                <Grid Grid.Row="4" Style="{StaticResource grid_GDandMuaBan}"
+                      IsEnabled="{Binding IsEnableSoDuCK}">
+                    <Grid Grid.Column="0" x:Name="backLoaiGD">
+                        <ImageButton Source="back.png" Clicked="btnBackLoaiGD_Clicked" Command="{Binding LoaiGDCommand}"/>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LoaiGDCommand}" Tapped="NextBack_Tapped"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                    <Label Text="{Binding LbLoaiGD}" Grid.Column="1" VerticalTextAlignment="Center" 
                            TextColor="Black" FontSize="16" FontAttributes="None"/>
-                        <Grid Grid.Column="2" x:Name="nextLoaiGD">
-                            <ImageButton Source="nextBasic.png" Margin="0,10,0,10" Clicked="btnNextLoaiGD_Clicked" Command="{Binding LoaiGDCommand}"/>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding LoaiGDCommand}" Tapped="NextBack_Tapped"/>
-                            </Grid.GestureRecognizers>
-                        </Grid>
-
+                    <Grid Grid.Column="2" x:Name="nextLoaiGD">
+                        <ImageButton Source="nextBasic.png" Clicked="btnNextLoaiGD_Clicked" Command="{Binding LoaiGDCommand}"/>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LoaiGDCommand}" Tapped="NextBack_Tapped"/>
+                        </Grid.GestureRecognizers>
                     </Grid>
                 </Grid>
+                <!--end of loai GD-->
                 <!--khoi luong-->
-            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}" HeightRequest="35">
-                    <Grid Grid.Column="0" ColumnDefinitions="*,*" >
-                        <Label Text="Khối lượng" Grid.Column="0" Style="{StaticResource lb_Note}"/>
-                        <Label Text="{Binding LbKLMax}" Grid.Column="1" BackgroundColor="#808080" TextColor="White" FontSize="13" 
+                <Grid Grid.Column="0" ColumnDefinitions="*,*" Grid.Row="5">
+                    <Label Text="Khối lượng" Grid.Column="0" Style="{StaticResource lb_Note}"/>
+                    <Label Text="{Binding LbKLMax}" Grid.Column="1" BackgroundColor="#808080" TextColor="White" FontSize="13" 
                            Margin="0,5,0,5" VerticalTextAlignment="Center"
-                           IsVisible="{Binding IsShowMenuGia}">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding LbMaxCommand}" Tapped="lbKLMax_Tapped"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </Grid>
-                    <Frame BorderColor="#c5c5c5" Grid.Column="1" Padding="0" HasShadow="False">
-                        <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnable}" x:Name="GridKL" Margin="1,1,1,1">
-                            <Grid Grid.Column="0" Margin="1" x:Name="minusKL">
-                                <ImageButton Source="minus.png"  Margin="0,10,0,10" 
-                                         Command="{Binding MinusKhoiLuongCommand}" Clicked="btnMinusKL_Clicked"/>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding MinusKhoiLuongCommand}" Tapped="PlusMinus_Tapped"/>
-                                </Grid.GestureRecognizers>
-                            </Grid>
-                            <local:CustomEntry Text="{Binding TxtKhoiLuong}" Grid.Column="1" HorizontalTextAlignment="Center" 
+                           IsVisible="{Binding IsEnable}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LbMaxCommand}" Tapped="lbKLMax_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <Frame Grid.Row="5" Style="{StaticResource frame_KLandGia}">
+                    <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnable}" x:Name="GridKL" Margin="1,1,1,1">
+                        <Grid Grid.Column="0" Margin="1" x:Name="minusKL">
+                            <ImageButton Source="minus.png" Command="{Binding MinusKhoiLuongCommand}" 
+                                         Clicked="btnMinusKL_Clicked"/>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding MinusKhoiLuongCommand}" Tapped="PlusMinus_Tapped"/>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                        <local:CustomEntry Text="{Binding TxtKhoiLuong}" Grid.Column="1" HorizontalTextAlignment="Center" 
                                                Keyboard="Numeric" Focused="lbKhoiLuong_Focused" Unfocused="lbKhoiLuong_Unfocused"
                                                x:Name="lbKhoiLuong"/>
-                            <Grid Grid.Column="2" Margin="1" x:Name="plusKL">
-                                <ImageButton Source="plus.png"  Margin="0,10,0,10" 
+                        <Grid Grid.Column="2" Margin="1" x:Name="plusKL">
+                            <ImageButton Source="plus.png" 
                                          Clicked="btnPlusKL_Clicked"
                                          Command="{Binding PlusKhoiLuongCommand}"/>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding PlusKhoiLuongCommand}" Tapped="PlusMinus_Tapped"/>
-                                </Grid.GestureRecognizers>
-                            </Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PlusKhoiLuongCommand}" Tapped="PlusMinus_Tapped"/>
+                            </Grid.GestureRecognizers>
                         </Grid>
-                    </Frame>
-                </Grid>
-                <!--end of khoi luong-->
-                <!--textbox Gia-->
-            <Grid ColumnDefinitions="*,*" Style="{StaticResource Key=Grid_2Colum}" HeightRequest="35">
-                    <Label Text="Giá" Grid.Column="0" Style="{StaticResource lb_Note}"/>
-                    <Frame BorderColor="#c5c5c5" Grid.Column="1" Padding="0" HasShadow="False">
-                        <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnableGia}" x:Name="GridGia" Margin="1,1,1,1">
-                            <Grid Grid.Column="0" Margin="1" x:Name="minusGia">
-                                <ImageButton Source="minus.png" Grid.Column="0" Command="{Binding MinusGiaCommand}"  
-                                         Margin="0,10,0,10" Clicked="btnMinusGia_Clicked"/>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding MinusGiaCommand}" Tapped="PlusMinus_Tapped"/>
-                                </Grid.GestureRecognizers>
-                            </Grid>
-                            <local:CustomEntry Text="{Binding TxtGia, Mode=TwoWay}" Grid.Column="1" 
+                    </Grid>
+                </Frame>
+                <!--end khoi luong-->
+                <!--gia-->
+                <Label Text="Giá" Grid.Column="0" Grid.Row="6" Style="{StaticResource lb_Note}"/>
+                <Frame Grid.Row="6" Style="{StaticResource frame_KLandGia}">
+                    <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnableGia}" x:Name="GridGia" Margin="1,1,1,1">
+                        <Grid Grid.Column="0" Margin="1" x:Name="minusGia">
+                            <ImageButton Source="minus.png" Grid.Column="0" Command="{Binding MinusGiaCommand}"  
+                                         Clicked="btnMinusGia_Clicked"/>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding MinusGiaCommand}" Tapped="PlusMinus_Tapped"/>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                        <local:CustomEntry Text="{Binding TxtGia, Mode=TwoWay}" Grid.Column="1" 
                                                HorizontalTextAlignment="Center" Keyboard="Numeric"
                                                Focused="lbGia_Focused" x:Name="lbGia"
                                                Unfocused="lbGia_Unfocused"/>
-                            <Grid Grid.Column="2" Margin="1" x:Name="PlusGia">
-                                <ImageButton Source="plus.png" Margin="0,10,0,10" Command="{Binding PlusGiaCommand}" 
+                        <Grid Grid.Column="2" Margin="1" x:Name="PlusGia">
+                            <ImageButton Source="plus.png" Command="{Binding PlusGiaCommand}" 
                                          Clicked="btnPlusGia_Clicked"/>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding PlusGiaCommand}" Tapped="PlusMinus_Tapped"/>
-                                </Grid.GestureRecognizers>
-                            </Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PlusGiaCommand}" Tapped="PlusMinus_Tapped"/>
+                            </Grid.GestureRecognizers>
                         </Grid>
-                    </Frame>
-                </Grid>
+                    </Grid>
+                </Frame>
                 <!--end of textbox gia-->
-                <!--menu Giá-->
-                <Grid Margin="20,10,20,0" ColumnDefinitions="*,*,*,*" ColumnSpacing="20" HeightRequest="35" IsVisible="{Binding IsShowMenuGia}">
+                <Label Text="Tiền treo gốc:" TextColor="#0673ff" Grid.Row="7" FontSize="15" 
+                       HorizontalOptions="Start" Grid.ColumnSpan="2"/>
+                <Grid Grid.Row="8" Grid.ColumnSpan="2" Margin="10,0,10,0"
+                      ColumnDefinitions="*,*,*,*" ColumnSpacing="45" IsVisible="{Binding IsEnable}">
                     <Button Text="LO" Grid.Column="0" TextColor="{Binding ColorOfLO}" Command="{Binding LOCommand}"/>
                     <Button Text="ATO" Grid.Column="1" TextColor="{Binding ColorOfATO}" Command="{Binding ATOCommand}"/>
                     <Button Text="MP" Grid.Column="2" TextColor="{Binding ColorOfMP}" Command="{Binding MPCommand}"/>
                     <Button Text="ATC" Grid.Column="3" TextColor="{Binding ColorOfATC}" Command="{Binding ATCCommand}"/>
                 </Grid>
-                <!--end of menuGia-->
-                <Label Text="Tiền treo gốc:" TextColor="#0673ff" Margin="10,0,0,0" FontSize="15" HorizontalOptions="Start"/>
-                <!--Password-->
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="10,10,10,0" HeightRequest="40">
-                    <Label Text="Mật khẩu giao dịch" Grid.Column="0" Style="{StaticResource lb_Note}"/>
-                    <Frame BorderColor="#c5c5c5" Grid.Column="1" Padding="0">
-                        <Grid ColumnDefinitions="4*,*" IsEnabled="{Binding IsEnable}">
-                            <local:CustomEntry Grid.Column="0" IsPassword="{Binding Source={x:Reference showPassTriggerStatic}, Path=HidePassword}" 
+                <!--mat khau-->
+                <Label Text="Mật khẩu giao dịch" Grid.Column="0" Style="{StaticResource lb_Note}" Grid.Row="9"/>
+                <Frame BorderColor="#c5c5c5" Grid.Column="1" Padding="0" Grid.Row="9">
+                    <Grid ColumnDefinitions="4*,*" IsEnabled="{Binding IsEnable}">
+                        <local:CustomEntry Grid.Column="0" IsPassword="{Binding Source={x:Reference showPassTriggerStatic}, Path=HidePassword}" 
                                            Placeholder="mật khẩu giao dịch" FontSize="12"
                                            VerticalOptions="Center" HorizontalTextAlignment="Center" TextChanged="txtPassWord_TextChanged"
                                            Text="{Binding TxtPassWord}"/>
-                            <ImageButton Source="noSee.png" Grid.Column="1" Margin="8,0,8,0" HorizontalOptions="End">
-                                <ImageButton.Triggers>
-                                    <EventTrigger Event="Clicked">
-                                        <localShowOrHidePass:ShowPasswordTriggerAction ShowIcon="see.png"
+                        <ImageButton Source="noSee.png" Grid.Column="1" Margin="8,0,8,0" HorizontalOptions="End">
+                            <ImageButton.Triggers>
+                                <EventTrigger Event="Clicked">
+                                    <localShowOrHidePass:ShowPasswordTriggerAction ShowIcon="see.png"
                                                                                    HideIcon="noSee.png"
                                                                                    x:Name="showPassTriggerStatic"/>
-                                    </EventTrigger>
-                                </ImageButton.Triggers>
-                            </ImageButton>
-                        </Grid>
-                    </Frame>
-                </Grid>
-                <!--end of passWord-->
-                <Button HorizontalOptions="Center" TextColor="White"
-                    BackgroundColor="{Binding ColorOfBtnXacNhan}" CornerRadius="30" WidthRequest="200" Margin="0,10,0,0"
+                                </EventTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                    </Grid>
+                </Frame>
+                <Button HorizontalOptions="Center" TextColor="White" Grid.Row="10" Grid.ColumnSpan="2"
+                    BackgroundColor="{Binding ColorOfBtnXacNhan}" CornerRadius="30" WidthRequest="200" Margin="10,10,15,10"
                     Opacity="{Binding OpacityValue}" IsEnabled="{Binding StatusOfXacNhan}"
                     FontAttributes="Bold" Text="{Binding StringOfXacNhanBtn}" x:Name="btnXacNhan"/>
-            </StackLayout>
-        </ScrollView>
-
+            </Grid>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

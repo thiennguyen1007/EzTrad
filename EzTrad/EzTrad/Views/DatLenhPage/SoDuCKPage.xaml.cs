@@ -20,12 +20,10 @@ namespace EzTrad.Views.DatLenhPage
             get { return BindingContext as SoDuCKPageViewModel; }
             set { BindingContext = value; }
         }
-
         private void CustomEntry_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
         {
             return;
         }
-
         private void CustomEntry_Unfocused(object sender, Xamarin.Forms.FocusEventArgs e)
         {
             ViewModel.SearchCompany();
@@ -35,7 +33,6 @@ namespace EzTrad.Views.DatLenhPage
             var x = e.SelectedItem as MaCompanyViewModel;
             ViewModel.SoDuCKSelected(x);
         }
-
         private void CustomEntry_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
         {
             ViewModel.SearchCompanyRealTime(e.NewTextValue);

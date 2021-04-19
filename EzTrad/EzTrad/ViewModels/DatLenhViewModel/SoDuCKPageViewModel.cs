@@ -54,10 +54,9 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         }
         public void SearchCompanyRealTime(string x)
         {
-            if (string.IsNullOrWhiteSpace(TxtMa) == true || string.IsNullOrEmpty(TxtMa) == true || TxtMa == "")
+            if (string.IsNullOrWhiteSpace(TxtMa)|| string.IsNullOrEmpty(TxtMa)|| TxtMa == "")
             {
-                LstSoDuCK = null;
-                return;
+                LstSoDuCK = new ObservableCollection<MaCompanyViewModel>(KhoiTaoSoDuCK());
             }
             else
             {

@@ -8,7 +8,6 @@ namespace EzTrad
         public MainPage()
         {
             InitializeComponent();
-            Detail.Title = "Tổng quan";
             MessagingCenter.Subscribe<FlyoutMenuViewModel, FlyoutViewModel>(this, "ChangeDetail", OnItemSelected);  
         }
         private void OnItemSelected(FlyoutMenuViewModel sender, FlyoutViewModel x)
@@ -17,8 +16,8 @@ namespace EzTrad
             {
                 Detail = new NavigationPage(new MenuHorizontal(x.LabelTitle));
                 MessagingCenter.Unsubscribe<MainPage>(this, "ChangeDetail");
-            }
-            IsPresented = false;            
+                IsPresented = false;
+            }                       
         }
     }
 }
