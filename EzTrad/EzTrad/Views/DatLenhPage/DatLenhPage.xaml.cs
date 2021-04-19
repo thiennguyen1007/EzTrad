@@ -153,7 +153,7 @@ namespace EzTrad.Views.DatLenhPage
         }
         private void FocusGia(DatLenhPageViewModel obj)
         {
-            lbGia.Focus();
+            txtGia.Focus();
         }
         private void FocusKhoiLuong(object arg1)
         {

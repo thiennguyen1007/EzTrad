@@ -33,6 +33,7 @@
             </Style>
             <Style TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#4d4d4d"/>
+                <Setter Property="TextColor" Value="White"/>
             </Style>
             <Style TargetType="Grid" x:Key="grid_GDandMuaBan">
                 <Setter Property="ColumnDefinitions" Value="*,4*,*"/>
@@ -51,7 +52,7 @@
         <ToolbarItem IconImageSource="chart.png"/>
     </ContentPage.ToolbarItems>
     <ScrollView>
-        <StackLayout Margin="10,0,10,0">
+        <StackLayout Margin="10,0">
             <StackLayout Orientation="Horizontal" Spacing="5" Margin="10,10,0,0">
                 <Label Text="{Binding LbTienOrCK}" HorizontalOptions="Start" FontSize="15" TextColor="#2794ff"/>
                 <Label Text="{Binding LbTongTaiSan}" TextColor="#0079fe" FontAttributes="Bold"/>
@@ -59,7 +60,7 @@
             <Grid ColumnDefinitions="*,*" RowDefinitions="0.45*,0.4*,0.65*,0.45*,0.45*,0.45*,0.45*,0.3*,0.5*,0.5*,*,2*" 
                   RowSpacing="10" ColumnSpacing="10" HeightRequest="650">
                 <!--txtID & so du CK-->
-                <Frame BorderColor="#c5c5c5" Grid.Column="0" Padding="0">
+                <Frame BorderColor="#c5c5c5" Padding="0">
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         <local:CustomEntry BackgroundColor="Transparent" Placeholder="Mã" 
                                                x:Name="txtMa"
@@ -81,7 +82,7 @@
                 </Frame>
                 <Grid Grid.Column="1" BackgroundColor="#808080" IsEnabled="{Binding IsEnableSoDuCK}">
                     <Label Text="Số dư CK" FontSize="17" TextColor="White" 
-                               HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+                           HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NaviSoDuCKCommand}"/>
                     </Grid.GestureRecognizers>
@@ -92,7 +93,7 @@
                        HorizontalOptions="CenterAndExpand" x:Name="txtName"/>
                 <!--menu 1-->
                 <Grid ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="5" Grid.Row="2" Grid.ColumnSpan="2">
-                    <StackLayout Grid.Column="0" Style="{StaticResource Key=stackLayoutMenu}">
+                    <StackLayout Style="{StaticResource Key=stackLayoutMenu}">
                         <Label Text="Trần" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceTran}" TextColor="#ef2da8"/>
                         <StackLayout.GestureRecognizers>
@@ -137,10 +138,9 @@
                 </Grid>
                 <!--end menu 1-->
                 <!--mua ban-->
-                <Label Text="Mua/Ban" Grid.Column="0" Grid.Row="3"
-                       Style="{StaticResource lb_Note}"/>
+                <Label Text="Mua/Ban" Grid.Row="3" Style="{StaticResource lb_Note}"/>
                 <Grid Grid.Row="3" Style="{StaticResource grid_GDandMuaBan}">
-                    <Grid Grid.Column="0" x:Name="backMuaBan">
+                    <Grid x:Name="backMuaBan">
                         <ImageButton Source="back.png" Clicked="btnBackMuaBan_Clicked" 
                                          Command="{Binding MuaBanCommand}"/>
                         <Grid.GestureRecognizers>
@@ -148,7 +148,7 @@
                         </Grid.GestureRecognizers>
                     </Grid>
                     <Label Text="{Binding MuaBanString}" Grid.Column="1" VerticalTextAlignment="Center" 
-                           TextColor="#c3161c" FontSize="20" FontAttributes="Bold">
+                           TextColor="#c3161c" FontSize="20" FontAttributes="Bold" x:Name="lbMuaBan">
                         <Label.Triggers>
                             <Trigger TargetType="Label" Property="Text" Value="Mua">
                                 <Setter Property="TextColor" Value="#007efa"/>
@@ -164,7 +164,7 @@
                 </Grid>
                 <!--end mua ban-->
                 <!--loai GD-->
-                <Label Text="Loại GD" Grid.Column="0" Style="{StaticResource lb_Note}" Grid.Row="4"/>
+                <Label Text="Loại GD" Style="{StaticResource lb_Note}" Grid.Row="4"/>
                 <Grid Grid.Row="4" Style="{StaticResource grid_GDandMuaBan}"
                       IsEnabled="{Binding IsEnableSoDuCK}">
                     <Grid Grid.Column="0" x:Name="backLoaiGD">
@@ -184,10 +184,11 @@
                 </Grid>
                 <!--end of loai GD-->
                 <!--khoi luong-->
-                <Grid Grid.Column="0" ColumnDefinitions="*,*" Grid.Row="5">
-                    <Label Text="Khối lượng" Grid.Column="0" Style="{StaticResource lb_Note}"/>
-                    <Label Text="{Binding LbKLMax}" Grid.Column="1" BackgroundColor="#808080" TextColor="White" FontSize="13" 
-                           Margin="0,5,0,5" VerticalTextAlignment="Center"
+                <Grid ColumnDefinitions="*,*" Grid.Row="5">
+                    <Label Text="Khối lượng" Style="{StaticResource lb_Note}"/>
+                    <Label Text="{Binding LbKLMax}" Grid.Column="1" BackgroundColor="#808080" TextColor="White" 
+                           FontSize="13" 
+                           Margin="0,5" VerticalTextAlignment="Center"
                            IsVisible="{Binding IsEnable}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding LbMaxCommand}" Tapped="lbKLMax_Tapped"/>
@@ -195,8 +196,8 @@
                     </Label>
                 </Grid>
                 <Frame Grid.Row="5" Style="{StaticResource frame_KLandGia}">
-                    <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnable}" x:Name="GridKL" Margin="1,1,1,1">
-                        <Grid Grid.Column="0" Margin="1" x:Name="minusKL">
+                    <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnable}" x:Name="GridKL" Margin="1">
+                        <Grid Margin="1" x:Name="minusKL">
                             <ImageButton Source="minus.png" Command="{Binding MinusKhoiLuongCommand}" 
                                          Clicked="btnMinusKL_Clicked"/>
                             <Grid.GestureRecognizers>
@@ -218,11 +219,11 @@
                 </Frame>
                 <!--end khoi luong-->
                 <!--gia-->
-                <Label Text="Giá" Grid.Column="0" Grid.Row="6" Style="{StaticResource lb_Note}"/>
+                <Label Text="Giá" Grid.Row="6" Style="{StaticResource lb_Note}"/>
                 <Frame Grid.Row="6" Style="{StaticResource frame_KLandGia}">
-                    <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnableGia}" x:Name="GridGia" Margin="1,1,1,1">
-                        <Grid Grid.Column="0" Margin="1" x:Name="minusGia">
-                            <ImageButton Source="minus.png" Grid.Column="0" Command="{Binding MinusGiaCommand}"  
+                    <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnableGia}" x:Name="GridGia" Margin="1">
+                        <Grid Margin="1" x:Name="minusGia">
+                            <ImageButton Source="minus.png" Command="{Binding MinusGiaCommand}"  
                                          Clicked="btnMinusGia_Clicked"/>
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding MinusGiaCommand}" Tapped="PlusMinus_Tapped"/>
@@ -230,8 +231,9 @@
                         </Grid>
                         <local:CustomEntry Text="{Binding TxtGia, Mode=TwoWay}" Grid.Column="1" 
                                                HorizontalTextAlignment="Center" Keyboard="Numeric"
-                                               Focused="lbGia_Focused" x:Name="lbGia"
-                                               Unfocused="lbGia_Unfocused"/>
+                                               Focused="lbGia_Focused" x:Name="txtGia"
+                                               Unfocused="lbGia_Unfocused">
+                        </local:CustomEntry>
                         <Grid Grid.Column="2" Margin="1" x:Name="PlusGia">
                             <ImageButton Source="plus.png" Command="{Binding PlusGiaCommand}" 
                                          Clicked="btnPlusGia_Clicked"/>
@@ -246,20 +248,41 @@
                        HorizontalOptions="Start" Grid.ColumnSpan="2"/>
                 <Grid Grid.Row="8" Grid.ColumnSpan="2" Margin="10,0,10,0"
                       ColumnDefinitions="*,*,*,*" ColumnSpacing="45" IsVisible="{Binding IsEnable}">
-                    <Button Text="LO" Grid.Column="0" TextColor="{Binding ColorOfLO}" Command="{Binding LOCommand}"/>
-                    <Button Text="ATO" Grid.Column="1" TextColor="{Binding ColorOfATO}" Command="{Binding ATOCommand}"/>
-                    <Button Text="MP" Grid.Column="2" TextColor="{Binding ColorOfMP}" Command="{Binding MPCommand}"/>
-                    <Button Text="ATC" Grid.Column="3" TextColor="{Binding ColorOfATC}" Command="{Binding ATCCommand}"/>
+                    <Button Text="LO" TextColor="{Binding ColorOfLO}" Command="{Binding LOCommand}"/>
+                    <Button Text="ATO" Grid.Column="1" Command="{Binding ATOCommand}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference txtGia}, Path=Text}"
+                                         Value="ATO">
+                                <Setter Property="TextColor" Value="#fb9807"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="MP" Grid.Column="2" Command="{Binding MPCommand}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference txtGia}, Path=Text}"
+                                         Value="MP">
+                                <Setter Property="TextColor" Value="#fb9807"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="ATC" Grid.Column="3" Command="{Binding ATCCommand}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference txtGia}, Path=Text}"
+                                         Value="ATC">
+                                <Setter Property="TextColor" Value="#fb9807"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
                 </Grid>
                 <!--mat khau-->
-                <Label Text="Mật khẩu giao dịch" Grid.Column="0" Style="{StaticResource lb_Note}" Grid.Row="9"/>
+                <Label Text="Mật khẩu giao dịch" Style="{StaticResource lb_Note}" Grid.Row="9"/>
                 <Frame BorderColor="#c5c5c5" Grid.Column="1" Padding="0" Grid.Row="9">
                     <Grid ColumnDefinitions="4*,*" IsEnabled="{Binding IsEnable}">
-                        <local:CustomEntry Grid.Column="0" IsPassword="{Binding Source={x:Reference showPassTriggerStatic}, Path=HidePassword}" 
+                        <local:CustomEntry IsPassword="{Binding Source={x:Reference showPassTriggerStatic}, Path=HidePassword}" 
                                            Placeholder="mật khẩu giao dịch" FontSize="12"
                                            VerticalOptions="Center" HorizontalTextAlignment="Center" TextChanged="txtPassWord_TextChanged"
                                            Text="{Binding TxtPassWord}"/>
-                        <ImageButton Source="noSee.png" Grid.Column="1" Margin="8,0,8,0" HorizontalOptions="End">
+                        <ImageButton Source="noSee.png" Grid.Column="1" Margin="8,0" HorizontalOptions="End">
                             <ImageButton.Triggers>
                                 <EventTrigger Event="Clicked">
                                     <localShowOrHidePass:ShowPasswordTriggerAction ShowIcon="see.png"
@@ -270,10 +293,16 @@
                         </ImageButton>
                     </Grid>
                 </Frame>
-                <Button HorizontalOptions="Center" TextColor="White" Grid.Row="10" Grid.ColumnSpan="2"
-                    BackgroundColor="{Binding ColorOfBtnXacNhan}" CornerRadius="30" WidthRequest="200" Margin="10,10,15,10"
-                    Opacity="{Binding OpacityValue}" IsEnabled="{Binding StatusOfXacNhan}"
-                    FontAttributes="Bold" Text="{Binding StringOfXacNhanBtn}" x:Name="btnXacNhan"/>
+                <Button HorizontalOptions="Center" Grid.Row="10" Grid.ColumnSpan="2"
+                        BackgroundColor="{Binding ColorOfBtnXacNhan}" CornerRadius="30" WidthRequest="200" 
+                        Margin="10,10,15,10" IsEnabled="{Binding StatusOfXacNhan}"
+                        FontAttributes="Bold" Text="Xac nhan Mua" x:Name="btnXacNhan">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference lbMuaBan}, Path=Text}" Value="Bán" >
+                            <Setter Property="Text" Value="Xac nhan Ban"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
             </Grid>
         </StackLayout>
     </ScrollView>

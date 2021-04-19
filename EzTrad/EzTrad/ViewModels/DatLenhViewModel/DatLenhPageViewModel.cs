@@ -14,9 +14,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         //
         private double max { get; set; } = 0;
         private string _colorOfLO;
-        private string _colorOfATO;
-        private string _colorOfPM;
-        private string _colorOfATC;
         private string _colorOfBtnXacNhan;
 
         private bool _muaBanValue = true;
@@ -31,12 +28,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private string _txtGia;
         private string _txtPassWord;
         private bool _statusOfXacNhan;
-        private string _stringOfXacNhanBtn;
+        //private string _stringOfXacNhanBtn;
         private string _lbTienOrCK;
         private string _lbTongTaiSan;
         private string _lbKLMax;
-        private double TongTaiSan { get; set; }
-        private double TongSoDuCK { get; set; }
+        public double TongTaiSan { get; set; }
+        public double TongSoDuCK { get; set; }
         // Company in Stock exchanges
         private MaCompanyViewModel _company;
         //Company user have stock
@@ -64,9 +61,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public ICommand LoaiGDCommand { get; private set; }
         //
         public string ColorOfLO { get => _colorOfLO; set => SetProperty(ref _colorOfLO, value); }
-        public string ColorOfATO { get => _colorOfATO; set => SetProperty(ref _colorOfATO, value); }
-        public string ColorOfMP { get => _colorOfPM; set => SetProperty(ref _colorOfPM, value); }
-        public string ColorOfATC { get => _colorOfATC; set => SetProperty(ref _colorOfATC, value); }
         public string ColorOfBtnXacNhan { get => _colorOfBtnXacNhan; set => SetProperty(ref _colorOfBtnXacNhan, value); }
         public string MuaBanString { get => _muaBanString; set => SetProperty(ref _muaBanString, value); }
         public bool MuaBanValue { get => _muaBanValue; set => SetProperty(ref _muaBanValue, value); }
@@ -74,7 +68,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public string TxtKhoiLuong { get => _txtKhoiLuong; set => SetProperty(ref _txtKhoiLuong, value); }
         public string TxtGia { get => _txtGia; set => SetProperty(ref _txtGia, value); }
         public bool StatusOfXacNhan { get => _statusOfXacNhan; set => SetProperty(ref _statusOfXacNhan, value); }
-        public string StringOfXacNhanBtn { get => _stringOfXacNhanBtn; set => SetProperty(ref _stringOfXacNhanBtn, value); }
         public MaCompanyViewModel Company { get => _company; set => SetProperty(ref _company, value); }
         public string LbTienOrCK { get => _lbTienOrCK; set => SetProperty(ref _lbTienOrCK, value); }
         public string LbTongTaiSan { get => _lbTongTaiSan; set => SetProperty(ref _lbTongTaiSan, value); }
@@ -157,9 +150,10 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             MuaBanValue = true;
             TxtGia = TxtKhoiLuong = LbKLMax = TxtMa = null;
             StatusOfXacNhan = IsEnable = IsEnableGia = false;
-            ColorOfLO = ColorOfATO = ColorOfMP = ColorOfATC = "White";
+            ColorOfLO = "White";
             ColorOfBtnXacNhan = "#80bdfe";
-            StringOfXacNhanBtn = "Xác nhận mua";
+            MuaBanString = "Mua";
+            //StringOfXacNhanBtn = "Xác nhận mua";
             LbTienOrCK = "S.dư tiền";
             LbLoaiGD = "Thường";
         }
@@ -507,34 +501,29 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private void OnLOClicked()
         {
             ColorOfLO = "#fb9807";
-            TxtGia = "";
-            ColorOfATC = ColorOfATO = ColorOfMP = "White";
+            TxtGia = null;
             IsEnableGia = true;
-            StatusOfXacNhan = false;
             CheckIsEnableXacNhan();
         }
         private void OnATOClicked()
         {
-            ColorOfATO = "#fb9807";
             TxtGia = "ATO";
-            ColorOfATC = ColorOfLO = ColorOfMP = "White";
+            ColorOfLO = "White";
             IsEnableGia = false;
             CheckIsEnableXacNhan();
         }
         private void OnMPClicked()
         {
-            ColorOfMP = "#fb9807";
             TxtGia = "MP";
-            ColorOfATC = ColorOfATO = ColorOfLO = "White";
+            ColorOfLO = "White";
             IsEnableGia = false;
             CheckIsEnableXacNhan();
         }
         private void OnATCClicked()
         {
-            ColorOfATC = "#fb9807";
             TxtGia = "ATC";
             IsEnableGia = false;
-            ColorOfLO = ColorOfATO = ColorOfMP = "White";
+            ColorOfLO = "White";
             CheckIsEnableXacNhan();
         }
         //
@@ -652,7 +641,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 }
                 //color
                 ColorOfBtnXacNhan = "#80bdfe";
-                StringOfXacNhanBtn = "Xác nhận mua";
                 LbTongTaiSan = TongTaiSan.ToString();
             }
             else
@@ -661,7 +649,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 LbTienOrCK = "Số dư CK";
                 //color
                 ColorOfBtnXacNhan = "#e18b8e";
-                StringOfXacNhanBtn = "Xác nhận bán";
                 LbTongTaiSan = TongSoDuCK.ToString();
                 if (TxtMa != null)
                 {
