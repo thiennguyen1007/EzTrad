@@ -28,7 +28,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private string _txtGia;
         private string _txtPassWord;
         private bool _statusOfXacNhan;
-        //private string _stringOfXacNhanBtn;
         private string _lbTienOrCK;
         private string _lbTongTaiSan;
         private string _lbKLMax;
@@ -41,22 +40,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         //Command
         public ICommand LoadDataCommand { get; private set; }
         public ICommand MuaBanCommand { get; private set; }
-        public ICommand LOCommand { get; private set; }
-        public ICommand ATOCommand { get; private set; }
-        public ICommand MPCommand { get; private set; }
-        public ICommand ATCCommand { get; private set; }
+        public ICommand LoaiGiaCommand { get; private set; }
         public ICommand CancelCommand { get; private set; }
-        public ICommand MinusGiaCommand { get; private set; }
-        public ICommand PlusGiaCommand { get; private set; }
-        public ICommand MinusKhoiLuongCommand { get; private set; }
-        public ICommand PlusKhoiLuongCommand { get; private set; }
+        public ICommand GiaCommand { get; private set; }
+        public ICommand KhoiLuongCommand { get; private set; }
         public ICommand LbMaxCommand { get; private set; }
-        public ICommand BtnTranCommand { get; private set; }
-        public ICommand BtnTCCommand { get; private set; }
-        public ICommand BtnSanCommand { get; private set; }
-        public ICommand BtnMuaCommand { get; private set; }
-        public ICommand BtnKhopCommand { get; private set; }
-        public ICommand BtnBanCommand { get; private set; }
+        public ICommand FillGiaCommand { get; private set; }
         public ICommand NaviSoDuCKCommand { get; private set; }
         public ICommand LoaiGDCommand { get; private set; }
         //
@@ -89,21 +78,11 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             LoadDataCommand = new Command(LoadData);
             MuaBanCommand = new Command(OnStatusOfMuaBanClicked);
             CancelCommand = new Command(OnCancelClick);
-            LOCommand = new Command(OnLOClicked);
-            ATOCommand = new Command(OnATOClicked);
-            ATCCommand = new Command(OnATCClicked);
-            MPCommand = new Command(OnMPClicked);
+            LoaiGiaCommand = new Command<string>(OnLoaiGiaClicked);
             LbMaxCommand = new Command(OnLbMaxClicked);
-            MinusGiaCommand = new Command(OnMinusGiaClicked);
-            PlusGiaCommand = new Command(OnPlusGiaClicked);
-            BtnTranCommand = new Command(OnBtnTranClicked);
-            BtnTCCommand = new Command(OnBtnTCClicked);
-            BtnSanCommand = new Command(OnBtnSanClicked);
-            BtnMuaCommand = new Command(OnBtnMuaClicked);
-            BtnKhopCommand = new Command(OnBtnKhopClicked);
-            BtnBanCommand = new Command(OnBtnBanClicked);
-            MinusKhoiLuongCommand = new Command(OnMinusKhoiLuongClicked);
-            PlusKhoiLuongCommand = new Command(OnPlusKhoiLuongClicked);
+            GiaCommand = new Command<string>(OnGiaClicked);
+            FillGiaCommand = new Command<string>(OnFillGiaClicked);
+            KhoiLuongCommand = new Command<string>(OnKhoiLuongClicked);
             NaviSoDuCKCommand = new Command(OnSoDuCKClicked);
             LoaiGDCommand = new Command(OnLoaiGDClicked);
             //
@@ -260,113 +239,47 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             LoadData();
         }
         //btn gia tran, san, mua, ban, khop, TC
-        private void OnBtnTranClicked()
+        private void OnFillGiaClicked(string parameter)
         {
-            OnLOClicked();
-            if (Company.PriceTran == 0)
+            ColorOfLO = "#fb9807";
+            if (TxtMa != null && TxtMa!= "")
+            {
+                if (parameter.Equals("tran"))
+                {
+                    TxtGia = Company.PriceTran.ToString();
+                }else if(parameter.Equals("tc"))
+                {
+                    TxtGia = Company.PriceTC.ToString();
+                }
+                else if (parameter.Equals("san"))
+                {
+                    TxtGia = Company.PriceSan.ToString();
+                }
+                else if (parameter.Equals("mua"))
+                {
+                    TxtGia = Company.PriceMua.ToString();
+                }
+                else if (parameter.Equals("khop"))
+                {
+                    TxtGia = Company.PriceKhop.ToString();
+                }else
+                {
+                    TxtGia = Company.PriceBan.ToString();
+                }
+                IsEnableGia = true;
+                //check KL
+                if (TxtKhoiLuong != null)
+                {
+                    if (!IsValidTaiSan())
+                    {
+                        FocusGia();
+                    }
+                }
+            }
+            else
             {
                 IsEnableGia = false;
-            }
-            else
-            {
-                TxtGia = Company.PriceTran.ToString();
-                if (TxtKhoiLuong != null)
-                {
-                    if (!IsValidTaiSan())
-                    {
-                        FocusGia();
-                    }
-                }
-            }
-            CheckIsEnableXacNhan();
-        }
-        private void OnBtnTCClicked()
-        {
-            OnLOClicked();
-            if (Company.PriceTC == 0)
-            {
-                IsEnableGia = false;
-            }
-            else
-            {
-                TxtGia = Company.PriceTC.ToString();
-                if (TxtKhoiLuong != null)
-                {
-                    if (!IsValidTaiSan())
-                    {
-                        FocusGia();
-                    }
-                }
-            }
-            CheckIsEnableXacNhan();
-        }
-        private void OnBtnSanClicked()
-        {
-            OnLOClicked();
-            if (Company.PriceSan == 0)
-            {
-                IsEnableGia = false;
-            }
-            else
-            {
-                TxtGia = Company.PriceSan.ToString();
-            }
-            CheckIsEnableXacNhan();
-        }
-        private void OnBtnMuaClicked()
-        {
-            OnLOClicked();
-            if (Company.PriceMua == 0)
-            { IsEnableGia = false; }
-            else
-            {
-                TxtGia = Company.PriceMua.ToString();
-                if (TxtKhoiLuong != null)
-                {
-                    if (!IsValidTaiSan())
-                    {
-                        FocusGia();
-                    }
-                }
-            }
-            CheckIsEnableXacNhan();
-        }
-        private void OnBtnKhopClicked()
-        {
-            OnLOClicked();
-            if (Company.PriceKhop == 0)
-            { IsEnableGia = false; }
-            else
-            {
-                TxtGia = Company.PriceKhop.ToString();
-                if (TxtKhoiLuong != null)
-                {
-                    if (!IsValidTaiSan())
-                    {
-                        FocusGia();
-                    }
-                }
-            }
-            CheckIsEnableXacNhan();
-        }
-        private void OnBtnBanClicked()
-        {
-            OnLOClicked();
-            if (Company.PriceBan == 0)
-            {
-                IsEnableGia = false;
-            }
-            else
-            {
-                TxtGia = Company.PriceBan.ToString();
-                if (TxtKhoiLuong != null)
-                {
-                    if (!IsValidTaiSan())
-                    {
-                        FocusGia();
-                    }
-                }
-            }
+            }                      
             CheckIsEnableXacNhan();
         }
         //
@@ -377,8 +290,8 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             {
                 _pageService.PushModelAsync(new SoDuCKPage());
             }
-            TxtGia = TxtKhoiLuong = null;
-            OnLOClicked();
+            TxtGia = TxtGia = TxtKhoiLuong = null;
+            ColorOfLO = "#fb9807";
             CheckMuaBan();
             CheckIsEnableXacNhan();
         }
@@ -393,96 +306,87 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                 }
             }
         }
-        private void OnMinusKhoiLuongClicked()
+        private void OnKhoiLuongClicked(string paramater)
         {
-            if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
+            if (paramater.Equals("0")) // minus
             {
-                TxtKhoiLuong = max.ToString();
-            }
-            else
-            {
-                double KL = Convert.ToDouble(TxtKhoiLuong);
-                if (KL == 100)
+                if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
                 {
-                    _pageService.DisplayAlert("Alert!", "Khoi luong min= 100", "Ok");
+                    TxtKhoiLuong = max.ToString();
                 }
-                else if (KL >= 200)
+                else
                 {
-                    double newKL = KL - 100;
-                    TxtKhoiLuong = newKL.ToString();
-                }
-                if (TxtGia != null && TxtGia != "")
-                {
-                    if (!IsValidTaiSan())
+                    double KL = Convert.ToDouble(TxtKhoiLuong);
+                    if (KL == 100)
                     {
-                        FocusKL();
+                        _pageService.DisplayAlert("Alert!", "Khoi luong min= 100", "Ok");
                     }
-                }
-            }
-            CheckIsEnableXacNhan();
-        }
-        private void OnPlusKhoiLuongClicked()
-        {
-            if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
-            {
-                TxtKhoiLuong = "100";
-            }
-            else
-            {
-                double KL = Convert.ToDouble(TxtKhoiLuong);
-                double newKL = KL + 100;
-                if (KL != max)
-                {
-                    if (newKL > max)
+                    else if (KL >= 200)
                     {
-                        _pageService.DisplayAlert("Alert!", "Khoi luong vuot muc", "Ok");
-                        FocusKL();
-                    }
-                    else
-                    {
+                        double newKL = KL - 100;
                         TxtKhoiLuong = newKL.ToString();
-                        if (TxtGia != null && TxtGia != "")
+                    }
+                }
+            }
+            else //plus khoi luong
+            {
+                if (TxtKhoiLuong == "" || TxtKhoiLuong == null)
+                {
+                    TxtKhoiLuong = "100";
+                }
+                else
+                {
+                    double KL = Convert.ToDouble(TxtKhoiLuong);
+                    double newKL = KL + 100;
+                    if (KL != max)
+                    {
+                        if (newKL > max)
                         {
-                            if (!IsValidTaiSan())
-                            {
-                                FocusKL();
-                            }
+                            _pageService.DisplayAlert("Alert!", "Khoi luong vuot muc", "Ok");
+                            FocusKL();
+                        }
+                        else
+                        {
+                            TxtKhoiLuong = newKL.ToString();
                         }
                     }
                 }
             }
-            CheckIsEnableXacNhan();
-        }
-        private void OnMinusGiaClicked()
-        {
-            if (TxtGia == "" || TxtGia == null)
+            //check tai san
+            if (TxtGia != null && TxtGia != "")
             {
-                TxtGia = Company.PriceTran.ToString();
-            }
-            else if (Convert.ToDouble(TxtGia) > Company.PriceSan)
-            {
-                double tempGia = Convert.ToDouble(TxtGia) - 0.1;
-                TxtGia = tempGia.ToString();
-            }
-            if (TxtKhoiLuong != "" && TxtKhoiLuong != null)
-            {
-                if (IsValidGia())
+                if (!IsValidTaiSan())
                 {
-                    if (!IsValidTaiSan()) FocusGia();
+                    FocusKL();
                 }
             }
             CheckIsEnableXacNhan();
         }
-        private void OnPlusGiaClicked()
+        private void OnGiaClicked(string paramater)
         {
-            if (TxtGia == "" || TxtGia == null)
+            if (paramater.Equals("0"))
             {
-                TxtGia = Company.PriceSan.ToString();
+                if (TxtGia == "" || TxtGia == null)
+                {
+                    TxtGia = Company.PriceTran.ToString();
+                }
+                else if (Convert.ToDouble(TxtGia) > Company.PriceSan)
+                {
+                    double tempGia = Convert.ToDouble(TxtGia) - 0.1;
+                    TxtGia = tempGia.ToString();
+                }
             }
-            else if (Convert.ToDouble(TxtGia) < Company.PriceTran)
+            else
             {
-                double newGia = Convert.ToDouble(TxtGia) + 0.1;
-                TxtGia = newGia.ToString();
+                if (TxtGia == "" || TxtGia == null)
+                {
+                    TxtGia = Company.PriceSan.ToString();
+                }
+                else if (Convert.ToDouble(TxtGia) < Company.PriceTran)
+                {
+                    double newGia = Convert.ToDouble(TxtGia) + 0.1;
+                    TxtGia = newGia.ToString();
+                }
             }
             //check
             if (TxtKhoiLuong != "" && TxtKhoiLuong != null)
@@ -498,32 +402,27 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             CheckIsEnableXacNhan();
         }
         // button loai Gia
-        private void OnLOClicked()
+        private void OnLoaiGiaClicked(string paramater)
         {
-            ColorOfLO = "#fb9807";
-            TxtGia = null;
-            IsEnableGia = true;
-            CheckIsEnableXacNhan();
-        }
-        private void OnATOClicked()
-        {
-            TxtGia = "ATO";
-            ColorOfLO = "White";
-            IsEnableGia = false;
-            CheckIsEnableXacNhan();
-        }
-        private void OnMPClicked()
-        {
-            TxtGia = "MP";
-            ColorOfLO = "White";
-            IsEnableGia = false;
-            CheckIsEnableXacNhan();
-        }
-        private void OnATCClicked()
-        {
-            TxtGia = "ATC";
-            IsEnableGia = false;
-            ColorOfLO = "White";
+            if (paramater.Equals("LO"))
+            {
+                ColorOfLO = "#fb9807";
+                TxtGia = null;
+                IsEnableGia = true;
+            }
+            else
+            {
+                ColorOfLO = "White";
+                IsEnableGia = false;
+                if (paramater.Equals("ATC"))
+                {
+                    TxtGia = "ATC";
+                }
+                else if (paramater.Equals("ATO"))
+                { TxtGia = "ATO"; }
+                else
+                { TxtGia = "MP"; }
+            }
             CheckIsEnableXacNhan();
         }
         //

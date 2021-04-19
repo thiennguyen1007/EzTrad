@@ -97,42 +97,42 @@
                         <Label Text="Trần" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceTran}" TextColor="#ef2da8"/>
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BtnTranCommand}" Tapped="btn_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding FillGiaCommand}" Tapped="btn_Tapped" CommandParameter="tran"/>
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                     <StackLayout Grid.Column="1" Style="{StaticResource Key=stackLayoutMenu}">
                         <Label Text="TC" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceTC}" TextColor="#eeff3e"/>
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BtnTCCommand}" Tapped="btn_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding FillGiaCommand}" Tapped="btn_Tapped" CommandParameter="tc"/>
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                     <StackLayout Grid.Column="2" Style="{StaticResource Key=stackLayoutMenu}">
                         <Label Text="Sàn" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceSan}" TextColor="#08b7fa"/>
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BtnSanCommand}" Tapped="btn_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding FillGiaCommand}" Tapped="btn_Tapped" CommandParameter="san"/>
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                     <StackLayout Grid.Column="3" Style="{StaticResource Key=stackLayoutMenu}">
                         <Label Text="Mua 1" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceMua}" TextColor="#ff3662"/>
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BtnMuaCommand}" Tapped="btn_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding FillGiaCommand}" Tapped="btn_Tapped" CommandParameter="mua1"/>
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                     <StackLayout Grid.Column="4" Style="{StaticResource Key=stackLayoutMenu}">
                         <Label Text="Khớp" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceKhop}" TextColor="#eeff3e"/>
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BtnKhopCommand}" Tapped="btn_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding FillGiaCommand}" Tapped="btn_Tapped" CommandParameter="khop"/>
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                     <StackLayout Grid.Column="5" Style="{StaticResource Key=stackLayoutMenu}">
                         <Label Text="Bán 1" Style="{StaticResource labelStackLayoutMenu}"/>
                         <Label Text="{Binding Path=Company.PriceBan}" TextColor="#eeff3e"/>
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BtnBanCommand}" Tapped="btn_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding FillGiaCommand}" Tapped="btn_Tapped" CommandParameter="ban1"/>
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                 </Grid>
@@ -198,10 +198,12 @@
                 <Frame Grid.Row="5" Style="{StaticResource frame_KLandGia}">
                     <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnable}" x:Name="GridKL" Margin="1">
                         <Grid Margin="1" x:Name="minusKL">
-                            <ImageButton Source="minus.png" Command="{Binding MinusKhoiLuongCommand}" 
+                            <ImageButton Source="minus.png" Command="{Binding KhoiLuongCommand}"
+                                         CommandParameter="0"
                                          Clicked="btnMinusKL_Clicked"/>
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding MinusKhoiLuongCommand}" Tapped="PlusMinus_Tapped"/>
+                                <TapGestureRecognizer Command="{Binding KhoiLuongCommand}" Tapped="PlusMinus_Tapped"
+                                                      CommandParameter="0"/>
                             </Grid.GestureRecognizers>
                         </Grid>
                         <local:CustomEntry Text="{Binding TxtKhoiLuong}" Grid.Column="1" HorizontalTextAlignment="Center" 
@@ -210,9 +212,10 @@
                         <Grid Grid.Column="2" Margin="1" x:Name="plusKL">
                             <ImageButton Source="plus.png" 
                                          Clicked="btnPlusKL_Clicked"
-                                         Command="{Binding PlusKhoiLuongCommand}"/>
+                                         Command="{Binding KhoiLuongCommand}" CommandParameter="1"/>
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding PlusKhoiLuongCommand}" Tapped="PlusMinus_Tapped"/>
+                                <TapGestureRecognizer Command="{Binding KhoiLuongCommand}" Tapped="PlusMinus_Tapped"
+                                                      CommandParameter="1"/>
                             </Grid.GestureRecognizers>
                         </Grid>
                     </Grid>
@@ -223,10 +226,10 @@
                 <Frame Grid.Row="6" Style="{StaticResource frame_KLandGia}">
                     <Grid ColumnDefinitions="*,4*,*" IsEnabled="{Binding IsEnableGia}" x:Name="GridGia" Margin="1">
                         <Grid Margin="1" x:Name="minusGia">
-                            <ImageButton Source="minus.png" Command="{Binding MinusGiaCommand}"  
+                            <ImageButton Source="minus.png" Command="{Binding GiaCommand}" CommandParameter="0"
                                          Clicked="btnMinusGia_Clicked"/>
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding MinusGiaCommand}" Tapped="PlusMinus_Tapped"/>
+                                <TapGestureRecognizer Command="{Binding GiaCommand}" Tapped="PlusMinus_Tapped" CommandParameter="0"/>
                             </Grid.GestureRecognizers>
                         </Grid>
                         <local:CustomEntry Text="{Binding TxtGia, Mode=TwoWay}" Grid.Column="1" 
@@ -235,10 +238,10 @@
                                                Unfocused="lbGia_Unfocused">
                         </local:CustomEntry>
                         <Grid Grid.Column="2" Margin="1" x:Name="PlusGia">
-                            <ImageButton Source="plus.png" Command="{Binding PlusGiaCommand}" 
+                            <ImageButton Source="plus.png" Command="{Binding GiaCommand}" CommandParameter="1"
                                          Clicked="btnPlusGia_Clicked"/>
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding PlusGiaCommand}" Tapped="PlusMinus_Tapped"/>
+                                <TapGestureRecognizer Command="{Binding GiaCommand}" Tapped="PlusMinus_Tapped" CommandParameter="1"/>
                             </Grid.GestureRecognizers>
                         </Grid>
                     </Grid>
@@ -246,29 +249,26 @@
                 <!--end of textbox gia-->
                 <Label Text="Tiền treo gốc:" TextColor="#0673ff" Grid.Row="7" FontSize="15" 
                        HorizontalOptions="Start" Grid.ColumnSpan="2"/>
-                <Grid Grid.Row="8" Grid.ColumnSpan="2" Margin="10,0,10,0"
+                <Grid Grid.Row="8" Grid.ColumnSpan="2" Margin="10,0"
                       ColumnDefinitions="*,*,*,*" ColumnSpacing="45" IsVisible="{Binding IsEnable}">
-                    <Button Text="LO" TextColor="{Binding ColorOfLO}" Command="{Binding LOCommand}"/>
-                    <Button Text="ATO" Grid.Column="1" Command="{Binding ATOCommand}">
+                    <Button Text="LO" TextColor="{Binding ColorOfLO}" Command="{Binding LoaiGiaCommand}" CommandParameter="LO"/>
+                    <Button Text="ATO" Grid.Column="1" Command="{Binding LoaiGiaCommand}" CommandParameter="ATO">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference txtGia}, Path=Text}"
-                                         Value="ATO">
+                            <DataTrigger TargetType="Button" Binding="{Binding TxtGia}" Value="ATO">
                                 <Setter Property="TextColor" Value="#fb9807"/>
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
-                    <Button Text="MP" Grid.Column="2" Command="{Binding MPCommand}">
+                    <Button Text="MP" Grid.Column="2" Command="{Binding LoaiGiaCommand}" CommandParameter="MP">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference txtGia}, Path=Text}"
-                                         Value="MP">
+                            <DataTrigger TargetType="Button" Binding="{Binding TxtGia}" Value="MP">
                                 <Setter Property="TextColor" Value="#fb9807"/>
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
-                    <Button Text="ATC" Grid.Column="3" Command="{Binding ATCCommand}">
+                    <Button Text="ATC" Grid.Column="3" Command="{Binding LoaiGiaCommand}" CommandParameter="ATC">
                         <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference txtGia}, Path=Text}"
-                                         Value="ATC">
+                            <DataTrigger TargetType="Button" Binding="{Binding TxtGia}" Value="ATC">
                                 <Setter Property="TextColor" Value="#fb9807"/>
                             </DataTrigger>
                         </Button.Triggers>
@@ -298,7 +298,7 @@
                         Margin="10,10,15,10" IsEnabled="{Binding StatusOfXacNhan}"
                         FontAttributes="Bold" Text="Xac nhan Mua" x:Name="btnXacNhan">
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference lbMuaBan}, Path=Text}" Value="Bán" >
+                        <DataTrigger TargetType="Button" Binding="{Binding MuaBanString}" Value="Bán">
                             <Setter Property="Text" Value="Xac nhan Ban"/>
                         </DataTrigger>
                     </Button.Triggers>
