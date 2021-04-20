@@ -72,7 +72,7 @@
                             <Label Grid.Column="1" Text="{Binding LabelTitle}" FontSize="16" IsEnabled="False"/>
                             <ImageButton Source="favorites.png"                                     
                                      IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
-                                     Grid.Column="2" Margin="2,2,2,2"                        
+                                     Grid.Column="2" Margin="2"                        
                                      Command="{Binding Source={x:Reference listView}, Path=BindingContext.FavoritesCommand}"
                                      CommandParameter="{Binding .}"
                                      BackgroundColor="{Binding IsTicked}"/>
@@ -137,26 +137,23 @@
                             <Label Grid.Column="1" Text="{Binding LabelTitle}" FontSize="16" IsEnabled="False"/>
                             <ImageButton Source="favorites.png"                                     
                                      IsVisible="{Binding Source={x:Reference lbShow}, Path=Text}" 
-                                     Grid.Column="2" Margin="2,2"                        
+                                     Grid.Column="2" Margin="2"                        
                                      Command="{Binding Source={x:Reference lstViewFavor}, Path=BindingContext.RemoveFavoritesCommand}"
                                      CommandParameter="{Binding .}"
                                      BackgroundColor="{Binding IsTicked}"/>
-                            <ImageButton Source="next.png" Grid.Column="2" Margin="2,2,2,2" 
+                            <ImageButton Source="next.png" Grid.Column="2" Margin="2" 
                                      Command="{Binding Source={x:Reference lstViewFavor}, Path=BindingContext.showLstBaoCaoGDCommmand}" 
                                      IsVisible="{Binding Source={x:Reference lbShowBaoCaoGDBtn}, Path=Text}"/>
-                            <ImageButton Source="chevron.png" Grid.Column="2" Margin="2,2,2,2" 
+                            <ImageButton Source="chevron.png" Grid.Column="2" Margin="2" 
                                      Command="{Binding Source={x:Reference lstViewFavor}, Path=BindingContext.showLstBaoCaoGDCommmand}"
                                      IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"/>
                         </Grid>
                         <Label Text="Lệnh trong ngày" Margin="40,0,0,0" 
-                               IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"
-                               HeightRequest="30"/>
+                               IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"/>
                         <Label Text="Lịch sử đặt lệnh" Margin="40,0,0,0" 
-                               IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"
-                               HeightRequest="30"/>
+                               IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"/>
                         <Label Text="Lịch sử ứng trước" Margin="40,0,0,0" 
-                               IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"
-                               HeightRequest="30"/>
+                               IsVisible="{Binding Source={x:Reference lbShowDropDownBaoCaoBtn}, Path=Text}"/>
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>
@@ -194,7 +191,7 @@
         <Label Text="{Binding IsShowDropDownBaoCaoGDBtn}" IsVisible="False" x:Name="lbShowDropDownBaoCaoBtn"/>
         <Grid ColumnDefinitions="*,3*,*,*" BackgroundColor="#2196F3" >
             <Image Source="userPro.png" Margin="10"/>
-            <StackLayout Orientation="Vertical" Grid.Column="1">
+            <StackLayout Grid.Column="1">
                 <Label Text="059C189701" TextColor="White"/>
                 <Label Text="Nguyen Van Thien" TextColor="White" FontSize="18"/>
             </StackLayout>

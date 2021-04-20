@@ -187,9 +187,8 @@
                 <Grid ColumnDefinitions="*,*" Grid.Row="5">
                     <Label Text="Khối lượng" Style="{StaticResource lb_Note}"/>
                     <Label Text="{Binding LbKLMax}" Grid.Column="1" BackgroundColor="#808080" TextColor="White" 
-                           FontSize="13" 
-                           Margin="0,5" VerticalTextAlignment="Center"
-                           IsVisible="{Binding IsEnable}">
+                           FontSize="13" IsVisible="{Binding IsEnable}"
+                           Margin="0,5" VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding LbMaxCommand}" Tapped="lbKLMax_Tapped"/>
                         </Label.GestureRecognizers>
@@ -207,7 +206,7 @@
                             </Grid.GestureRecognizers>
                         </Grid>
                         <local:CustomEntry Text="{Binding TxtKhoiLuong}" Grid.Column="1" HorizontalTextAlignment="Center" 
-                                               Keyboard="Numeric" Focused="lbKhoiLuong_Focused" Unfocused="lbKhoiLuong_Unfocused"
+                                               Keyboard="Numeric" Focused="lbGia_Focused" Unfocused="lbKhoiLuong_Unfocused"
                                                x:Name="lbKhoiLuong"/>
                         <Grid Grid.Column="2" Margin="1" x:Name="plusKL">
                             <ImageButton Source="plus.png" 
@@ -286,8 +285,9 @@
                     <Grid ColumnDefinitions="4*,*" IsEnabled="{Binding IsEnable}">
                         <local:CustomEntry IsPassword="{Binding Source={x:Reference showPassTriggerStatic}, Path=HidePassword}" 
                                            Placeholder="mật khẩu giao dịch" FontSize="12"
-                                           VerticalOptions="Center" HorizontalTextAlignment="Center" TextChanged="txtPassWord_TextChanged"
-                                           Text="{Binding TxtPassWord}"/>
+                                           VerticalOptions="Center" HorizontalTextAlignment="Center" 
+                                           TextChanged="txtPassWord_TextChanged"
+                                           Text="{Binding TxtPassWord}" Focused="lbGia_Focused" Unfocused="txtPass_Unfocused"/>
                         <ImageButton Source="noSee.png" Grid.Column="1" Margin="8,0" HorizontalOptions="End">
                             <ImageButton.Triggers>
                                 <EventTrigger Event="Clicked">

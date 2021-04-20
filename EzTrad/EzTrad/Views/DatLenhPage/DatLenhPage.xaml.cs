@@ -36,7 +36,7 @@ namespace EzTrad.Views.DatLenhPage
         }
         private async void AnimationOfCompanyName()
         {
-            await Task.Delay(4000);
+            await Task.Delay(5000);
             while (true)
             {
                 await txtName.TranslateTo(0, 0, 800);
@@ -134,17 +134,13 @@ namespace EzTrad.Views.DatLenhPage
             var x = sender as Grid;
             FadeGridClickedWhite(x);
         }
-        private void lbKhoiLuong_Focused(object sender, FocusEventArgs e)
-        {
-            ViewModel.StatusOfXacNhan = false;
-        }
         private void lbKhoiLuong_Unfocused(object sender, FocusEventArgs e)
         {
             ViewModel.TxtKhoiLuongUnfocus();
         }
         private void lbGia_Focused(object sender, FocusEventArgs e)
         {
-            ViewModel.StatusOfXacNhan = false;
+            btnXacNhan.IsEnabled = false;
         }
         private void lbGia_Unfocused(object sender, FocusEventArgs e)
         {
@@ -169,6 +165,10 @@ namespace EzTrad.Views.DatLenhPage
         private void lbKLMax_Tapped(object sender, EventArgs e)
         {
             FadeGridClicked(GridKL);
+        }
+        private void txtPass_Unfocused(object sender, FocusEventArgs e)
+        {
+            ViewModel.CheckIsEnableXacNhan();
         }
     }
 }

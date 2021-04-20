@@ -73,7 +73,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         {
             ObservableCollection<MaCompanyViewModel> temp = new ObservableCollection<MaCompanyViewModel>(KhoiTaoSoDuCK());
             var x = new List<MaCompanyViewModel>(temp);
-            return x.Where(f => f.Name.Contains(newText));
+            return x.Where(c => c.ID != null && c.ID.Contains(newText));
         }
         public void SoDuCKSelected(MaCompanyViewModel x)
         {

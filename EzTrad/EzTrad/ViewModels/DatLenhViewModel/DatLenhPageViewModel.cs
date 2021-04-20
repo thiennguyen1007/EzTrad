@@ -27,7 +27,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         private string _txtKhoiLuong;
         private string _txtGia;
         private string _txtPassWord;
-        private bool _statusOfXacNhan;
         private string _lbTienOrCK;
         private string _lbTongTaiSan;
         private string _lbKLMax;
@@ -55,7 +54,6 @@ namespace EzTrad.ViewModels.DatLenhViewModel
         public string TxtMa { get => _txtMa; set => SetProperty(ref _txtMa, value); }
         public string TxtKhoiLuong { get => _txtKhoiLuong; set => SetProperty(ref _txtKhoiLuong, value); }
         public string TxtGia { get => _txtGia; set => SetProperty(ref _txtGia, value); }
-        public bool StatusOfXacNhan { get => _statusOfXacNhan; set => SetProperty(ref _statusOfXacNhan, value); }
         public MaCompanyViewModel Company { get => _company; set => SetProperty(ref _company, value); }
         public string LbTienOrCK { get => _lbTienOrCK; set => SetProperty(ref _lbTienOrCK, value); }
         public string LbTongTaiSan { get => _lbTongTaiSan; set => SetProperty(ref _lbTongTaiSan, value); }
@@ -127,7 +125,7 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             LbTongTaiSan = TongTaiSan.ToString();
             MuaBanValue = true;
             TxtGia = TxtKhoiLuong = LbKLMax = TxtMa = null;
-            StatusOfXacNhan = IsEnable = IsEnableGia = false;
+            IsEnable = IsEnableGia = false;
             ColorOfBtnXacNhan = "#80bdfe";
             MuaBanString = "Mua";
             //StringOfXacNhanBtn = "Xác nhận mua";
@@ -419,8 +417,9 @@ namespace EzTrad.ViewModels.DatLenhViewModel
             CheckIsEnableXacNhan();
         }
         //
-        private void CheckIsEnableXacNhan()
+        public void CheckIsEnableXacNhan()
         {
+            bool StatusOfXacNhan = default;
             if (string.IsNullOrWhiteSpace(TxtMa) || string.IsNullOrEmpty(TxtMa)
                 || string.IsNullOrWhiteSpace(TxtGia) || string.IsNullOrEmpty(TxtGia)
                 || string.IsNullOrWhiteSpace(TxtKhoiLuong) || string.IsNullOrEmpty(TxtKhoiLuong)
