@@ -210,6 +210,12 @@ namespace EzTrad.ViewModels.DatLenhViewModel
                     }
                 }
             }
+            CheckMuaBan();
+            CheckIsEnableXacNhan();
+        }
+        public void TxtPassUnfocus()
+        {
+            CheckMuaBan();
             CheckIsEnableXacNhan();
         }
         private void OnLoaiGDClicked()

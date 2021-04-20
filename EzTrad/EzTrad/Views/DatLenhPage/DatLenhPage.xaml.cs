@@ -168,7 +168,7 @@ namespace EzTrad.Views.DatLenhPage
         }
         private void txtPass_Unfocused(object sender, FocusEventArgs e)
         {
-            ViewModel.CheckIsEnableXacNhan();
+            ViewModel.TxtPassUnfocus();
         }
     }
 }
