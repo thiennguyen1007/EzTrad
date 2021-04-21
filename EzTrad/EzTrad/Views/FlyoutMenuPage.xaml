@@ -205,12 +205,13 @@
                            FontSize="18" VerticalTextAlignment="Center" IsVisible="{Binding IsShowFavor}" HeightRequest="40"/>
                 <!--list favorites-->
                 <ListView ItemsSource="{Binding LstFavorites}" IsVisible="{Binding IsShowFavor}"
-                              x:Name="lstViewFavor" ItemTemplate="{StaticResource menuFavorTemplateSelector}"
-                              HasUnevenRows="True" HeightRequest="{Binding HeightOfLst}" ItemSelected="listView_ItemSelected"/>
+                          x:Name="lstViewFavor" ItemTemplate="{StaticResource menuFavorTemplateSelector}"
+                          HasUnevenRows="True" HeightRequest="{Binding HeightOfLst}" 
+                          ItemSelected="listView_ItemSelected"/>
                 <!--list menu-->
                 <ListView x:Name="listView" ItemTemplate="{StaticResource menuDataTemplateSelector}" 
-                              ItemsSource="{Binding FlyoutItems}" ItemSelected="listView_ItemSelected"
-                              HasUnevenRows="True" SelectedItem="{Binding SelectedItem,Mode=TwoWay}"/>
+                          ItemsSource="{Binding FlyoutItems}" ItemSelected="listView_ItemSelected"
+                          HasUnevenRows="True" SelectedItem="{Binding SelectedItem,Mode=TwoWay}"/>
             </StackLayout>
         </ScrollView>
     </Grid>
